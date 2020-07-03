@@ -1,3 +1,6 @@
+# temp-graph-visualizer
+Proyecto final para ITBA por Diego y Joaquin.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
