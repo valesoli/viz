@@ -1,4 +1,4 @@
-import './Popoto.css';
+/*import './Popoto.css';
 import * as d3 from 'd3';
 import * as popoto from 'popoto';
 import React, { Component } from 'react';
@@ -11,8 +11,9 @@ class Popoto extends Component {
 
     popotoConfig() {
         //Neo4j rest settings 
-        popoto.rest.CYPHER_URL = "https://localhost:7473/db/data/transaction/commit";
+        popoto.rest.CYPHER_URL = "http://localhost:7474/db/data/transaction/commit";
         popoto.rest.AUTHORIZATION = "Basic " + btoa("neo4j:admin");
+        
         
         // Define the list of label provider to customize the graph behavior:
         // Only two labels are used in Neo4j movie graph example: "Movie" and "Person"
@@ -20,7 +21,7 @@ class Popoto extends Component {
             "Object": {
                 "returnAttributes": ["title", "inteval"],
                 "constraintAttribute": "title"
-            },
+            }/*,
             "Atribute": {
                 "returnAttributes": ["title", "interval"],
                 "constraintAttribute": "title",
@@ -68,27 +69,36 @@ class Popoto extends Component {
             });
             popoto.update();
         });
+        */
         // Start the generation using parameter as root label of the query.
+        /*
         popoto.start("Object");
     }
 
     render() {
 
         return (
-            <div>
+            <div className="ppt-body">
                 <section className="ppt-section-main">
                     <div className="ppt-section-header">
                         <span className="ppt-header-span">Neo4j Visualization with Popoto</span>
                     </div>
 
-                    <div id="popoto-graph" className="ppt-div-graph">
+                    
+                    <div id="popoto-container" className="ppt-container-graph">
+                        <nav id="popoto-taxonomy" className="ppt-taxo-nav">
+                            
+                        </nav>
+                        <div id="popoto-graph" className="ppt-div-graph">
+                            
+                        </div>
                     </div>
 
-                    <div id="popoto-cypher" className="ppt-container-query">
+                    <div id="popoto-cypher" className="ppt-container-cypher">
                     </div>
 
                     <div className="ppt-section-header">
-                        RESULTS <span id="rescount" className="ppt-count"></span>
+                        RESULTS <span id="result-total-count" className="ppt-count"></span>
                     </div>
 
                     <div id="popoto-results" className="ppt-container-results">
@@ -100,4 +110,4 @@ class Popoto extends Component {
     }
 }
 
-export default Popoto;
+export default Popoto;*/

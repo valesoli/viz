@@ -7,11 +7,9 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "d3": "^5.16.0",
-    "popoto": "^2.0.18",
-    "prop-types": "^15.7.2",
+    "neovis.js": "^1.4.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-resize-aware": "^3.0.1",
     "react-scripts": "3.4.1"
   },
   "scripts": {
