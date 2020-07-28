@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import {Navbar, Nav, Container, Col, Row} from 'react-bootstrap';
 import NeoGraph from "./Components/NeoGraph";
+import TempSlider from "./Components/TempSlider";
 
 const NEO4J_URI = "bolt://localhost:7687";
 const NEO4J_USER = "neo4j";
@@ -28,7 +29,7 @@ class App extends Component {
           <Col>
             <NeoGraph
               width={400}
-              height={700}
+              height={675}
               containerId={"id1"}
               neo4jUri={NEO4J_URI}
               neo4jUser={NEO4J_USER}
@@ -37,6 +38,7 @@ class App extends Component {
             />
           </Col>
         </Row>
+        <TempSlider currentDate={"31-10-96"}/>
       </Container>
     );
   }
