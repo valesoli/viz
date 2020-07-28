@@ -16,27 +16,33 @@ class NeoGraph extends Component {
       server_user: neo4jUser,
       server_password: neo4jPassword,
       labels: {
-        Object: {
-          title: "user_key",
-          interval: "pagerank"
+        "Object": {
+          "caption": "title"
         },
-        Attribute: {
-          title: "user_key",
-          interval: "pagerank"
+        "Attribute": {
+          "caption": "title"
         },
-        Value: {
-          value: "user_key",
-          interval: "pagerank"
+        "Value": {
+          "caption": "value"
         }
       },
       relationships: {
-        Fan: {
-          interval: false,
-          thickness: "count"
+        "Edge": {
+          "caption": false,
+          "thickness": 1
+        },
+        "LivedIn": {
+          "thickness": 1
+        },
+        "Friend": {
+          "thickness": 1
+        },
+        "Fan": {
+          "thickness": 1
         }
       },
       initial_cypher:
-        "MATCH (n) RETURN n"
+        "match (n)-[r]-() return n,r"
     };
     /*
       Since there is no neovis package on NPM at the moment, we have to use a "trick":
