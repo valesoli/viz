@@ -1,24 +1,24 @@
 import React from "react";
 import {Col, Row, Badge} from 'react-bootstrap';
 import Slider from '@material-ui/core/Slider';
-import {api_getYears} from '../GraphService/graphQueryService'
+import {api_getYears} from '../GraphService/graphQueryService';
 
 const marks = [
     {
-      value: 0,
-      label: '0°C',
+      value: 1900,
+      label: '1900',
     },
     {
-      value: 20,
-      label: '20°C',
+      value: 1965,
+      label: '1965',
     },
     {
-      value: 37,
-      label: '37°C',
+      value: 1980,
+      label: '1980',
     },
     {
-      value: 100,
-      label: '100°C',
+      value: 1995,
+      label: '1995',
     }
 ];
 
@@ -29,19 +29,19 @@ export function sliderTest(){
 //Esta es la funcion que si te fijas en el constructor le bindeo el 'this' para que cuando llame a this.setState cambie
 export function sliderCallback(years){
     let array = [];
-    years.results[0].data[0].row.forEach(function(val){array.push({value:val,label:val.toString(),key:val.id})})
+    years.results[0].data[0].row[0].forEach(function(val){array.push({value:val})})
     this.setState({marcas: array});
 }
 
 //ToDo: Que formatee de la forma que corresponda la fecha
 function valuetext(value) {
-    return `${value}°C`;
+    return `${value}`;
 }
 
 class TempSlider extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {currentDate: this.props.currentDate, marcas:marks};
+      this.state = {currentDate: this.props.currentDate, marcas: marks};
       sliderCallback = sliderCallback.bind(this);
     }
 
@@ -51,11 +51,12 @@ class TempSlider extends React.Component {
                 <Col md='10'>
                     <Slider
                         defaultValue={20}
-                        getAriaValueText={valuetext}
                         aria-labelledby="discrete-slider-custom"
-                        step={10}
-                        valueLabelDisplay="auto"
+                        step={null}
                         marks={this.state.marcas}
+                        min={1900}
+                        max={2000}
+                        valueLabelDisplay="auto"
                     />
                 </Col>
                 <Col md='2'>
