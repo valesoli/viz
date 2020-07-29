@@ -38,7 +38,7 @@ class App extends Component {
             />
           </Col>
         </Row>
-        <TempSlider currentDate={"31-10-96"}/>
+        <TempSlider currentDate={1900}/>
       </Container>
     );
   }

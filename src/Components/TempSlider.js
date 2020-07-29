@@ -1,6 +1,7 @@
 import React from "react";
 import {Col, Row, Badge} from 'react-bootstrap';
 import Slider from '@material-ui/core/Slider';
+import Input from '@material-ui/core/Input';
 import {api_getYears} from '../GraphService/graphQueryService';
 
 const marks = [
@@ -22,6 +23,9 @@ const marks = [
     }
 ];
 
+const min = 1900;
+const max = 2000;
+
 export function sliderTest(){
     api_getYears(sliderCallback);
 }
@@ -41,7 +45,7 @@ function valuetext(value) {
 class TempSlider extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {currentDate: this.props.currentDate, marcas: marks};
+      this.state = {interval: [min, max], marcas: marks};
       sliderCallback = sliderCallback.bind(this);
     }
 
@@ -49,21 +53,25 @@ class TempSlider extends React.Component {
         return(
             <Row>
                 <Col md='10'>
-                    <Slider
-                        defaultValue={20}
+                    <Slider                        
                         aria-labelledby="discrete-slider-custom"
                         step={null}
                         marks={this.state.marcas}
-                        min={1900}
-                        max={2000}
+                        min={min}
+                        max={max}
                         valueLabelDisplay="auto"
+                        onChange={this.handleSliderChange}
+                        value={this.state.interval}
                     />
                 </Col>
                 <Col md='2'>
-                    <Badge variant="primary">{this.state.currentDate}</Badge>
+                    <Badge variant="primary">{this.state.interval[0] + ' - ' + this.state.interval[1]}</Badge>
                 </Col>
             </Row>
         );
     }
+
+    handleSliderChange = (event, value) => this.setState({ interval: value });
+
 }
 export default TempSlider;
