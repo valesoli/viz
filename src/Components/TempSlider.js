@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import {Col, Row, Badge} from 'react-bootstrap';
 import Slider from '@material-ui/core/Slider';
+import {api_getYears} from '../GraphService/graphQueryService'
 
-//ToDo: Esto hay que llenarlo con los dates que pueden usarse
 const marks = [
     {
       value: 0,
@@ -22,15 +22,27 @@ const marks = [
     }
 ];
 
+export function sliderTest(){
+    api_getYears(sliderCallback);
+}
+
+//Esta es la funcion que si te fijas en el constructor le bindeo el 'this' para que cuando llame a this.setState cambie
+export function sliderCallback(years){
+    let array = [];
+    years.results[0].data[0].row.forEach(function(val){array.push({value:val,label:val.toString(),key:val.id})})
+    this.setState({marcas: array});
+}
+
 //ToDo: Que formatee de la forma que corresponda la fecha
 function valuetext(value) {
     return `${value}°C`;
 }
 
-class TempSlider extends Component {
+class TempSlider extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {currentDate: this.props.currentDate};
+      this.state = {currentDate: this.props.currentDate, marcas:marks};
+      sliderCallback = sliderCallback.bind(this);
     }
 
     render(){
@@ -43,7 +55,7 @@ class TempSlider extends Component {
                         aria-labelledby="discrete-slider-custom"
                         step={10}
                         valueLabelDisplay="auto"
-                        marks={marks}
+                        marks={this.state.marcas}
                     />
                 </Col>
                 <Col md='2'>
