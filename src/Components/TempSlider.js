@@ -65,7 +65,7 @@ class TempSlider extends React.Component {
     render(){
         return(
             <Row>
-                <Col md='10'>
+                <Col md='10' className="pl-4">
                     <Slider                        
                         aria-labelledby="discrete-slider-custom"
                         step={null}

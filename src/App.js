@@ -16,7 +16,7 @@ class App extends Component {
         <Row className="pb-1 pt-1">
           <Col>
             <Navbar bg="primary" variant="dark" className="justify-content-between">
-              <Navbar.Brand href="#home">React NeoVis Example</Navbar.Brand>
+              <Navbar.Brand href="#home">React NeoVis</Navbar.Brand>
               <Nav className="ml-auto">
                 <Nav.Link href="#home">Graph Viz</Nav.Link>
                 <Nav.Link href="#features">Stats</Nav.Link>
