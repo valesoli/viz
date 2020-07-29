@@ -1,35 +1,7 @@
-import { post } from "request";
 var txUrl = "http://localhost:7474/db/data/transaction/commit";
-
 const NEO_USER = 'neo4j';
 const NEO_PASS = 'admin';
 
-//Deprecated
-function cypherQuery(query,params, processResponse) {
-  post({
-        uri:txUrl,
-        json: {statements:[{statement:query,parameters:params}]},
-        headers: {'Accept':'application/json;charset=UTF-8',
-                    'Authorization':'Basic ' + btoa(NEO_USER + ':' + NEO_PASS),
-                    'Content-Type':'application/json'}
-        }, function(err,res) { processResponse(err,res.body) }
-  )
-}
-var cb=function(err,data) { console.log(JSON.stringify(data)) }
-export function consoleLogCypher(query){ 
-    var params={};
-    return cypherQuery(query,params,cb);
-}
-export function fetchEveryYear(callback){
-    var params={};
-    cypherQuery(
-        "match (o:Object) with distinct toInteger(split(o.interval[0], '—')[0]) as Años order by Años return collect(Años)",
-        params,
-        callback
-    )
-}
-
-//Esta es la que vá
 export function api_getYears(callback){
     let query = "match (o:Object) with distinct toInteger(split(o.interval[0], '—')[0]) as Años order by Años return collect(Años)";
     let params = {};

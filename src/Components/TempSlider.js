@@ -1,8 +1,8 @@
 import React from "react";
 import {Col, Row, Badge} from 'react-bootstrap';
 import Slider from '@material-ui/core/Slider';
-import Input from '@material-ui/core/Input';
 import {api_getYears} from '../GraphService/graphQueryService';
+import { refreshGraph } from "./NeoGraph";
 
 const marks = [
     {
@@ -23,31 +23,44 @@ const marks = [
     }
 ];
 
-const min = 1900;
-const max = 2000;
-
-export function sliderTest(){
-    api_getYears(sliderCallback);
-}
-
 //Esta es la funcion que si te fijas en el constructor le bindeo el 'this' para que cuando llame a this.setState cambie
 export function sliderCallback(years){
     let array = [];
-    years.results[0].data[0].row[0].forEach(function(val){array.push({value:val})})
-    this.setState({marcas: array});
-}
-
-//ToDo: Que formatee de la forma que corresponda la fecha
-function valuetext(value) {
-    return `${value}`;
+    var object = years.results[0].data[0].row[0];
+    var min = null;
+    var max = null;
+    for (var i=0;i<object.length; i++) {
+        var val = object[i];
+        if(val < min || min == null)
+            min = val;
+        if(val > max || max == null)
+            max = val;
+        array.push({
+            value:val
+        });
+    }
+    this.setState({marca_maxima:max, marca_minima:min, marcas:array, interval: [min,max]});
 }
 
 class TempSlider extends React.Component {
     constructor(props) {
-      super(props);
-      this.state = {interval: [min, max], marcas: marks};
-      sliderCallback = sliderCallback.bind(this);
+        super(props);
+        this.state = {interval: [this.props.initMinDate, this.props.initMaxDate],
+                    marcas: marks,
+                    marca_minima:1900, 
+                    marca_maxima:2000};
+        sliderCallback = sliderCallback.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
+
+    componentDidMount(){
+        api_getYears(sliderCallback);
+    }
+
+    handleChange(event, newValue){
+        refreshGraph(newValue[0], newValue[1]);
+        this.setState({interval: newValue});
+    };
 
     render(){
         return(
@@ -57,10 +70,10 @@ class TempSlider extends React.Component {
                         aria-labelledby="discrete-slider-custom"
                         step={null}
                         marks={this.state.marcas}
-                        min={min}
-                        max={max}
+                        min={this.state.marca_minima}
+                        max={this.state.marca_maxima}
                         valueLabelDisplay="auto"
-                        onChange={this.handleSliderChange}
+                        onChange={this.handleChange}
                         value={this.state.interval}
                     />
                 </Col>
@@ -70,8 +83,5 @@ class TempSlider extends React.Component {
             </Row>
         );
     }
-
-    handleSliderChange = (event, value) => this.setState({ interval: value });
-
 }
 export default TempSlider;

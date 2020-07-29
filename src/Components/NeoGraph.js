@@ -2,10 +2,21 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import NeoVis from "neovis.js/dist/neovis.js"
 
+
+export function refreshGraph(min, max){
+  this.vis.renderWithCypher("match (o)-[r]-() where toInteger(split(o.interval[0], '—')[0]) > " 
+                            + min
+                            + " AND toInteger(split(o.interval[0], '—')[0]) < "
+                            + max 
+                            + " return o,r");
+  //this.vis.renderWithCypher("match (o:Object)where toInteger(split(o.interval[0], '—')[0]) > 1960 AND toInteger(split(o.interval[0], '—')[0]) < 2000 return o");
+}
+
 class NeoGraph extends Component {
   constructor(props) {
     super(props);
     this.visRef = React.createRef();
+    refreshGraph = refreshGraph.bind(this);
   }
 
   componentDidMount() {
