@@ -40,12 +40,14 @@ class Network extends React.Component {
 
   // Update force if the width or height of the graph changes
   componentDidUpdate(newProps) {
+    
     this.force = this.force
       .force("center", forceCenter(
         newProps.width / 2,
         newProps.height / 2
       ))
       .restart();
+
   }
 
   // Setup D3 force
@@ -65,14 +67,12 @@ class Network extends React.Component {
         forceCenter(this.props.width / 2, this.props.height / 2)
       );
 
-    // Force-update the component on each force tick
+    // Force-update the component on each force tick   
     this.force.on("tick", () => this.forceUpdate());
-    //api_newCypher(this.networkCallback);
-    //api_cypherQuery("match (n) with collect(id(n)) as nodes match (m)-[r]->(o) with nodes, collect([id(m),id(o)]) as edges return nodes, edges", this.networkCallback);
+    api_cypherQuery("match (n) with collect(id(n)) as nodes match (m)-[r]->(o) with nodes, collect([id(m),id(o)]) as edges return nodes, edges", this.networkCallback);    
   }
 
   networkCallback(response){
-    console.log("LLEGUE")
     let response_tuple = response.results[0].data[0].row
     let nodes = [];
     let links = [];
@@ -88,27 +88,23 @@ class Network extends React.Component {
         links: links
       }
     });
+    this.force = forceSimulation(this.state.data.nodes)
+      .force(
+        "link",
+        forceLink()
+          .id(function(d) {
+            return d.id;
+          })
+          .links(this.state.data.links)
+      )
+      .force("charge", forceManyBody().strength(-500))
+      .force(
+        "center",
+        forceCenter(this.props.width / 2, this.props.height / 2)
+      );
   }
 
-  // networkCallback2(response){
-  //     let dataArray = response.results[0].data;
-  //     //console.log(dataArray)
-  //     let nodes = [];
-  //     let links = [];
-  //     dataArray.forEach(e => {
-  //         nodes.push(e.row[0]);
-  //         links.push(e.meta[2]);
-  //     });
-  //     //console.log(nodes);
-  //     //console.log(links);
-  //     this.setState({ results: response});
-  // }
-
   render() {
-    if (!this.force) {
-      return null;
-    }
-
     return (
       <div style={{ width: "100%", height: "100%" }}>
         <svg width={this.props.width} height={this.props.height}>
@@ -133,6 +129,7 @@ const links = [
   { source: 3, target: 4 },
   { source: 4, target: 5 }
 ];
+
 
 class App extends Component {
   componentDidMount() {
@@ -160,22 +157,13 @@ class App extends Component {
         <Row >
           <Col>
             <Network
-              width={400}
-              height={400}
+              width={1110}
+              height={700}
               network={{
                 nodes: nodes,
                 links: links
               }}
             />
-            {/* <NeoGraph
-              width={400}
-              height={675}
-              containerId={"id1"}
-              neo4jUri={NEO4J_URI}
-              neo4jUser={NEO4J_USER}
-              neo4jPassword={NEO4J_PASSWORD}
-              backgroundColor={"rgba(178, 190, 181, 0.16)"}
-            /> */}
           </Col>
         </Row>
         <TempSlider initMinDate={1900} initMaxDate={1980}/>
