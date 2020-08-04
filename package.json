@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^7.2.1",
     "@vx/network": "0.0.198",
     "d3": "^5.16.0",
+    "lodash.chunk": "^4.2.0",
     "neovis.js": "^1.4.0",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",

@@ -1,11 +1,30 @@
 import React from 'react';
 import Network from './Network';
 import { api_cypherQuery } from '../GraphService/graphQueryService';
+import { Container , Row, Col} from 'react-bootstrap';
 
 //MockValues
 const nodesMock = [];
 const linksMock = [];
 const attrsMock = [];
+
+class TestPost extends React.Component{
+    constructor(props){
+        super(props);
+    }
+    
+    render(){
+        if(this.props.value[0] == null){
+            return <div>Loading</div>;
+        }
+        return(
+            <div>
+                Node: {this.props.value[0].id}
+                Attribute: {this.props.value[0].attributes}        
+            </div>
+        );
+    }
+}
 
 class NetworkWrapper extends React.Component {
     constructor(props){
@@ -59,31 +78,46 @@ class NetworkWrapper extends React.Component {
         //El mapa deberia ser con key el id del nodo, y el value deberian ser cada
         //cada uno de los atributos del nodo. Es decir tendria [key,value] adentro,
         //donde key es el nombre del atributo, y value es el valor.
-        
-        /*
+        let response_map = new Map();
         let response_table = response.results[0].data;
-        const attrs = response_table.map((attr) =>
-            <Post
-                key={attr.row[0]}
-                id={attr.row[0]}
-                title={attr.row[1]}
-                attribute={attr.row[2]}
-                value={attr.row[3]}
-            />
-            );
+        
+        const attrsHashmap = response_table.reduce((obj, item) => {
+            if(obj[item.row[0]]){
+                obj[item.row[0]].attributes.push([item.row[2], item.row[2]]);
+            } else {
+                let objr = new Object();
+                objr.id = item.row[0];
+                //objr.title = attr.row[1];
+                objr.attributes = [];
+                objr.attributes.push([item.row[2], item.row[3]]);
+                obj[item.row[0]] = objr;
+            }
+            return obj;
+          }, {});
+          
+        const mergedAttrsArray = Object.values(attrsHashmap);
+
         this.setState({
-            attrs: attrs
+            attrs: mergedAttrsArray
         });
-        */
     }
 
     render(){
         return(
-            <Network
-                nodesData={this.state.data.nodes}
-                linksData={this.state.data.links}
-                nodeHoverTooltip={this.nodeHoverTooltip}
-            />
+            <Container>
+                <Row>
+                    <Network
+                        nodesData={this.state.data.nodes}
+                        linksData={this.state.data.links}
+                        nodeHoverTooltip={this.nodeHoverTooltip}
+                    />
+                </Row>
+                <Row>
+                    <Col>
+                        <TestPost value={this.state.attrs}></TestPost>
+                    </Col>
+                </Row>
+            </Container>
         );
     }
 }

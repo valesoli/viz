@@ -190,8 +190,8 @@ export function runForceGraph( container, linksData, nodesData, nodeHoverTooltip
                     .on('contextmenu', (d) => {
                         createContextMenu(d, menuItems, width, height, '#graphSvg');
                     })
-                .attr("r", 12)
-                .attr("fill", d => color(d.id)))
+                    .attr("r", 12)
+                    .attr("fill", d => color(d.id)))
                 .call(drag(simulation));
 
                 link = link
