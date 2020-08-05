@@ -111,8 +111,8 @@ export function runForceGraph( container, linksData, nodesData, nodeHoverTooltip
         }));
 
     let link = svg
-        .append("g")
-        .attr("stroke", "#999")
+        .append("svg:g")
+        .attr("stroke", "#0000FF")
         .attr("stroke-opacity", 0.6)
         .selectAll("line")
         .data(links)
@@ -202,10 +202,21 @@ export function runForceGraph( container, linksData, nodesData, nodeHoverTooltip
                     .attr("fill", d => color(d.id)))
                 .call(drag(simulation));
 
-                link = link
+            link = link
                 .data(links, d => [d.source, d.target])
                 .join("line")
-                .attr("stroke-width", d => Math.sqrt(d.value));
+                .attr("stroke-width", d => Math.sqrt(d.value))
+                .attr("stroke", function(d) { 
+                    if(d.relation == "Friend") {
+                        return "#FF0000";
+                    } else if(d.relation == "LivedIn") {
+                        return "#00FF00";
+                    } else if(d.relation == "Fan") {
+                        return "0000FF";
+                    } else {
+                        return "#000000";
+                    } 
+                });
 
             label = label
                 .data(nodes)

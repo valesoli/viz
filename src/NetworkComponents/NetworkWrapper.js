@@ -39,9 +39,7 @@ class NetworkWrapper extends React.Component {
                 nodes: null,
                 links: null
             },
-            attrs: attrsMock,
-            loading1: true,
-            loading2: true
+            attrs: attrsMock
         }
         this.networkCallback = this.networkCallback.bind(this);
         this.infoCallback = this.infoCallback.bind(this);
@@ -49,20 +47,7 @@ class NetworkWrapper extends React.Component {
     }
 
     componentDidMount(){
-        //api_cypherQuery("match (n) with collect([id(n),n]) as nodes match (m)-[r]->(o) with nodes, collect([[id(m),id(o)],r]) as edges return nodes, edges", this.networkCallback);
-        api_cypherQuery("match (n:Object) with collect([id(n),n]) as nodes match (m:Object)-[r]->(o:Object) with nodes, collect([[id(m),id(o)],r]) as edges return nodes, edges", this.networkCallback);
-        
-        /*
-        let nodes = [];
-        let links = [];
-        var map = this.state.attrs;
-        this.state.data.nodes.forEach(e => {
-            nodes.push({id: e[0], name: map[e[0]][1] || e[1].title})
-        });
-        this.state.data.links.forEach(e => {
-            links.push({source: e[0][0], target: e[0][1]})
-        });
-        */
+        api_cypherQuery("match (n:Object) with collect([id(n),n]) as nodes match (m:Object)-[r]->(o:Object) with nodes, collect([[id(m),id(o)],type(r)]) as edges return nodes, edges", this.networkCallback);
     }
 
     componentDidUpdate(){
@@ -78,7 +63,7 @@ class NetworkWrapper extends React.Component {
             nodes.push({id: e[0], name: attrs[e[0]].attributes[0][1] || e[1].title})
         });
         this.state.base.links.forEach(e => {
-            links.push({source: e[0][0], target: e[0][1]})
+            links.push({source: e[0][0], target: e[0][1], relation: e[1]})
         });
         this.setState({
             data: {
@@ -96,37 +81,16 @@ class NetworkWrapper extends React.Component {
 
     edgeHoverTooltip(link){
         return `<div>     
-            <b>${link.source}</b>
+            <b>${link.relation}</b>
             </div>`
     }
 
     networkCallback(response){
-        /*
-        let response_tuple = response.results[0].data[0].row;
-        let nodes = [];
-        let links = [];
-        //No deberiamos loopear aca, sino en el componentDidMount para poder asignarle
-        //los atributos al nodo. Aca solo guardamos los nodos como estan.
-        
-        response_tuple[0].forEach(e => {
-            nodes.push({id: e[0], name: e[1].title || e[1].value})
-        });
-        response_tuple[1].forEach(e => {
-            links.push({source: e[0][0], target: e[0][1]})
-        });
-        
-        this.setState({
-            data: {
-                nodes: nodes,
-                links: links
-            }
-        });*/
         this.setState({
             base: {
                 nodes: response.results[0].data[0].row[0],
                 links: response.results[0].data[0].row[1]
-            },
-            loading1: false
+            }
         }, () => { api_cypherQuery("match (o:Object)-->(a:Attribute)-->(v:Value) return id(o), o.title, a.title, v.value order by id(o)", this.infoCallback); });
     }
 
@@ -140,7 +104,6 @@ class NetworkWrapper extends React.Component {
             } else {
                 let objr = new Object();
                 objr.id = item.row[0];
-                //objr.title = attr.row[1];
                 objr.attributes = [];
                 objr.attributes.push([item.row[2], item.row[3]]);
                 obj[item.row[0]] = objr;
@@ -150,8 +113,7 @@ class NetworkWrapper extends React.Component {
           
         const mergedAttrsArray = Object.values(attrsHashmap);
         this.setState({
-            attrs: attrsHashmap,
-            loading2: false
+            attrs: attrsHashmap
         }, this.buildNodes);
     }
 
@@ -166,11 +128,6 @@ class NetworkWrapper extends React.Component {
                         edgeHoverTooltip={this.edgeHoverTooltip}
                     />
                 </Row>
-                {/* <Row>
-                    <Col>
-                        <TestPost value={this.state.attrs}></TestPost>
-                    </Col>
-                </Row> */}
             </Container>
         );
     }
