@@ -2,6 +2,7 @@ import * as d3 from "d3";
 //import "@fortawesome/fontawesome-free/css/all.min.css";
 import {createContextMenu} from "./utils";
 import styles from "./forceGraph.module.css";
+import { onClickUpdateSelectionVis } from './NodeVisualizer';
 
 export function runForceGraph( container, linksData, nodesData, nodeHoverTooltip, edgeHoverTooltip) {
     const links = linksData.map((d) => Object.assign({}, d));
@@ -231,7 +232,19 @@ export function runForceGraph( container, linksData, nodesData, nodeHoverTooltip
                 })
                 .on("mouseout", () => {
                     removeTooltip();
-                }); 
+                });
+                
+            node.on("click", function(d){
+                if (!d3.select(this).classed("selected") ){
+                    d3.select(this).classed("selected", true)
+                    d3.select(this).transition().attr("stroke","red");
+                    onClickUpdateSelectionVis(d.id);
+                }else{
+                    d3.select(this).classed("selected", false);
+                    d3.select(this).transition().attr("stroke","none");
+                }
+            });
+        
 
             simulation.nodes(nodes);
             simulation.force("link").links(links);

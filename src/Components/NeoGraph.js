@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import NeoVis from "neovis.js/dist/neovis.js"
 
 
-export function refreshGraph(min, max){
+function refreshGraph(min, max){
   this.vis.renderWithCypher("match (o)-[r]-() where toInteger(split(o.interval[0], '—')[0]) > " 
                             + min
                             + " AND toInteger(split(o.interval[0], '—')[0]) < "

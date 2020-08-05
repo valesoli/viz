@@ -2,7 +2,6 @@ import React from "react";
 import {Col, Row, Badge} from 'react-bootstrap';
 import Slider from '@material-ui/core/Slider';
 import {api_getYears} from '../GraphService/graphQueryService';
-import { refreshGraph } from "./NeoGraph";
 
 const marks = [
     {
@@ -58,7 +57,7 @@ class TempSlider extends React.Component {
     }
 
     handleChange(event, newValue){
-        refreshGraph(newValue[0], newValue[1]);
+        //refreshGraph(newValue[0], newValue[1]);
         this.setState({interval: newValue});
     };
 

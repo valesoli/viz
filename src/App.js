@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import {Navbar, Nav, Container, Col, Row} from 'react-bootstrap';
 import TempSlider from "./Components/TempSlider";
-import NetworkWrapper from './NetworkComponents/NetworkWrapper'
+import NetworkWrapper from './NetworkComponents/NetworkWrapper';
+import NodeVisualizer from './NetworkComponents/NodeVisualizer';
 
 class App extends Component {
   render() {
@@ -24,8 +25,9 @@ class App extends Component {
           <Col>
             <NetworkWrapper/>
           </Col>
+          <NodeVisualizer/>
         </Row>
-        <TempSlider initMinDate={1900} initMaxDate={1980}/>
+        {/* <TempSlider initMinDate={1900} initMaxDate={1980}/> */}
       </Container>
     );
   }
