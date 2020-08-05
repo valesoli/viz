@@ -15,7 +15,7 @@ class Network extends React.Component {
         let updaterFn;
   
         if (this.containerRef.current) {
-            let return_pkg = runForceGraph(this.containerRef.current, this.props.linksData, this.props.nodesData, this.props.nodeHoverTooltip);
+            let return_pkg = runForceGraph(this.containerRef.current, this.props.linksData, this.props.nodesData, this.props.nodeHoverTooltip, this.props.edgeHoverTooltip);
             destroyFn = return_pkg.destroy;
             updaterFn = return_pkg.update;
         }

@@ -63,10 +63,11 @@ export function api_cypherQuery(queryParam, callback){
         }
         if (this.status === 200) {
             let results = JSON.parse(this.responseText);
-            callback(results);
+            callback(results);            
         } else {
             callback(null);
         }
+        return true;
     };
     xhttp.open("POST", txUrl, true);
     xhttp.setRequestHeader("Content-type", "application/json");
@@ -74,5 +75,5 @@ export function api_cypherQuery(queryParam, callback){
     xhttp.setRequestHeader("Data-type", "json");
     xhttp.send(JSON.stringify({
         statements:[{statement:query,parameters:params}]
-        }));
+        }));        
 }

@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import {createContextMenu} from "./utils";
 import styles from "./forceGraph.module.css";
 
-export function runForceGraph( container, linksData, nodesData, nodeHoverTooltip) {
+export function runForceGraph( container, linksData, nodesData, nodeHoverTooltip, edgeHoverTooltip) {
     const links = linksData.map((d) => Object.assign({}, d));
     const nodes = nodesData.map((d) => Object.assign({}, d));
 
@@ -154,6 +154,13 @@ export function runForceGraph( container, linksData, nodesData, nodeHoverTooltip
             removeTooltip();
         });
 
+    link.on("mouseover", (d) => {
+        addTooltip(edgeHoverTooltip, d, d3.event.pageX, d3.event.pageY);
+        })
+        .on("mouseout", () => {
+            removeTooltip();
+        });
+
     simulation.on("tick", () => {
         //update link positions
         link
@@ -218,6 +225,13 @@ export function runForceGraph( container, linksData, nodesData, nodeHoverTooltip
                 .on("mouseout", () => {
                   removeTooltip();
                 });
+
+            link.on("mouseover", (d) => {
+                addTooltip(edgeHoverTooltip, d, d3.event.pageX, d3.event.pageY);
+                })
+                .on("mouseout", () => {
+                    removeTooltip();
+                }); 
 
             simulation.nodes(nodes);
             simulation.force("link").links(links);
