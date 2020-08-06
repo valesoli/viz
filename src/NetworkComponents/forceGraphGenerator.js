@@ -205,7 +205,7 @@ export function runForceGraph( container, linksData, nodesData, nodeHoverTooltip
             link = link
                 .data(links, d => [d.source, d.target])
                 .join("line")
-                .attr("stroke-width", d => Math.sqrt(d.value))
+                .attr("stroke-width", "4px")
                 .attr("stroke", function(d) { 
                     if(d.relation == "Friend") {
                         return "#FF0000";
@@ -218,24 +218,34 @@ export function runForceGraph( container, linksData, nodesData, nodeHoverTooltip
                     } 
                 });
 
-            label = label
-                .data(nodes)
-                .enter()
-                .append("text")
-                .on('contextmenu', (d) => {
-                    createContextMenu(d, menuItems, width, height, '#graphSvg');
-                })
-                .attr('text-anchor', 'middle')
-                .attr('dominant-baseline', 'central')
-                .attr("class", d => `fa ${getClass(d)}`)
-                .text(d => {return icon(d);})
-                .call(drag(simulation));
+            // label = label
+            //     .data(nodes)
+            //     .enter()
+            //     .append("text")
+            //     .on('contextmenu', (d) => {
+            //         createContextMenu(d, menuItems, width, height, '#graphSvg');
+            //     })
+            //     .attr('text-anchor', 'middle')
+            //     .attr('dominant-baseline', 'central')
+            //     .attr("class", d => `fa ${getClass(d)}`)
+            //     .text(d => {return icon(d);})
+            //     .call(drag(simulation));
 
-            label.on("mouseover", (d) => {
-                addTooltip(nodeHoverTooltip, d, d3.event.pageX, d3.event.pageY);
-              })
+            node.on("mouseover", (d) => {
+                    addTooltip(nodeHoverTooltip, d, d3.event.pageX, d3.event.pageY);
+                })
                 .on("mouseout", () => {
                   removeTooltip();
+                })
+                .on("click", function(d){
+                    if (!d3.select(this).classed("selected") ){
+                        d3.select(this).classed("selected", true)
+                        d3.select(this).transition().attr("stroke","red");
+                        onClickUpdateSelectionVis(d.id);
+                    }else{
+                        d3.select(this).classed("selected", false);
+                        d3.select(this).transition().attr("stroke","none");
+                    }
                 });
 
             link.on("mouseover", (d) => {
@@ -243,19 +253,7 @@ export function runForceGraph( container, linksData, nodesData, nodeHoverTooltip
                 })
                 .on("mouseout", () => {
                     removeTooltip();
-                });
-                
-            node.on("click", function(d){
-                if (!d3.select(this).classed("selected") ){
-                    d3.select(this).classed("selected", true)
-                    d3.select(this).transition().attr("stroke","red");
-                    onClickUpdateSelectionVis(d.id);
-                }else{
-                    d3.select(this).classed("selected", false);
-                    d3.select(this).transition().attr("stroke","none");
-                }
-            });
-        
+                });        
 
             simulation.nodes(nodes);
             simulation.force("link").links(links);

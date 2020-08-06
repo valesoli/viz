@@ -44,7 +44,7 @@ class NodeVisualizer extends React.Component{
 
     render(){
         return(
-            <Col md='3' className='pl-0'>
+            <Col className='pl-0'>
                 <Card
                     bg='secondary'
                     text='white'

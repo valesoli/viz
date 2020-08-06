@@ -4,6 +4,7 @@ import {Navbar, Nav, Container, Col, Row} from 'react-bootstrap';
 import TempSlider from "./Components/TempSlider";
 import NetworkWrapper from './NetworkComponents/NetworkWrapper';
 import NodeVisualizer from './NetworkComponents/NodeVisualizer';
+import LegendVisualizer from './NetworkComponents/LegendVisualizer';
 
 class App extends Component {
   render() {
@@ -21,11 +22,20 @@ class App extends Component {
             </Navbar>
           </Col>
         </Row>
-        <Row >
+        <Row>
           <Col>
             <NetworkWrapper/>
           </Col>
-          <NodeVisualizer/>
+          <Col md={3}>
+            <Container>
+              <Row>
+                <LegendVisualizer/>
+              </Row>
+              <Row>
+                <NodeVisualizer/>
+              </Row>
+            </Container>
+          </Col>
         </Row>
         {/* <TempSlider initMinDate={1900} initMaxDate={1980}/> */}
       </Container>
