@@ -7,6 +7,7 @@ import { onClickUpdateSelectionVis } from './NodeVisualizer';
 export function runForceGraph( container, linksData, nodesData, nodeHoverTooltip, edgeHoverTooltip) {
     const links = linksData.map((d) => Object.assign({}, d));
     const nodes = nodesData.map((d) => Object.assign({}, d));
+    const colors = ["#33cccc", "#f6ecd2", "#ff9f88", "#fb7777", "#9dd8d8"];
 
     //TODO:Context Menu - Creo que no lo vamos a necesitar
     const menuItems = [
@@ -30,7 +31,7 @@ export function runForceGraph( container, linksData, nodesData, nodeHoverTooltip
     const height = containerRect.height;
     const width = containerRect.width;
 
-    const color = () => { return "#9D00A0"; };
+    const color = (d) => { return colors[d.type.length%5]; };
 
     const icon = (d) => {
         return d.gender === "male" ? "\uf222" : "\uf221";
@@ -199,7 +200,7 @@ export function runForceGraph( container, linksData, nodesData, nodeHoverTooltip
                         createContextMenu(d, menuItems, width, height, '#graphSvg');
                     })
                     .attr("r", 12)
-                    .attr("fill", d => color(d.id)))
+                    .attr("fill", d => color(d)))
                 .call(drag(simulation));
 
             link = link

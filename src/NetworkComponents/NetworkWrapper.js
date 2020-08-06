@@ -60,7 +60,7 @@ class NetworkWrapper extends React.Component {
         var attrs = this.state.attrs;
 
         this.state.base.nodes.forEach(e => {
-            nodes.push({id: e[0], name: attrs[e[0]].attributes[0][1] || e[1].title})
+            nodes.push({id: e[0], type: e[1].title, name: attrs[e[0]].attributes[0][1] || e[1].title})
         });
         this.state.base.links.forEach(e => {
             links.push({source: e[0][0], target: e[0][1], relation: e[1]})
