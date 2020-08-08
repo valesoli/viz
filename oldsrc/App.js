@@ -37,7 +37,7 @@ class App extends Component {
             </Container>
           </Col>
         </Row>
-        {/* <TempSlider initMinDate={1900} initMaxDate={1980}/> */}
+        <TempSlider initMinDate={1900} initMaxDate={1980}/>
       </Container>
     );
   }
