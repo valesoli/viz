@@ -140,7 +140,7 @@ light-bootstrap-dashboard-react
         ├── TableList.jsx
         ├── Typography.jsx
         ├── Upgrade.jsx
-        └── UserProfile.jsx
+        └── Configuration.jsx
 ```
 
 ## Browser Support

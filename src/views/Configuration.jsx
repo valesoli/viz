@@ -32,40 +32,108 @@ import Button from "components/CustomButton/CustomButton.jsx";
 
 import avatar from "assets/img/faces/face-3.jpg";
 
-class UserProfile extends Component {
+class Configuration extends Component {
   render() {
     return (
       <div className="content">
         <Grid fluid>
           <Row>
-            <Col md={8}>
+            <Col md={12}>
               <Card
-                title="Edit Profile"
+                title="Database Configuration"
                 content={
                   <form>
                     <FormInputs
                       ncols={["col-md-5", "col-md-3", "col-md-4"]}
                       properties={[
                         {
-                          label: "Company (disabled)",
+                          label: "Connection URL:port",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Company",
-                          defaultValue: "Creative Code Inc.",
-                          disabled: true
+                          defaultValue: "http://localhost:7474"
                         },
                         {
                           label: "Username",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Username",
-                          defaultValue: "michael23"
+                          defaultValue: "admin"
                         },
                         {
-                          label: "Email address",
-                          type: "email",
+                          label: "Password",
+                          type: "password",
                           bsClass: "form-control",
-                          placeholder: "Email"
+                          placeholder: "Password"
+                        }
+                      ]}
+                    />
+                    <Button bsStyle="info" pullRight fill type="submit">
+                      Test Connection
+                    </Button>
+                    <div className="clearfix" />
+                  </form>
+                }
+              />
+            </Col>
+            {/* <Col md={4}>
+              <UserCard
+                bgImage="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400"
+                avatar={avatar}
+                name="Mike Andrew"
+                userName="michael24"
+                description={
+                  <span>
+                    "Lamborghini Mercy
+                    <br />
+                    Your chick she so thirsty
+                    <br />
+                    I'm in that two seat Lambo"
+                  </span>
+                }
+                socials={
+                  <div>
+                    <Button simple>
+                      <i className="fa fa-facebook-square" />
+                    </Button>
+                    <Button simple>
+                      <i className="fa fa-twitter" />
+                    </Button>
+                    <Button simple>
+                      <i className="fa fa-google-plus-square" />
+                    </Button>
+                  </div>
+                }
+              />
+            </Col> */}
+          </Row>
+          <Row>
+          <Card
+                title="Visualization Configuration"
+                content={
+                  <form>
+                    <FormInputs
+                      ncols={["col-md-5", "col-md-3", "col-md-4"]}
+                      properties={[
+                        {
+                          label: "Connection URL:port",
+                          type: "text",
+                          bsClass: "form-control",
+                          placeholder: "Company",
+                          defaultValue: "http://localhost:7474"
+                        },
+                        {
+                          label: "Username",
+                          type: "text",
+                          bsClass: "form-control",
+                          placeholder: "Username",
+                          defaultValue: "admin"
+                        },
+                        {
+                          label: "Password",
+                          type: "password",
+                          bsClass: "form-control",
+                          placeholder: "Password"
                         }
                       ]}
                     />
@@ -88,6 +156,9 @@ class UserProfile extends Component {
                         }
                       ]}
                     />
+                    <Button bsStyle="info" pullRight fill type="submit">
+                      Test Connection
+                    </Button>
                     <FormInputs
                       ncols={["col-md-12"]}
                       properties={[
@@ -148,37 +219,6 @@ class UserProfile extends Component {
                   </form>
                 }
               />
-            </Col>
-            <Col md={4}>
-              <UserCard
-                bgImage="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400"
-                avatar={avatar}
-                name="Mike Andrew"
-                userName="michael24"
-                description={
-                  <span>
-                    "Lamborghini Mercy
-                    <br />
-                    Your chick she so thirsty
-                    <br />
-                    I'm in that two seat Lambo"
-                  </span>
-                }
-                socials={
-                  <div>
-                    <Button simple>
-                      <i className="fa fa-facebook-square" />
-                    </Button>
-                    <Button simple>
-                      <i className="fa fa-twitter" />
-                    </Button>
-                    <Button simple>
-                      <i className="fa fa-google-plus-square" />
-                    </Button>
-                  </div>
-                }
-              />
-            </Col>
           </Row>
         </Grid>
       </div>
@@ -186,4 +226,4 @@ class UserProfile extends Component {
   }
 }
 
-export default UserProfile;
+export default Configuration;
