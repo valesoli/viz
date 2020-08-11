@@ -25,6 +25,8 @@ import "./assets/css/animate.min.css";
 import "./assets/sass/light-bootstrap-dashboard-react.scss?v=1.3.0";
 import "./assets/css/demo.css";
 import "./assets/css/pe-icon-7-stroke.css";
+import $ from 'jquery';
+import Popper from 'popper.js';
 
 import AdminLayout from "layouts/Admin.jsx";
 

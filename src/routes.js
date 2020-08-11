@@ -33,7 +33,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    path: "/user",
+    path: "/config",
     name: "Configuration",
     icon: "pe-7s-user",
     component: Configuration,

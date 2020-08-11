@@ -266,7 +266,7 @@ var style = {
 // // // For tables
 // //
 //
-const thArray = ["ID", "Name", "Salary", "Country", "City"];
+const thArray = ["ID", "Type", "Color", "Main Attribute", "Default"];
 const tdArray = [
   ["1", "Dakota Rice", "$36,738", "Niger", "Oud-Turnhout"],
   ["2", "Minerva Hooper", "$23,789", "Curaçao", "Sinaai-Waas"],
@@ -275,7 +275,15 @@ const tdArray = [
   ["5", "Doris Greene", "$63,542", "Malawi", "Feldkirchen in Kärnten"],
   ["6", "Mason Porter", "$78,615", "Chile", "Gloucester"]
 ];
-
+const theArray = ["ID", "Type", "Color"];
+const tdeArray = [
+  ["1", "Dakota Rice", "$36,738"],
+  ["2", "Minerva Hooper", "$23,789"],
+  ["3", "Sage Rodriguez", "$56,142"],
+  ["4", "Philip Chaney", "$38,735"],
+  ["5", "Doris Greene", "$63,542"],
+  ["6", "Mason Porter", "$78,615"]
+];
 //
 // //
 // // // For icons
@@ -609,6 +617,8 @@ module.exports = {
   style, // For notifications (App container and Notifications view)
   thArray,
   tdArray, // For tables (TableList view)
+  theArray,
+  tdeArray, // For tables (TableList view)
   iconsArray, // For icons (Icons view)
   dataPie,
   legendPie,
