@@ -7,6 +7,7 @@ import { Card } from "components/Card/Card.jsx";
 import { theArray, tdeArray } from "variables/Variables.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
+import MyColorPicker from "components/CustomColorPicker/MyColorPicker";
 
 class EdgeConfigCard extends React.Component{
     constructor(props){
@@ -31,7 +32,11 @@ class EdgeConfigCard extends React.Component{
                         return (
                         <tr key={key}>
                             {prop.map((prop, key) => {
-                            return <td key={key}>{prop}</td>;
+                                if(prop == "Color") {
+                                    return(<td key={key}>{<MyColorPicker/>}</td>)
+                                } else {
+                                    return <td key={key}>{prop}</td>;
+                                }
                             })}
                         </tr>
                         );

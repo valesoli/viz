@@ -1,12 +1,15 @@
 import React from 'react';
 import {
     Grid,
-    Table
+    Table,
+    DropdownButton, 
+    MenuItem 
 } from "react-bootstrap";
 import { Card } from "components/Card/Card.jsx";
 import { thArray, tdArray } from "variables/Variables.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
+import MyColorPicker from "components/CustomColorPicker/MyColorPicker";
 
 class NodeConfigCard extends React.Component{
     constructor(props){
@@ -31,7 +34,28 @@ class NodeConfigCard extends React.Component{
                         return (
                         <tr key={key}>
                             {prop.map((prop, key) => {
-                            return <td key={key}>{prop}</td>;
+                                if(prop == "Button"){
+                                    return (<td key={key}><DropdownButton
+                                            style={{width: "100%"}}
+                                            bsStyle={"primary"}
+                                            title={"logi"}
+                                            key={1}
+                                            id={`dropdown-basic`}
+                                            >
+                                            <MenuItem eventKey="1">Action</MenuItem>
+                                            <MenuItem eventKey="2">Another action</MenuItem>
+                                            <MenuItem eventKey="3" active>
+                                                Active Item
+                                            </MenuItem>
+                                            <MenuItem divider />
+                                            <MenuItem eventKey="4">Separated link</MenuItem>
+                                        </DropdownButton></td>
+                                    );
+                                } else if(prop == "Color") {
+                                    return(<td key={key}>{<MyColorPicker/>}</td>)
+                                } else {
+                                    return <td key={key}>{prop}</td>;
+                                }
                             })}
                         </tr>
                         );

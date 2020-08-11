@@ -268,21 +268,21 @@ var style = {
 //
 const thArray = ["ID", "Type", "Color", "Main Attribute", "Default"];
 const tdArray = [
-  ["1", "Dakota Rice", "$36,738", "Niger", "Oud-Turnhout"],
-  ["2", "Minerva Hooper", "$23,789", "Curaçao", "Sinaai-Waas"],
-  ["3", "Sage Rodriguez", "$56,142", "Netherlands", "Baileux"],
-  ["4", "Philip Chaney", "$38,735", "Korea, South", "Overland Park"],
-  ["5", "Doris Greene", "$63,542", "Malawi", "Feldkirchen in Kärnten"],
-  ["6", "Mason Porter", "$78,615", "Chile", "Gloucester"]
+  ["1", "Dakota Rice", "Color", "Button", "Button"],
+  ["2", "Minerva Hooper", "Color", "Button", "Button"],
+  ["3", "Sage Rodriguez", "Color", "Button", "Button"],
+  ["4", "Philip Chaney", "Color", "Button", "Button"],
+  ["5", "Doris Greene", "Color", "Button", "Button"],
+  ["6", "Mason Porter", "Color", "Button", "Button"]
 ];
 const theArray = ["ID", "Type", "Color"];
 const tdeArray = [
-  ["1", "Dakota Rice", "$36,738"],
-  ["2", "Minerva Hooper", "$23,789"],
-  ["3", "Sage Rodriguez", "$56,142"],
-  ["4", "Philip Chaney", "$38,735"],
-  ["5", "Doris Greene", "$63,542"],
-  ["6", "Mason Porter", "$78,615"]
+  ["1", "Dakota Rice", "Color"],
+  ["2", "Minerva Hooper", "Color"],
+  ["3", "Sage Rodriguez", "Color"],
+  ["4", "Philip Chaney", "Color"],
+  ["5", "Doris Greene", "Color"],
+  ["6", "Mason Porter", "Color"]
 ];
 //
 // //
