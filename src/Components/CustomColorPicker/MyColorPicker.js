@@ -50,11 +50,11 @@ class MyColorPicker extends React.Component {
           zIndex: '2',
         },
         cover: {
-          position: 'fixed',
+          position: 'inherit',
           top: '0px',
-          right: '0px',
+          right: '175px',
           bottom: '0px',
-          left: '0px',
+          left: '-175px',
         },
       },
     });
@@ -65,8 +65,9 @@ class MyColorPicker extends React.Component {
           <div style={ styles.color } />
         </div>
         { this.state.displayColorPicker ? <div style={ styles.popover }>
-          <div style={ styles.cover } onClick={ this.handleClose }/>
+          <div style={ styles.cover } onClick={ this.handleClose }>
           <SketchPicker color={ this.state.color } onChange={ this.handleChange } />
+          </div>
         </div> : null }
 
       </div>

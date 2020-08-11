@@ -1,4 +1,5 @@
 import React from 'react';
+import "assets/css/mycss.css";
 
 import { Card } from "components/Card/Card.jsx";
 import { Table, DropdownButton, MenuItem } from 'react-bootstrap';
