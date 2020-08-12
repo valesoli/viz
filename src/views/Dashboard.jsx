@@ -29,6 +29,7 @@ import {
   legendBar
 } from "variables/Variables.jsx";
 import NetworkWrapper from "components/NetworkComponents/NetworkWrapper";
+import NetworkVis from "components/NetworkComponents/NetworkVis"
 import FilterModule from "components/NetworkComponents/FilterModule";
 import NodeVisualizer from "components/NetworkComponents/NodeVisualizer";
 
@@ -60,7 +61,7 @@ class Dashboard extends Component {
         <Grid fluid>
           <Row>
             <Col md={9}>
-              <NetworkWrapper/>
+              <NetworkVis/>
             </Col>
             <Col md={3}>
                 <Row>

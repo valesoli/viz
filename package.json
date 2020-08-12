@@ -20,7 +20,8 @@
     "react-router": "5.0.0",
     "react-router-dom": "5.0.0",
     "react-scripts": "^3.4.2",
-    "react-toggle": "4.0.2"
+    "react-toggle": "4.0.2",
+    "vis-network": "^8.1.0"
   },
   "devDependencies": {
     "@types/googlemaps": "3.30.19",
