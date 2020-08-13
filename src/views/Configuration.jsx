@@ -32,13 +32,16 @@ import GranularityConfigCard from "components/Card/GranularityConfigCard";
 import avatar from "assets/img/faces/face-3.jpg";
 
 class Configuration extends Component {
+  constructor(props){
+    super(props);
+  }
   render() {
     return (
       <div className="content">
         <Grid fluid>
           <Row>
             <Col md={12}>
-              <DbConfigCard/>
+              <DbConfigCard connection={this.props.connection}/>
             </Col>
             {/* <Col md={4}>
               <UserCard

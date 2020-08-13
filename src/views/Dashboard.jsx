@@ -33,11 +33,12 @@ import {
 import NetworkVis from "components/NetworkComponents/NetworkVis"
 import FilterModule from "components/NetworkComponents/FilterModule";
 import NodeVisualizer from "components/NetworkComponents/NodeVisualizer";
+import { neo4j_config } from "variables/ConnectionVariables";
 
 class Dashboard extends Component {
   constructor(props){
     super(props);
-    this.state = { notConnected: true }
+    this.state = { connected: this.props.connection.connected };
   }
   componentDidMount() {
     
@@ -63,7 +64,7 @@ class Dashboard extends Component {
   buildNetworkCard(){
     let NetworkCardContent;
     let NetworkCardlegend;
-    if(this.state.notConnected){
+    if(!this.state.connected){
         NetworkCardContent = 
           <Jumbotron>
             <h1>Bienvenid@!</h1>
@@ -87,7 +88,9 @@ class Dashboard extends Component {
         NetworkCardlegend = '';
     } else {
       NetworkCardContent = <NetworkVis/>;
-      NetworkCardlegend = this.createLegend(legendNodes);
+      // ToDo: revisar legend
+      // NetworkCardlegend = this.createLegend(legendNodes);
+      NetworkCardlegend = '';
     }
     return [NetworkCardContent, NetworkCardlegend]
   }

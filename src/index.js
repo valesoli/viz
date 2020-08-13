@@ -17,8 +17,7 @@
 */
 import React from "react";
 import ReactDOM from "react-dom";
-
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import App from "./App";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -27,14 +26,8 @@ import "./assets/sass/light-bootstrap-dashboard-react.scss?v=1.3.0";
 import "./assets/css/demo.css";
 import "./assets/css/pe-icon-7-stroke.css";
 
-import TempGraphPlatform from "layouts/TempGraphPlatform.jsx";
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
-      <Route path="/platform" render={props => <TempGraphPlatform {...props} />} />
-      <Redirect from="/" to="/platform/visualizer" />
-    </Switch>
-  </BrowserRouter>,
+  <App/>,
   document.getElementById("root")
 );
