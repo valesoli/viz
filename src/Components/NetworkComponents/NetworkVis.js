@@ -153,18 +153,7 @@ class NetworkVis extends React.Component {
 
     render(){   
         return(
-            <Card
-                statsIcon="fa fa-history"
-                id="chartHours"
-                title="Graph"
-                stats="Updated 3 minutes ago"
-                content={
-                    <div id="containerRef" ref={this.containerRef} />
-                }
-                legend={
-                  <div className="legend">{this.createLegend(legendNodes)}</div>
-                }
-            />
+            <div id="containerRef" ref={this.containerRef} />
         );
     }
 }

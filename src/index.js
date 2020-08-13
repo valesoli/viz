@@ -27,13 +27,13 @@ import "./assets/sass/light-bootstrap-dashboard-react.scss?v=1.3.0";
 import "./assets/css/demo.css";
 import "./assets/css/pe-icon-7-stroke.css";
 
-import AdminLayout from "layouts/Admin.jsx";
+import TempGraphPlatform from "layouts/TempGraphPlatform.jsx";
 
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
-      <Route path="/admin" render={props => <AdminLayout {...props} />} />
-      <Redirect from="/" to="/admin/visualizer" />
+      <Route path="/platform" render={props => <TempGraphPlatform {...props} />} />
+      <Redirect from="/" to="/platform/visualizer" />
     </Switch>
   </BrowserRouter>,
   document.getElementById("root")

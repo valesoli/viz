@@ -27,45 +27,45 @@ import Upgrade from "views/Upgrade.jsx";
 const dashboardRoutes = [
   {
     path: "/visualizer",
-    name: "Visualizer",
-    icon: "pe-7s-graph",
+    name: "Graph Visualizer",
+    icon: "pe-7s-share",
     component: Dashboard,
-    layout: "/admin"
+    layout: "/platform"
   },
   {
     path: "/config",
     name: "Configuration",
-    icon: "pe-7s-user",
+    icon: "pe-7s-config",
     component: Configuration,
-    layout: "/admin"
+    layout: "/platform"
   },
   {
     path: "/table",
     name: "Table List",
     icon: "pe-7s-note2",
     component: TableList,
-    layout: "/admin"
+    layout: "/platform"
   },
   {
     path: "/typography",
     name: "Typography",
     icon: "pe-7s-news-paper",
     component: Typography,
-    layout: "/admin"
+    layout: "/platform"
   },
   {
     path: "/icons",
     name: "Icons",
     icon: "pe-7s-science",
     component: Icons,
-    layout: "/admin"
+    layout: "/platform"
   },
   {
     path: "/notifications",
     name: "Notifications",
     icon: "pe-7s-bell",
     component: Notifications,
-    layout: "/admin"
+    layout: "/platform"
   }
   // },
   // {

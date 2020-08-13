@@ -30,7 +30,7 @@ import routes from "routes.js";
 
 import image from "assets/img/sidebar-3.jpg";
 
-class Admin extends Component {
+class TempGraphPlatform extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -75,7 +75,7 @@ class Admin extends Component {
   };
   getRoutes = routes => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/admin") {
+      if (prop.layout === "/platform") {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -190,4 +190,4 @@ class Admin extends Component {
   }
 }
 
-export default Admin;
+export default TempGraphPlatform;

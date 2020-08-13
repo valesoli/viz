@@ -17,7 +17,8 @@
 */
 import React, { Component } from "react";
 import ChartistGraph from "react-chartist";
-import { Grid, Row, Col } from "react-bootstrap";
+import { Grid, Row, Col, Button, Jumbotron } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 
 import { Card } from "components/Card/Card.jsx";
 import { StatsCard } from "components/StatsCard/StatsCard.jsx";
@@ -26,13 +27,18 @@ import {
   dataBar,
   optionsBar,
   responsiveBar,
-  legendBar
+  legendBar,
+  legendNodes
 } from "variables/Variables.jsx";
 import NetworkVis from "components/NetworkComponents/NetworkVis"
 import FilterModule from "components/NetworkComponents/FilterModule";
 import NodeVisualizer from "components/NetworkComponents/NodeVisualizer";
 
 class Dashboard extends Component {
+  constructor(props){
+    super(props);
+    this.state = { notConnected: true }
+  }
   componentDidMount() {
     
   }
@@ -54,13 +60,56 @@ class Dashboard extends Component {
     return legend;
   }
 
+  buildNetworkCard(){
+    let NetworkCardContent;
+    let NetworkCardlegend;
+    if(this.state.notConnected){
+        NetworkCardContent = 
+          <Jumbotron>
+            <h1>Bienvenid@!</h1>
+            <p>
+              Aún no realizó las configuraciones de connexión con neo4j.
+              Ahí mismo puede configurar algunos atributos para la visualización.
+            </p>
+            <Button variant="secondary" size="lg">
+              <NavLink
+                to={'/platform/config'}
+                className="nav-link"
+                activeClassName="active"
+              >
+                
+                  <i className='pe-7s-config' />   Configuración
+                
+              </NavLink>
+              </Button>
+          </Jumbotron>
+        ;
+        NetworkCardlegend = '';
+    } else {
+      NetworkCardContent = <NetworkVis/>;
+      NetworkCardlegend = this.createLegend(legendNodes);
+    }
+    return [NetworkCardContent, NetworkCardlegend]
+  }
+
   render() {
+    let [NetworkCardContent, NetworkCardlegend] = this.buildNetworkCard();
+
     return (
       <div className="content">
         <Grid fluid>
           <Row>
             <Col md={9}>
-              <NetworkVis/>
+              <Card
+                statsIcon="fa fa-history"
+                id="chartHours"
+                title="Graph"
+                stats="Updated 3 minutes ago"
+                content={NetworkCardContent}
+                legend={
+                  <div className="legend">{NetworkCardlegend}</div>
+                }
+              />
             </Col>
             <Col md={3}>
                 <Row>
