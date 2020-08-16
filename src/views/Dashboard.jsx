@@ -99,7 +99,7 @@ class Dashboard extends Component {
 
   render() {
     let [NetworkCardContent, NetworkCardlegend] = this.buildNetworkCard();
-
+    
     return (
       <div className="content">
         <Grid fluid>

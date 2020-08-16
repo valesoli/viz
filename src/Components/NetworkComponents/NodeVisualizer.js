@@ -15,15 +15,15 @@ class AttributesDisplayer extends React.Component{
     render(){
         return(
             <div>
-                {this.props.attribute[0]}
+                {this.props.attribute[0] + "\t"}
                 <span className="badge badge-pill badge-primary">{this.props.attribute[1]}</span>
             </div>
         );
     }
 }
 
-export function onClickUpdateSelectionVis(id){
-    api_cypherQuery("match (o:Object)-->(a:Attribute)-->(v:Value) where id(o) = " +id+" return o.title, a.title, v.value", onNodeClickCallback, this.props.con_config);
+export function onClickUpdateSelectionVis(id, con_config){
+    api_cypherQuery("match (o:Object)-->(a:Attribute)-->(v:Value) where id(o) = " + id + " return o.title, a.title, v.value", onNodeClickCallback, con_config);
 }
 
 function onNodeClickCallback(response){
@@ -43,8 +43,12 @@ class NodeVisualizer extends React.Component{
             nodeType: "MockType",
             nodeAttributes: [["MockAttr1", "MockVal1"],["MockAttr2", "MockVal2"]]
         }
-        
+                
+        onClickUpdateSelectionVis = onClickUpdateSelectionVis.bind(this);
         onNodeClickCallback = onNodeClickCallback.bind(this);
+    }
+
+    componentDidUpdate(){
     }
 
     render(){
@@ -59,7 +63,7 @@ class NodeVisualizer extends React.Component{
                         bgImage="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400"
                         avatar={avatar}
                         name={this.state.nodeType}
-                        userName="michael24"
+                        //userName="michael24"
                         description={
                             <div>
                                 {this.state.nodeAttributes.map((item, index) => (

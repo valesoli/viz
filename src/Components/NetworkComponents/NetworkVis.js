@@ -5,6 +5,7 @@ import{
     legendNodes
 } from "../../variables/Variables.jsx";
 import { Network, DataSet } from "vis-network/standalone";
+import {onClickUpdateSelectionVis} from './NodeVisualizer';
 
 //MockValues
 const nodesMock = [];
@@ -56,8 +57,12 @@ class NetworkVis extends React.Component {
                     stabilization: { iterations: 150 },
                     },
                 height: '500px'
-            }; 
+            };
+
             this.network = new Network(container, this.state.data, options);
+            this.network.on("selectNode", (params) => {
+                onClickUpdateSelectionVis(params.nodes[0], this.props.con_config);
+            });
         }   
     }
 
@@ -72,7 +77,7 @@ class NetworkVis extends React.Component {
                     id: e[0], 
                     title: attrs[e[0]].attributes[0][1] || e[1].title, 
                     group: e[1].title,
-                    color: this.props.visual.nodeColors[e[1].title]                    
+                    color: this.props.visual.nodeColors[e[1].title]
                 })
         });
         this.state.base.links.forEach(e => {
@@ -83,7 +88,8 @@ class NetworkVis extends React.Component {
                     title: e[1],
                     color: {
                         inherit: 'to'
-                    }
+                    },
+                    arrows: 'to'
                 })
         });
         var nodesForVis = new DataSet(nodes);
