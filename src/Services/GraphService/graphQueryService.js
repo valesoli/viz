@@ -52,7 +52,7 @@ export function api_getNodesAndEdges(callback){
         }));
 }
 
-export function api_cypherQuery(queryParam, callback){
+export function api_cypherQuery(queryParam, callback, con_config){
     let query = queryParam;
     let params = {};
     let xhttp = new XMLHttpRequest();
@@ -69,9 +69,9 @@ export function api_cypherQuery(queryParam, callback){
         }
         return true;
     };
-    xhttp.open("POST", txUrl, true);
+    xhttp.open("POST", con_config.txUrl, true);
     xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.setRequestHeader("Authorization", "Basic "+ btoa(NEO_USER + ':' + NEO_PASS));
+    xhttp.setRequestHeader("Authorization", "Basic "+ btoa(con_config.NEO_USER + ':' + con_config.NEO_PASS));
     xhttp.setRequestHeader("Data-type", "json");
     xhttp.send(JSON.stringify({
         statements:[{statement:query,parameters:params}]

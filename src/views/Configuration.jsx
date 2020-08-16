@@ -31,6 +31,7 @@ import EdgeConfigCard from "components/Card/EdgeConfigCard";
 import GranularityConfigCard from "components/Card/GranularityConfigCard";
 import avatar from "assets/img/faces/face-3.jpg";
 
+
 class Configuration extends Component {
   constructor(props){
     super(props);

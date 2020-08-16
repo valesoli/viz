@@ -84,6 +84,7 @@ class TempGraphPlatform extends Component {
                 {...props}
                 handleClick={this.handleNotificationClick}
                 connection = {this.props.connection}
+                visual = {this.props.visual}
               />
             )}
             key={key}

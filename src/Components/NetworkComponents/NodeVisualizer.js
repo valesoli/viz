@@ -23,7 +23,7 @@ class AttributesDisplayer extends React.Component{
 }
 
 export function onClickUpdateSelectionVis(id){
-    api_cypherQuery("match (o:Object)-->(a:Attribute)-->(v:Value) where id(o) = " +id+" return o.title, a.title, v.value", onNodeClickCallback);
+    api_cypherQuery("match (o:Object)-->(a:Attribute)-->(v:Value) where id(o) = " +id+" return o.title, a.title, v.value", onNodeClickCallback, this.props.con_config);
 }
 
 function onNodeClickCallback(response){

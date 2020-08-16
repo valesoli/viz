@@ -52,11 +52,13 @@ class Dashboard extends Component {
 
   createLegend(json) {
     var legend = [];
-    for (var i = 0; i < json["names"].length; i++) {
-      var type = "fa fa-circle text-" + json["types"][i];
-      legend.push(<i className={type} key={i} />);
+
+    let nodeColors = json.nodeColors;
+    for (const [index, [key, value]] of Object.entries(Object.entries(nodeColors))) {
+      var type = "fa fa-circle text";
+      legend.push(<i className={type} style={{color: value}} key={index} />);
       legend.push(" ");
-      legend.push(json["names"][i]);
+      legend.push(key);
     }
     return legend;
   }
@@ -87,10 +89,10 @@ class Dashboard extends Component {
         ;
         NetworkCardlegend = '';
     } else {
-      NetworkCardContent = <NetworkVis/>;
+      NetworkCardContent = <NetworkVis con_config={ this.props.connection.neo4j_config } visual={this.props.visual}/>;
       // ToDo: revisar legend
-      // NetworkCardlegend = this.createLegend(legendNodes);
-      NetworkCardlegend = '';
+      NetworkCardlegend = this.createLegend(this.props.visual);
+      // NetworkCardlegend = '';
     }
     return [NetworkCardContent, NetworkCardlegend]
   }
@@ -116,7 +118,7 @@ class Dashboard extends Component {
             </Col>
             <Col md={3}>
                 <Row>
-                  <NodeVisualizer/>
+                  <NodeVisualizer con_config={ this.props.connection.neo4j_config }/>
                 </Row>
                 <Row>
                   <FilterModule/>
@@ -140,9 +142,6 @@ class Dashboard extends Component {
                       responsiveOptions={responsiveBar}
                     />
                   </div>
-                }
-                legend={
-                  <div className="legend">{this.createLegend(legendBar)}</div>
                 }
               />
             </Col>

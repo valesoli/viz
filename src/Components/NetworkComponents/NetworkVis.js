@@ -32,7 +32,7 @@ class NetworkVis extends React.Component {
     }
 
     componentDidMount(){
-        api_cypherQuery("match (n:Object) with collect([id(n),n]) as nodes match (m:Object)-[r]->(o:Object) with nodes, collect([[id(m),id(o)],type(r)]) as edges return nodes, edges", this.networkCallback);
+        api_cypherQuery("match (n:Object) with collect([id(n),n]) as nodes match (m:Object)-[r]->(o:Object) with nodes, collect([[id(m),id(o)],type(r)]) as edges return nodes, edges", this.networkCallback, this.props.con_config);
     }
 
     componentDidUpdate(){
@@ -55,8 +55,7 @@ class NetworkVis extends React.Component {
                     timestep: 0.35,
                     stabilization: { iterations: 150 },
                     },
-                height: '400px',
-                width: '800px'
+                height: '500px'
             }; 
             this.network = new Network(container, this.state.data, options);
         }   
@@ -72,7 +71,8 @@ class NetworkVis extends React.Component {
                 {
                     id: e[0], 
                     title: attrs[e[0]].attributes[0][1] || e[1].title, 
-                    group: e[1].title                    
+                    group: e[1].title,
+                    color: this.props.visual.nodeColors[e[1].title]                    
                 })
         });
         this.state.base.links.forEach(e => {
@@ -114,7 +114,7 @@ class NetworkVis extends React.Component {
                 nodes: response.results[0].data[0].row[0],
                 links: response.results[0].data[0].row[1]
             }
-        }, () => { api_cypherQuery("match (o:Object)-->(a:Attribute)-->(v:Value) return id(o), o.title, a.title, v.value order by id(o)", this.infoCallback); });
+        }, () => { api_cypherQuery("match (o:Object)-->(a:Attribute)-->(v:Value) return id(o), o.title, a.title, v.value order by id(o)", this.infoCallback, this.props.con_config); });
     }
 
     infoCallback(response){
