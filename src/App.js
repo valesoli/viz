@@ -37,7 +37,7 @@ class App extends React.Component{
         return(
             <BrowserRouter>
                 <Switch>
-                <Route path="/platform" render={props => <TempGraphPlatform {...props} 
+                <Route path="/platform" render={props => <TempGraphPlatform {...props}
                                                             connection={this.state.connection_config} 
                                                             visual={this.state.visual} />
                                                 } />
