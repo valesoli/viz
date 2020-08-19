@@ -30,7 +30,7 @@ import {
   legendBar,
   legendNodes
 } from "variables/Variables.jsx";
-import TryVis from "components/NetworkComponents/TryVis"
+import GraphContainer from "components/NetworkComponents/GraphContainer"
 import {MyVis} from "components/NetworkComponents/MyVis"
 import NetworkVis from "components/NetworkComponents/NetworkVis"
 import FilterModule from "components/NetworkComponents/FilterModule";
@@ -115,7 +115,7 @@ class Dashboard extends Component {
         ;
         NetworkCardlegend = '';
     } else {
-      NetworkCardContent = <TryVis con_config={ this.props.connection.neo4j_config }/>
+      NetworkCardContent = <GraphContainer con_config={ this.props.connection.neo4j_config } visual={this.props.visual}/>
       // NetworkCardContent = <MyVis con_config={ this.props.connection.neo4j_config } visual={this.props.visual} data={my_data}/>;
       // NetworkCardContent = <NetworkVis con_config={ this.props.connection.neo4j_config } visual={this.props.visual}/>;
       // ToDo: revisar legend
@@ -146,7 +146,7 @@ class Dashboard extends Component {
             </Col>
             <Col md={3}>
                 <Row>
-                  <NodeVisualizer con_config={ this.props.connection.neo4j_config }/>
+                  <NodeVisualizer con_config={ this.props.connection.neo4j_config } visual={this.props.visual}/>              
                 </Row>
                 <Row>
                   <FilterModule/>

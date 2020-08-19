@@ -16,6 +16,7 @@
 
 */
 import React, { Component } from "react";
+import { Link } from 'react-router-dom';
 import { NavItem, Nav, NavDropdown, MenuItem } from "react-bootstrap";
 
 class AdminNavbarLinks extends Component {
@@ -54,7 +55,14 @@ class AdminNavbarLinks extends Component {
         </Nav>
         <Nav pullRight>
           <NavItem eventKey={1} href="#">
-            Account
+            <Link to="/visualizer">
+              Vis
+            </Link>
+          </NavItem>
+          <NavItem eventKey={1} href="#">
+            <Link to="/config">
+              Config
+            </Link>
           </NavItem>
           <NavDropdown
             eventKey={2}

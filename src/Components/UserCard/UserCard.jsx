@@ -21,15 +21,14 @@ export class UserCard extends Component {
   render() {
     return (
       <div className="card card-user">
-        <div className="image">
-          <img src={this.props.bgImage} alt="..." />
+        <div className="image" style={{backgroundColor:this.props.bgColor}}>
+          {/* <img src={this.props.bgImage} alt="..." /> */}
         </div>
         <div className="content">
           <div className="author">
-            <a href="#pablo">
-              <img
-                className="avatar border-gray"
-                src={this.props.avatar}
+              <i
+                className={"avatar border-gray "+ this.props.avatar}
+                style={{fontSize:"108px",backgroundColor:this.props.bgColor,borderColor:"#ccc"}}
                 alt="..."
               />
               <h4 className="title">
@@ -37,7 +36,6 @@ export class UserCard extends Component {
                 <br />
                 {/* <small>{this.props.userName}</small> */}
               </h4>
-            </a>
           </div>
           <div className="description text-center">{this.props.description}</div>
         </div>
