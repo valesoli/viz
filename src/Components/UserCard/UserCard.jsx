@@ -24,7 +24,7 @@ export class UserCard extends Component {
         <div className="image" style={{backgroundColor:this.props.bgColor}}>
           {/* <img src={this.props.bgImage} alt="..." /> */}
         </div>
-        <div className="content">
+        <div className="content my-content">
           <div className="author">
               <i
                 className={"avatar border-gray "+ this.props.avatar}

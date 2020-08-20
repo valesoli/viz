@@ -6,26 +6,31 @@ import Dashboard from 'views/Dashboard';
 import Configuration from 'views/Configuration';
 
 export function connect(connection_values){
-    this.setState({connection_config: {connected: true, neo4j_config: connection_values}});
+    this.setState({
+        connection_config: {connected: true, neo4j_config: connection_values},
+        visual: {
+            nodeColors: {
+                Person: "#33cccc", 
+                City: "#f6ecd2", 
+                Brand: "#ff9f88"
+            },
+            nodeAvatars: {
+                Person: "pe-7s-users", 
+                City: "pe-7s-world", 
+                Brand: "pe-7s-cart"
+            },
+            edgeColors: null
+        }
+    });
     console.log("conectamos");
 }
 
-export function visual_change(vis_config){
+export function visual_change(attributeChange, vis_config){
+    let visual = this.state.visual;
+    visual[attributeChange] = vis_config
     this.setState({
-        visual: {
-            nodeColors: {
-                "Person": "#33cccc", 
-                "City": "#f6ecd2", 
-                "Brand": "#ff9f88"
-            },
-            nodeAvatars: {
-                "Person": "pe-7s-users", 
-                "City": "pe-7s-world", 
-                "Brand": "pe-7s-cart"
-            },
-            edgeColors: vis_config}
+        visual
     });
-    console.log("Cambios visuales");
 }
 
 class App extends React.Component{

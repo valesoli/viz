@@ -28,6 +28,9 @@ class MyColorPicker extends React.Component {
   };
 
   handleChange = (color) => {
+    if(this.props.parentChange != null){
+      this.props.parentChange(this.props.myType, color);
+    }
     this.setState({ color: color.hex });
   };
 

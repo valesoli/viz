@@ -20,6 +20,8 @@ class NodeConfigCard extends React.Component{
         }
 
         this.nodesCallback = this.nodesCallback.bind(this);
+        this.confirmChanges = this.confirmChanges.bind(this);
+        this.colorChange = this.colorChange.bind(this);
     }
 
     componentDidMount(){
@@ -33,7 +35,7 @@ class NodeConfigCard extends React.Component{
         var defaultAttr = [];
         for(var i = 0; i < response_table.length; i++){
             tdArray[i].type = response_table[i].row[0];
-            tdArray[i].color = colors[i];
+            tdArray[i].color = this.props.visual.nodeColors[response_table[i].row[0]];
             tdArray[i].attribute = response_table[i].row[1][0];
             tdArray[i].default = response_table[i].row[1][0];
             tdArray[i].allAttrs = response_table[i].row[1];
@@ -80,6 +82,22 @@ class NodeConfigCard extends React.Component{
         this.setState({defaultAttr: defaultAttr})
     }
 
+    confirmChanges(){
+        let nodeColors={};
+        this.state.nodes.forEach(element => {
+            nodeColors[element.type] = element.color;
+        });
+        visual_change("nodeColors", nodeColors);
+    }
+
+    colorChange(type, color){
+        this.state.nodes.forEach(element => {
+            if(element.type == type){
+                element.color = color.hex;
+            }
+        });
+    }
+
     render(){
         return(
             <Card
@@ -100,7 +118,7 @@ class NodeConfigCard extends React.Component{
                                 return (
                                 <tr key={key}>
                                     <td key={key+"1"}>{prop.type}</td>
-                                    <td key={key+"2"}>{<MyColorPicker color={prop.color}/>}</td>                                    
+                                    <td key={key+"2"}>{<MyColorPicker color={prop.color} myType={prop.type} parentChange={this.colorChange}/>}</td>                                    
                                     <td key={key+"3"}>
                                         <DropdownButton style={{width: "100%"}}
                                                         bsStyle={"primary"}
@@ -139,7 +157,7 @@ class NodeConfigCard extends React.Component{
                 }
                 legend={
                     <div className="pull-right">
-                        <Button bsStyle="info" pullRight fill type="submit" onClick={visual_change}>
+                        <Button bsStyle="info" pullRight fill onClick={this.confirmChanges}>
                             Confirm Changes
                         </Button>
                     </div>

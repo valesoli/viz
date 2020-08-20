@@ -21,6 +21,7 @@ class EdgeConfigCard extends React.Component{
         }
 
         this.edgesCallback = this.edgesCallback.bind(this);
+        this.confirmChanges = this.confirmChanges.bind(this);
     }
 
     componentDidMount(){
@@ -39,6 +40,12 @@ class EdgeConfigCard extends React.Component{
             edges: edges
         });
     }
+
+
+
+    confirmChanges(){
+        console.log(this.state.edges);
+    }
     
     render(){
         return(
@@ -47,24 +54,31 @@ class EdgeConfigCard extends React.Component{
                 ctTableResponsive
                 content={
                     <Table striped hover>
-                    <thead>
-                    <tr>
-                        {theArray.map((prop, key) => {
-                            return <th key={key}>{prop}</th>;
-                        })}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {this.state.edges.map((prop, key) => {
-                        return (
-                        <tr key={key}>
-                            <td key={key+"1"}>{prop.type}</td>
-                            <td key={key+"2"}>{<MyColorPicker color={prop.color}/>}</td>
+                        <thead>
+                        <tr>
+                            {theArray.map((prop, key) => {
+                                return <th key={key}>{prop}</th>;
+                            })}
                         </tr>
-                        );
-                    })}
-                    </tbody>
-                </Table>
+                        </thead>
+                        <tbody>
+                        {this.state.edges.map((prop, key) => {
+                            return (
+                            <tr key={key}>
+                                <td key={key+"1"}>{prop.type}</td>
+                                <td key={key+"2"}>{<MyColorPicker color={prop.color}/>}</td>
+                            </tr>
+                            );
+                        })}
+                        </tbody>
+                    </Table>
+                }
+                legend={
+                    <div className="pull-right">
+                        <Button bsStyle="info" pullRight fill onClick={this.confirmChanges}>
+                            Confirm Changes
+                        </Button>
+                    </div>
                 }
             />
         );

@@ -35,59 +35,58 @@ import avatar from "assets/img/faces/face-3.jpg";
 class Configuration extends Component {
   constructor(props){
     super(props);
+    this.state = {connected: this.props.connection.connected}
   }
+
+  componentWillReceiveProps(props){
+    this.setState({connected: props.connection.connected});
+  }
+
+  getVisualConfig(){
+    if(this.state.connected){
+      return (
+        <Row>
+            <Col md={9}>
+              <NodeConfigCard visual={this.props.visual}/>
+            </Col>
+            <Col md={3}>
+              <EdgeConfigCard/>
+            </Col>
+        </Row>
+      );
+    } else {
+      return '';
+    }
+  }
+
+  getGranularityCard(){
+    if(this.state.connected){
+      return (
+        <Row>
+          <Col md={12}>
+            <GranularityConfigCard/>
+          </Col>
+        </Row>
+      );
+    } else {
+      return '';
+    }
+  }
+
   render() {
+    let granularityCard = this.getGranularityCard();
+    let visualCards = this.getVisualConfig();
+
     return (
       <div className="content">
         <Grid fluid>
           <Row>
             <Col md={12}>
-              <DbConfigCard connection={this.props.connection}/>
-            </Col>
-            {/* <Col md={4}>
-              <UserCard
-                bgImage="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400"
-                avatar={avatar}
-                name="Mike Andrew"
-                userName="michael24"
-                description={
-                  <span>
-                    "Lamborghini Mercy
-                    <br />
-                    Your chick she so thirsty
-                    <br />
-                    I'm in that two seat Lambo"
-                  </span>
-                }
-                socials={
-                  <div>
-                    <Button simple>
-                      <i className="fa fa-facebook-square" />
-                    </Button>
-                    <Button simple>
-                      <i className="fa fa-twitter" />
-                    </Button>
-                    <Button simple>
-                      <i className="fa fa-google-plus-square" />
-                    </Button>
-                  </div>
-                }
-              />
-            </Col> */}
-          </Row>
-          <Row>
-            <Col md={12}>
-              <GranularityConfigCard/>
+              <DbConfigCard connection={this.props.connection} visual={this.props.visual}/>
             </Col>
           </Row>
-          <Row>
-            <Col md={9}>
-              <NodeConfigCard/>
-            </Col>
-            <Col md={3}>
-              <EdgeConfigCard/>
-            </Col>
-          </Row>
+          {granularityCard}
+          {visualCards}
         </Grid>
       </div>
     );
