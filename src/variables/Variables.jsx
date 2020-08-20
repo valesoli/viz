@@ -266,24 +266,15 @@ var style = {
 // // // For tables
 // //
 //
-const thArray = ["ID", "Type", "Color", "Main Attribute", "Default"];
-const tdArray = [
-  ["1", "Dakota Rice", "Color", "Button", "Button"],
-  ["2", "Minerva Hooper", "Color", "Button", "Button"],
-  ["3", "Sage Rodriguez", "Color", "Button", "Button"],
-  ["4", "Philip Chaney", "Color", "Button", "Button"],
-  ["5", "Doris Greene", "Color", "Button", "Button"],
-  ["6", "Mason Porter", "Color", "Button", "Button"]
-];
-const theArray = ["ID", "Type", "Color"];
-const tdeArray = [
-  ["1", "Dakota Rice", "Color"],
-  ["2", "Minerva Hooper", "Color"],
-  ["3", "Sage Rodriguez", "Color"],
-  ["4", "Philip Chaney", "Color"],
-  ["5", "Doris Greene", "Color"],
-  ["6", "Mason Porter", "Color"]
-];
+const thArray = ["Type", "Color", "Main Attribute", "Default"];
+const tdArray = [ {type: "", color:"", attribute: "", default: "", allAttrs: []},
+                  {type: "", color:"", attribute: "", default: "", allAttrs: []},
+                  {type: "", color:"", attribute: "", default: "", allAttrs: []}];
+
+const theArray = ["Type", "Color"];
+const tdeArray = [  {type: "", color:""},
+                    {type: "", color:""},
+                    {type: "", color:""}];
 //
 // //
 // // // For icons
@@ -567,6 +558,8 @@ var legendNodes = {
   colors: ["#33cccc", "#f6ecd2", "#ff9f88", "#fb7777", "#9dd8d8"]
 };
 
+const colors = ["#33cccc", "#f6ecd2", "#ff9f88", "#fb7777", "#9dd8d8"];
+
 // Data for Bar Chart
 var dataBar = {
   labels: [
@@ -630,5 +623,6 @@ module.exports = {
   dataBar,
   optionsBar,
   responsiveBar,
-  legendBar // For charts (Dashboard view)
+  legendBar, // For charts (Dashboard view)
+  colors
 };

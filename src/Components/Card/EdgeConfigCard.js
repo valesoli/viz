@@ -4,15 +4,42 @@ import {
     Table
 } from "react-bootstrap";
 import { Card } from "components/Card/Card.jsx";
-import { theArray, tdeArray } from "variables/Variables.jsx";
+import { theArray, tdeArray, colors } from "variables/Variables.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import MyColorPicker from "components/CustomColorPicker/MyColorPicker";
+import { neo4j_config } from "variables/ConnectionVariables.jsx";
+import { api_cypherQuery } from '../../Services/GraphService/graphQueryService';
+
 
 class EdgeConfigCard extends React.Component{
     constructor(props){
         super(props);
+
+        this.state = {
+            edges: tdeArray
+        }
+
+        this.edgesCallback = this.edgesCallback.bind(this);
     }
+
+    componentDidMount(){
+        api_cypherQuery("match (:Object)-[r]->(:Object) return collect(distinct type(r))", this.edgesCallback, neo4j_config);
+    }
+
+    edgesCallback(response){
+        let response_table = response.results[0].data[0].row[0];
+        var edges = [];
+        for(var i = 0; i < response_table.length; i++){
+            tdeArray[i].type = response_table[i];
+            tdeArray[i].color = colors[i];
+            edges.push(tdeArray[i]);
+        }
+        this.setState({
+            edges: edges
+        });
+    }
+    
     render(){
         return(
             <Card
@@ -23,21 +50,16 @@ class EdgeConfigCard extends React.Component{
                     <thead>
                     <tr>
                         {theArray.map((prop, key) => {
-                        return <th key={key}>{prop}</th>;
+                            return <th key={key}>{prop}</th>;
                         })}
                     </tr>
                     </thead>
                     <tbody>
-                    {tdeArray.map((prop, key) => {
+                    {this.state.edges.map((prop, key) => {
                         return (
                         <tr key={key}>
-                            {prop.map((prop, key) => {
-                                if(prop == "Color") {
-                                    return(<td key={key}>{<MyColorPicker/>}</td>)
-                                } else {
-                                    return <td key={key}>{prop}</td>;
-                                }
-                            })}
+                            <td key={key+"1"}>{prop.type}</td>
+                            <td key={key+"2"}>{<MyColorPicker color={prop.color}/>}</td>
                         </tr>
                         );
                     })}

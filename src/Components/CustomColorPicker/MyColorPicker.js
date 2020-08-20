@@ -1,19 +1,23 @@
 'use strict'
 
-import React from 'react'
-import reactCSS from 'reactcss'
-import { SketchPicker } from 'react-color'
+import React from 'react';
+import reactCSS from 'reactcss';
+import { SketchPicker } from 'react-color';
 
 class MyColorPicker extends React.Component {
-  state = {
-    displayColorPicker: false,
-    color: {
-      r: '241',
-      g: '112',
-      b: '19',
-      a: '1',
-    },
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+      displayColorPicker: false,
+      color: this.props.color,
+    };
+  }
+
+  componentWillReceiveProps(props){
+    this.setState({
+      color: props.color
+    });
+  }
 
   handleClick = () => {
     this.setState({ displayColorPicker: !this.state.displayColorPicker })
@@ -24,18 +28,17 @@ class MyColorPicker extends React.Component {
   };
 
   handleChange = (color) => {
-    this.setState({ color: color.rgb })
+    this.setState({ color: color.hex });
   };
 
   render() {
-
-    const styles = reactCSS({
+    var styles = reactCSS({
       'default': {
         color: {
           width: '36px',
           height: '14px',
           borderRadius: '2px',
-          background: `rgba(${ this.state.color.r }, ${ this.state.color.g }, ${ this.state.color.b }, ${ this.state.color.a })`,
+          background: this.state.color
         },
         swatch: {
           padding: '5px',
@@ -66,7 +69,7 @@ class MyColorPicker extends React.Component {
         </div>
         { this.state.displayColorPicker ? <div style={ styles.popover }>
           <div style={ styles.cover } onClick={ this.handleClose }>
-          <SketchPicker color={ this.state.color } onChange={ this.handleChange } />
+            <SketchPicker color={ this.state.color } onChange={ this.handleChange } />
           </div>
         </div> : null }
 
