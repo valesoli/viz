@@ -10,6 +10,7 @@ import Button from "components/CustomButton/CustomButton.jsx";
 import MyColorPicker from "components/CustomColorPicker/MyColorPicker";
 import { neo4j_config } from "variables/ConnectionVariables.jsx";
 import { api_cypherQuery } from '../../Services/GraphService/graphQueryService';
+import { visual_change } from 'App';
 
 
 class EdgeConfigCard extends React.Component{
@@ -22,6 +23,7 @@ class EdgeConfigCard extends React.Component{
 
         this.edgesCallback = this.edgesCallback.bind(this);
         this.confirmChanges = this.confirmChanges.bind(this);
+        this.receiveColor = this.receiveColor.bind(this);
     }
 
     componentDidMount(){
@@ -33,7 +35,7 @@ class EdgeConfigCard extends React.Component{
         var edges = [];
         for(var i = 0; i < response_table.length; i++){
             tdeArray[i].type = response_table[i];
-            tdeArray[i].color = colors[i];
+            tdeArray[i].color = this.props.visual.edgeColors[response_table[i]];
             edges.push(tdeArray[i]);
         }
         this.setState({
@@ -41,11 +43,20 @@ class EdgeConfigCard extends React.Component{
         });
     }
 
-
+    receiveColor(type, color){
+        this.state.edges.forEach(element => {
+            if(element.type == type){
+                element.color = color.hex;
+            }
+        });
+    }
 
     confirmChanges(){
-        // TODO: seguir con esto
-        console.log(this.state.edges);
+        let edgeColors={};
+        this.state.edges.forEach(element => {
+            edgeColors[element.type] = element.color;
+        });
+        visual_change("edgeColors", edgeColors);
     }
     
     render(){
@@ -67,7 +78,7 @@ class EdgeConfigCard extends React.Component{
                             return (
                             <tr key={key}>
                                 <td key={key+"1"}>{prop.type}</td>
-                                <td key={key+"2"}>{<MyColorPicker color={prop.color}/>}</td>
+                                <td key={key+"2"}>{<MyColorPicker color={prop.color} myType={prop.type} parentChange={this.receiveColor}/>}</td>
                             </tr>
                             );
                         })}

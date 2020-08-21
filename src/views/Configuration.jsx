@@ -50,7 +50,7 @@ class Configuration extends Component {
               <NodeConfigCard visual={this.props.visual}/>
             </Col>
             <Col md={3}>
-              <EdgeConfigCard/>
+              <EdgeConfigCard visual={this.props.visual}/>
             </Col>
         </Row>
       );

@@ -19,7 +19,11 @@ export function connect(connection_values){
                 City: "pe-7s-world", 
                 Brand: "pe-7s-cart"
             },
-            edgeColors: null
+            edgeColors: {
+                LivedIn: "#33cccc", 
+                Friend: "#f6ecd2", 
+                Fan: "#ff9f88"
+            }
         }
     });
     console.log("conectamos");

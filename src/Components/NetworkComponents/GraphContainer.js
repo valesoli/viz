@@ -112,9 +112,7 @@ class GraphContainer extends React.Component {
                     from: e[0][0], 
                     to: e[0][1],
                     title: e[1],
-                    color: {
-                        inherit: 'to'
-                    },
+                    color: this.props.visual.edgeColors[e[1]],
                     arrows: 'to'
                 })
         });
