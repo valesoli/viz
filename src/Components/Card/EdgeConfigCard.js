@@ -44,6 +44,7 @@ class EdgeConfigCard extends React.Component{
 
 
     confirmChanges(){
+        // TODO: seguir con esto
         console.log(this.state.edges);
     }
     
