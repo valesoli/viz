@@ -1,62 +1,75 @@
-import React, { Component } from 'react';
-import './App.css';
-import {Navbar, Nav, Container, Col, Row} from 'react-bootstrap';
-import TempSlider from "./Components/TempSlider";
-import Network from './NetworkComponents/Network'
+import React from 'react';
+import TempGraphPlatform from "layouts/TempGraphPlatform.jsx";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import AdminNavbar from "components/Navbars/AdminNavbar";
+import Dashboard from 'views/Dashboard';
+import Configuration from 'views/Configuration';
 
-const NEO4J_URI = "bolt://localhost:7687";
-const NEO4J_USER = "neo4j";
-const NEO4J_PASSWORD = "admin";
-
-const nodes = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
-const links = [
-  { source: 1, target: 2 },
-  { source: 1, target: 3 },
-  { source: 1, target: 4 },
-  { source: 2, target: 4 },
-  { source: 3, target: 4 },
-  { source: 4, target: 5 }
-];
-
-
-class App extends Component {
-  componentDidMount() {
-  }
-
-  componentWillUnmount() {
-  }
-
-  render() {
-    return (
-      <Container>
-        <Row className="pb-1 pt-1">
-          <Col>
-            <Navbar bg="primary" variant="dark" className="justify-content-between">
-              <Navbar.Brand href="#home">React NeoVis</Navbar.Brand>
-              <Nav className="ml-auto">
-                <Nav.Link href="#home">Graph Viz</Nav.Link>
-                <Nav.Link href="#features">Stats</Nav.Link>
-                <Nav.Link href="#pricing">Info</Nav.Link>
-              </Nav>
-            </Navbar>
-          </Col>
-        </Row>
-        <Row >
-          <Col>
-            <Network
-              width={1110}
-              height={700}
-              network={{
-                nodes: nodes,
-                links: links
-              }}
-            />
-          </Col>
-        </Row>
-        <TempSlider initMinDate={1900} initMaxDate={1980}/>
-      </Container>
-    );
-  }
+export function connect(connection_values){
+    this.setState({
+        connection_config: {connected: true, neo4j_config: connection_values},
+        visual: {
+            nodeColors: {
+                Person: "#33cccc", 
+                City: "#f6ecd2", 
+                Brand: "#ff9f88"
+            },
+            nodeAvatars: {
+                Person: "pe-7s-users", 
+                City: "pe-7s-world", 
+                Brand: "pe-7s-cart"
+            },
+            edgeColors: null
+        }
+    });
+    console.log("conectamos");
 }
 
+export function visual_change(attributeChange, vis_config){
+    let visual = this.state.visual;
+    visual[attributeChange] = vis_config
+    this.setState({
+        visual
+    });
+}
+
+class App extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            connection_config:{
+                connected: false
+            },
+            visual: null
+        }
+        connect = connect.bind(this);
+        visual_change = visual_change.bind(this);
+    }
+    
+    render(){
+        return(
+            <BrowserRouter>
+            
+            {/* <div id="main-panel" className="main-panel" ref="mainPanel">
+                <AdminNavbar/>
+                <Switch>
+                    <Route path="/visualizer">
+                        <Dashboard connection={this.state.connection_config} visual={this.state.visual}/>
+                    </Route>
+                    <Route path="/config">
+                        <Configuration connection={this.state.connection_config} visual={this.state.visual}/>
+                    </Route>
+                </Switch>
+            </div> */}
+                <Switch>
+                <Route path="/platform" render={props => <TempGraphPlatform {...props}  
+                                                            connection={this.state.connection_config} 
+                                                            visual={this.state.visual} />
+                                                } />
+                <Redirect from="/" to="/platform/visualizer" />
+                </Switch>
+            </BrowserRouter>
+        );
+    }
+}
 export default App;
