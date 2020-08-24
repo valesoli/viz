@@ -38,9 +38,12 @@ export class Card extends Component {
 
           <div className="footer">
             {this.props.legend}
-            {this.props.stats != null ? <hr /> : ""}
+            {this.props.stats != null || this.props.slider != null ? <hr /> : ""}
             <div className="stats">
               <i className={this.props.statsIcon} /> {this.props.stats}
+            </div>
+            <div className="stats" style={{display:'block', marginTop:'-20px', height:'40px'}}>
+              {this.props.slider}
             </div>
           </div>
         </div>

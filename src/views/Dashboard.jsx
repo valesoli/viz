@@ -31,11 +31,9 @@ import {
   legendNodes
 } from "variables/Variables.jsx";
 import GraphContainer from "components/NetworkComponents/GraphContainer"
-import {MyVis} from "components/NetworkComponents/MyVis"
-import NetworkVis from "components/NetworkComponents/NetworkVis"
+import TempSlider from "components/Slider/TempSlider";
 import FilterModule from "components/NetworkComponents/FilterModule";
 import NodeVisualizer from "components/NetworkComponents/NodeVisualizer";
-import { neo4j_config } from "variables/ConnectionVariables";
 import { DataSet, Network } from 'vis-network/standalone';
 
 
@@ -66,6 +64,7 @@ class Dashboard extends Component {
     super(props);
     this.state = { connected: this.props.connection.connected };
   }
+
   componentDidMount() {
     
   }
@@ -92,6 +91,7 @@ class Dashboard extends Component {
   buildNetworkCard(){
     let NetworkCardContent;
     let NetworkCardlegend;
+    let NetworkCardBar;
     if(!this.state.connected){
         NetworkCardContent = 
           <Jumbotron>
@@ -114,19 +114,21 @@ class Dashboard extends Component {
           </Jumbotron>
         ;
         NetworkCardlegend = '';
+        NetworkCardBar = '';
     } else {
       NetworkCardContent = <GraphContainer con_config={ this.props.connection.neo4j_config } visual={this.props.visual}/>
       // NetworkCardContent = <MyVis con_config={ this.props.connection.neo4j_config } visual={this.props.visual} data={my_data}/>;
       // NetworkCardContent = <NetworkVis con_config={ this.props.connection.neo4j_config } visual={this.props.visual}/>;
       // ToDo: revisar legend
       NetworkCardlegend = this.createLegend(this.props.visual);
+      NetworkCardBar = <TempSlider initMinDate={1900} initMaxDate={1980}/>;
       // NetworkCardlegend = '';
     }
-    return [NetworkCardContent, NetworkCardlegend]
+    return [NetworkCardContent, NetworkCardlegend, NetworkCardBar]
   }
 
   render() {
-    let [NetworkCardContent, NetworkCardlegend] = this.buildNetworkCard();
+    let [NetworkCardContent, NetworkCardlegend, NetworkCardBar] = this.buildNetworkCard();
     
     return (
       <div className="content">
@@ -134,10 +136,9 @@ class Dashboard extends Component {
           <Row>
             <Col md={9}>
               <Card
-                statsIcon="fa fa-history"
                 id="chartHours"
                 title="Graph"
-                stats="Updated 3 minutes ago"
+                slider={NetworkCardBar}
                 content={NetworkCardContent}
                 legend={
                   <div className="legend">{NetworkCardlegend}</div>
