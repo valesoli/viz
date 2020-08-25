@@ -134,7 +134,7 @@ class Dashboard extends Component {
                 </Row>
             </Col>
           </Row>
-          <Row>
+          {/* <Row>
             <Col md={6}>
               <Card
                 id="chartActivity"
@@ -170,7 +170,7 @@ class Dashboard extends Component {
                 }
               />
             </Col>
-          </Row>
+          </Row> */}
         </Grid>
       </div>
     );

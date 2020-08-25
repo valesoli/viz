@@ -64,7 +64,6 @@ class NodeVisualizer extends React.Component{
             <Card
                 statsIcon="fa pe-7s-magic-wand"
                 title="Selector Module"
-                stats="Click a node to view its details"
                 content={
                     <UserCard
                         bgColor={this.props.visual? this.props.visual.nodeColors[this.state.nodeType] : null}
@@ -76,19 +75,6 @@ class NodeVisualizer extends React.Component{
                                     <AttributesDisplayer key={index} attribute={item} />
                                 ))}
                             </div>
-                        }
-                        socials={
-                        <div>
-                            <Button simple>
-                            <i className="fa fa-facebook-square" />
-                            </Button>
-                            <Button simple>
-                            <i className="fa fa-twitter" />
-                            </Button>
-                            <Button simple>
-                            <i className="fa fa-google-plus-square" />
-                            </Button>
-                        </div>
                         }
                     />
                 }

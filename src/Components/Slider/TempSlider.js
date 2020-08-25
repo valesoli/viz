@@ -2,6 +2,7 @@ import React from "react";
 import {Col, Row, Badge} from 'react-bootstrap';
 import Slider from '@material-ui/core/Slider';
 import { max } from "d3";
+import {applyFilters} from '../../App.js';
 
 // const marks = [
 //     {
@@ -58,12 +59,16 @@ class TempSlider extends React.Component {
     }
 
     componentDidMount(){
-        //api_getYears(sliderCallback);
     }
 
     handleChange(event, newValue){
         //refreshGraph(newValue[0], newValue[1]);
+        let query = `match (n:Object) where toInteger(split(n.interval[0], '—')[0]) > ${newValue[0]} AND toInteger(split(n.interval[0], '—')[0]) < ${newValue[1]}
+                    with collect([id(n),n]) as nodes 
+                    match (m:Object)-[r]->(o:Object) with nodes, collect([[id(m),id(o)],type(r)]) as edges return nodes, edges`;
+        
         this.setState({interval: newValue});
+        applyFilters(query);
     };
 
     buildMarks(min, max, granularity){
