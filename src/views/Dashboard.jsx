@@ -55,11 +55,11 @@ class Dashboard extends Component {
     }
   }
 
-  createLegend(json) {
+  createLegend(json, type) {
     var legend = [];
 
-    let nodeColors = json.nodeColors;
-    for (const [index, [key, value]] of Object.entries(Object.entries(nodeColors))) {
+    let colors = type == "node"?json.nodeColors:json.edgeColors;
+    for (const [index, [key, value]] of Object.entries(Object.entries(colors))) {
       var type = "fa fa-circle text";
       legend.push(<i className={type} style={{color: value}} key={index} />);
       legend.push(" ");
@@ -70,7 +70,8 @@ class Dashboard extends Component {
 
   buildNetworkCard(){
     let NetworkCardContent;
-    let NetworkCardlegend;
+    let NetworkCardNodelegend;
+    let NetworkCardEdgelegend;
     let NetworkCardBar;
     if(!this.state.connected){
         NetworkCardContent = 
@@ -93,22 +94,24 @@ class Dashboard extends Component {
               </Button>
           </Jumbotron>
         ;
-        NetworkCardlegend = '';
+        NetworkCardNodelegend = '';
+        NetworkCardEdgelegend = '';
         NetworkCardBar = '';
     } else {
       NetworkCardContent = <GraphContainer con_config={ this.props.connection.neo4j_config } visual={this.props.visual} query={this.props.query}/>
       // NetworkCardContent = <MyVis con_config={ this.props.connection.neo4j_config } visual={this.props.visual} data={my_data}/>;
       // NetworkCardContent = <NetworkVis con_config={ this.props.connection.neo4j_config } visual={this.props.visual}/>;
       // ToDo: revisar legend
-      NetworkCardlegend = this.createLegend(this.props.visual);
+      NetworkCardNodelegend = this.createLegend(this.props.visual, "node");
+      NetworkCardEdgelegend = this.createLegend(this.props.visual, "edge");
       NetworkCardBar = <TempSlider temporality={ this.props.temporality }/>;
       // NetworkCardlegend = '';
     }
-    return [NetworkCardContent, NetworkCardlegend, NetworkCardBar]
+    return [NetworkCardContent, NetworkCardNodelegend, NetworkCardEdgelegend, NetworkCardBar];
   }
 
   render() {
-    let [NetworkCardContent, NetworkCardlegend, NetworkCardBar] = this.buildNetworkCard();
+    let [NetworkCardContent, NetworkCardNodelegend, NetworkCardEdgeLegend, NetworkCardBar] = this.buildNetworkCard();
     
     return (
       <div className="content">
@@ -121,7 +124,10 @@ class Dashboard extends Component {
                 slider={NetworkCardBar}
                 content={NetworkCardContent}
                 legend={
-                  <div className="legend">{NetworkCardlegend}</div>
+                  <div className="legend" style={{height:'35px', display:'block'}}>
+                    <div style={{float:'left'}}>{NetworkCardNodelegend}</div>
+                    <div style={{float:'right'}}>{NetworkCardEdgeLegend}</div>
+                  </div>
                 }
               />
             </Col>
