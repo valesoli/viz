@@ -84,6 +84,7 @@ class TempGraphPlatform extends Component {
                 {...props}
                 handleClick={this.handleNotificationClick}
                 connection = {this.props.connection}
+                query = {this.props.query}
                 visual = {this.props.visual}
                 temporality = {this.props.temporality}
               />

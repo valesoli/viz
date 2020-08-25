@@ -6,11 +6,13 @@ import { Button } from 'react-bootstrap';
 
 import { api_cypherQuery } from '../../Services/GraphService/graphQueryService';
 import { onClickUpdateSelectionVis } from "./NodeVisualizer";
+import { timeHours } from "d3";
 
 class GraphContainer extends React.Component {
     constructor(props){
         super(props);
         let con_config = this.props.con_config;
+        let query = this.props.query;
         this.state = {
             con_config: con_config,
             graph: {
@@ -48,7 +50,8 @@ class GraphContainer extends React.Component {
             },
             events : {
                 select: (event) => onClickUpdateSelectionVis(22, con_config)
-            }
+            },
+            query: query
         }
 
         //Binding
@@ -58,7 +61,11 @@ class GraphContainer extends React.Component {
     }
     
     componentDidMount(){
-        api_cypherQuery("match (n:Object) with collect([id(n),n]) as nodes match (m:Object)-[r]->(o:Object) with nodes, collect([[id(m),id(o)],type(r)]) as edges return nodes, edges", this.networkCallback, this.props.con_config);
+        api_cypherQuery(this.state.query, this.networkCallback, this.props.con_config);
+    }
+
+    componentWillReceiveProps(props){
+        api_cypherQuery(props.query, this.networkCallback, this.props.con_config);
     }
 
     networkCallback(response){
@@ -116,8 +123,7 @@ class GraphContainer extends React.Component {
                     arrows: 'to'
                 })
         });
-        // var nodesForVis = new DataSet(nodes);
-        // var linksForVis = new DataSet(links);
+
         this.setState({
             graph: {
                 nodes: nodes,

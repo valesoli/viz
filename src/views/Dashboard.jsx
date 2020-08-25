@@ -30,43 +30,23 @@ import {
   legendBar,
   legendNodes
 } from "variables/Variables.jsx";
-import GraphContainer from "components/NetworkComponents/GraphContainer"
+import GraphContainer from "components/NetworkComponents/GraphContainer";
 import TempSlider from "components/Slider/TempSlider";
 import FilterModule from "components/NetworkComponents/FilterModule";
 import NodeVisualizer from "components/NetworkComponents/NodeVisualizer";
 import { DataSet, Network } from 'vis-network/standalone';
 
-
-const nodes = new DataSet([
-  { id: 1, label: 'Node 1' },
-  { id: 2, label: 'Node 2' },
-  { id: 3, label: 'Node 3' },
-  { id: 4, label: 'Node 4' },
-  { id: 5, label: 'Node 5' }
-]);
-
-// create an array with edges
-const edges = new DataSet([
-  { from: 1, to: 3 },
-  { from: 1, to: 2 },
-  { from: 2, to: 4 },
-  { from: 2, to: 5 }
-]);
-
-const my_data = {
-  nodes: nodes,
-  edges: edges
-};
-
-
 class Dashboard extends Component {
   constructor(props){
     super(props);
-    this.state = { connected: this.props.connection.connected };
+    this.state = { 
+      connected: props.connection.connected,
+      query: props.query
+    };    
   }
 
   componentDidMount() {
-    
+
   }
 
   componentWillUnmount() {
@@ -116,7 +96,7 @@ class Dashboard extends Component {
         NetworkCardlegend = '';
         NetworkCardBar = '';
     } else {
-      NetworkCardContent = <GraphContainer con_config={ this.props.connection.neo4j_config } visual={this.props.visual}/>
+      NetworkCardContent = <GraphContainer con_config={ this.props.connection.neo4j_config } visual={this.props.visual} query={this.props.query}/>
       // NetworkCardContent = <MyVis con_config={ this.props.connection.neo4j_config } visual={this.props.visual} data={my_data}/>;
       // NetworkCardContent = <NetworkVis con_config={ this.props.connection.neo4j_config } visual={this.props.visual}/>;
       // ToDo: revisar legend

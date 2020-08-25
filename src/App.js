@@ -32,7 +32,8 @@ export function connect(connection_values){
                 Friend: "#f6ecd2", 
                 Fan: "#ff9f88"
             }
-        }
+        },
+        query: query
     });
 }
 
@@ -44,6 +45,14 @@ export function visual_change(attributeChange, vis_config){
     });
 }
 
+export function applyFilters(query){
+    this.setState({
+      query: query
+    });
+  }
+
+const query = "match (n:Object) with collect([id(n),n]) as nodes match (m:Object)-[r]->(o:Object) with nodes, collect([[id(m),id(o)],type(r)]) as edges return nodes, edges";
+
 class App extends React.Component{
     constructor(props){
         super(props);
@@ -51,10 +60,12 @@ class App extends React.Component{
             connection_config:{
                 connected: false
             },
-            visual: null
+            visual: null,
+            query: null
         }
         connect = connect.bind(this);
         visual_change = visual_change.bind(this);
+        applyFilters = applyFilters.bind(this);
     }
     
     render(){
@@ -77,6 +88,7 @@ class App extends React.Component{
                                                             connection={this.state.connection_config} 
                                                             visual={this.state.visual} 
                                                             temporality={this.state.temporality}
+                                                            query={this.state.query}
                                                             />
                                                 } />
                 <Redirect from="/" to="/platform/visualizer" />
