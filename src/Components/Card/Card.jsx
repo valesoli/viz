@@ -18,6 +18,25 @@
 import React, { Component } from "react";
 
 export class Card extends Component {
+  getFooter(){
+    if(this.props.legend == null && this.props.stats == null){
+      return '';
+    } else {
+      return(
+        <div className="footer">
+                  {this.props.legend}
+                  {this.props.stats != null || this.props.slider != null ? <hr /> : ""}
+                  <div className="stats">
+                    <i className={this.props.statsIcon} /> {this.props.stats}
+                  </div>
+                  <div className="stats" style={{display:'block', marginTop:'-20px', height:'40px'}}>
+                    {this.props.slider}
+                  </div>
+                </div>
+      );
+    }
+  }
+
   render() {
     return (
       <div className={"card" + (this.props.plain ? " card-plain" : "")}>
@@ -35,17 +54,8 @@ export class Card extends Component {
           }
         >
           {this.props.content}
-
-          <div className="footer">
-            {this.props.legend}
-            {this.props.stats != null || this.props.slider != null ? <hr /> : ""}
-            <div className="stats">
-              <i className={this.props.statsIcon} /> {this.props.stats}
-            </div>
-            <div className="stats" style={{display:'block', marginTop:'-20px', height:'40px'}}>
-              {this.props.slider}
-            </div>
-          </div>
+          {this.getFooter()}
+          
         </div>
       </div>
     );

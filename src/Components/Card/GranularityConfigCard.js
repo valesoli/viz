@@ -7,6 +7,14 @@ import { Table, DropdownButton, MenuItem } from 'react-bootstrap';
 class GranularityConfigCard extends React.Component{
     constructor(props){
         super(props);
+        this.state = {
+            selected: "Years"
+        }
+    }
+    selection(sel){
+        this.setState({
+            selected:sel
+        })
     }
     render(){
         return(
@@ -22,17 +30,14 @@ class GranularityConfigCard extends React.Component{
                             <DropdownButton
                                 style={{width: "100%"}}
                                 bsStyle={"primary"}
-                                title={"logi"}
+                                title={this.state.selected}
                                 key={1}
                                 id={`dropdown-basic`}
                                 >
-                                <MenuItem eventKey="1">Action</MenuItem>
-                                <MenuItem eventKey="2">Another action</MenuItem>
-                                <MenuItem eventKey="3" active>
-                                    Active Item
-                                </MenuItem>
-                                <MenuItem divider />
-                                <MenuItem eventKey="4">Separated link</MenuItem>
+                                <MenuItem eventKey="1" onSelect={()=> this.selection("Seconds")}>Seconds</MenuItem>
+                                <MenuItem eventKey="2" onSelect={()=> this.selection("Minutes")}>Minutes</MenuItem>
+                                <MenuItem eventKey="3" onSelect={()=> this.selection("Hours")}>Hours</MenuItem>
+                                <MenuItem eventKey="4" onSelect={()=> this.selection("Years")}>Years</MenuItem>
                             </DropdownButton>
                         </div>
                     </div>

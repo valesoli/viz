@@ -121,7 +121,7 @@ class Dashboard extends Component {
       // NetworkCardContent = <NetworkVis con_config={ this.props.connection.neo4j_config } visual={this.props.visual}/>;
       // ToDo: revisar legend
       NetworkCardlegend = this.createLegend(this.props.visual);
-      NetworkCardBar = <TempSlider initMinDate={1900} initMaxDate={1980}/>;
+      NetworkCardBar = <TempSlider temporality={ this.props.temporality }/>;
       // NetworkCardlegend = '';
     }
     return [NetworkCardContent, NetworkCardlegend, NetworkCardBar]

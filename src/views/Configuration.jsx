@@ -63,7 +63,7 @@ class Configuration extends Component {
     if(this.state.connected){
       return (
         <Row>
-          <Col md={12}>
+          <Col md={12} style={{marginBottom:'-20px'}}>
             <GranularityConfigCard/>
           </Col>
         </Row>
@@ -81,7 +81,7 @@ class Configuration extends Component {
       <div className="content">
         <Grid fluid>
           <Row>
-            <Col md={12}>
+            <Col md={12} style={{marginBottom:'-20px'}}>
               <DbConfigCard connection={this.props.connection} visual={this.props.visual}/>
             </Col>
           </Row>

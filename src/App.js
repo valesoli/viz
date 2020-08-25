@@ -6,8 +6,16 @@ import Dashboard from 'views/Dashboard';
 import Configuration from 'views/Configuration';
 
 export function connect(connection_values){
+    //TODO: Hacer un fetch a la base para verificar que la información de conexión es correcta y recibir los valores de 
+    //min y max date, el resto de las cosas seran por default
     this.setState({
         connection_config: {connected: true, neo4j_config: connection_values},
+        temporality: {
+            minDate: 1900,
+            maxDate: 2000,
+            granularity: 1,
+            shouldHaveTextInput: false
+        },
         visual: {
             nodeColors: {
                 Person: "#33cccc", 
@@ -26,7 +34,6 @@ export function connect(connection_values){
             }
         }
     });
-    console.log("conectamos");
 }
 
 export function visual_change(attributeChange, vis_config){
@@ -68,7 +75,9 @@ class App extends React.Component{
                 <Switch>
                 <Route path="/platform" render={props => <TempGraphPlatform {...props}  
                                                             connection={this.state.connection_config} 
-                                                            visual={this.state.visual} />
+                                                            visual={this.state.visual} 
+                                                            temporality={this.state.temporality}
+                                                            />
                                                 } />
                 <Redirect from="/" to="/platform/visualizer" />
                 </Switch>

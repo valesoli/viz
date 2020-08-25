@@ -1,25 +1,26 @@
 import React from "react";
 import {Col, Row, Badge} from 'react-bootstrap';
 import Slider from '@material-ui/core/Slider';
+import { max } from "d3";
 
-const marks = [
-    {
-      value: 1900,
-      label: '1900',
-    },
-    {
-      value: 1965,
-      label: '1965',
-    },
-    {
-      value: 1980,
-      label: '1980',
-    },
-    {
-      value: 1995,
-      label: '1995',
-    }
-];
+// const marks = [
+//     {
+//       value: 1900,
+//       label: '1900',
+//     },
+//     {
+//       value: 1965,
+//       label: '1965',
+//     },
+//     {
+//       value: 1980,
+//       label: '1980',
+//     },
+//     {
+//       value: 1995,
+//       label: '1995',
+//     }
+// ];
 
 //Esta es la funcion que si te fijas en el constructor le bindeo el 'this' para que cuando llame a this.setState cambie
 export function sliderCallback(years){
@@ -45,10 +46,10 @@ class TempSlider extends React.Component {
         super(props);
         // TODO: Tengo que conseguir los extremos desde el estado. Los tiene que levantar en test connection
         this.state = {
-            interval: [this.props.initMinDate, this.props.initMaxDate],
-            marcas: marks,
-            marca_minima:1900, 
-            marca_maxima:2000,
+            interval: [this.props.temporality.minDate, this.props.temporality.maxDate],
+            marcas: this.buildMarks(this.props.temporality.minDate, this.props.temporality.maxDate, this.props.temporality.granularity),
+            marca_minima: this.props.temporality.minDate, 
+            marca_maxima: this.props.temporality.maxDate,
             should_have_text_input: false
         };
         
@@ -64,6 +65,23 @@ class TempSlider extends React.Component {
         //refreshGraph(newValue[0], newValue[1]);
         this.setState({interval: newValue});
     };
+
+    buildMarks(min, max, granularity){
+        let marks = []
+        //Supongo que 10 es un buen numero para ponerle label
+        let labelPeriod = Math.abs(max-min)/granularity/10
+        for(let i=min;i<max;i+=granularity){
+            marks.push({
+                value: i,
+                label: (i-min)%10 == 0?i.toString():'',
+            })
+        }
+        marks.push({
+            value: max,
+            label: max.toString()
+        });
+        return marks;
+    }
 
     render(){
         return(
