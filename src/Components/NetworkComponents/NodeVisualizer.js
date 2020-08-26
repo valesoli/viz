@@ -17,14 +17,14 @@ class AttributesDisplayer extends React.Component{
         return(
             <div>
                 {this.props.attribute[0] + "\t"}
-                <span className="badge badge-pill badge-primary">{this.props.attribute[1]}</span>
+                <span className="badge badge-pill badge-primary">{this.props.attribute[1] + "\t" + this.props.attribute[2]}</span>
             </div>
         );
     }
 }
 
 export function onClickUpdateSelectionVis(id, con_config){
-    api_cypherQuery("match (o:Object)-->(a:Attribute)-->(v:Value) where id(o) = " + id + " return o.title, a.title, v.value", onNodeClickCallback, con_config);
+    api_cypherQuery("match (o:Object)-->(a:Attribute)-->(v:Value) where id(o) = " + id + " return o.title, a.title, v.value, v.interval", onNodeClickCallback, con_config);
 }
 var onNodeClickCallback;
 
@@ -54,7 +54,7 @@ class NodeVisualizer extends React.Component{
     onNodeClickCallbackInt(response){
         let response_array = response.results[0].data;
         let formated_array = response_array.map((e) => {
-            return [e.row[1], e.row[2]];
+            return [e.row[1], e.row[2], e.row[3]];
         })
         let nodeTitle = response_array[0].row[0];
         this.setState({ nodeType: nodeTitle, nodeAttributes: formated_array});

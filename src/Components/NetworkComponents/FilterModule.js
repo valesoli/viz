@@ -20,6 +20,7 @@ class FilterModule extends React.Component{
             selectedEdgeType: "All edges"
         }
 
+        this.limit = 100;
         this.nodeTypesCallback = this.nodeTypesCallback.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -65,12 +66,22 @@ class FilterModule extends React.Component{
         var whereEdges = "";
         if(this.state.selectedNodeType != "All nodes"){
             whereNodes += "where n.title = \"" + this.state.selectedNodeType + "\"";
-            whereEdges += "where m.title = \"" + this.state.selectedNodeType + "\" or o.title = \"" + this.state.selectedNodeType + "\"";
+            whereEdges += "where (m.title = \"" + this.state.selectedNodeType + "\" or o.title = \"" + this.state.selectedNodeType + "\")";
+            if(this.state.selectedEdgeType != "All edges"){
+                whereEdges += " and type(r) = \"" + this.state.selectedEdgeType + "\"";
+            }
         }
-        var query = `match (n:Object) ${whereNodes} with collect([id(n),n]) as nodes  match (m:Object)-[r]->(o:Object) ${whereEdges} with nodes, collect([[id(m),id(o)],type(r)]) as edges return nodes, edges`;
+        else{
+            if(this.state.selectedEdgeType != "All edges"){
+                whereEdges += "where type(r) = \"" + this.state.selectedEdgeType + "\"";
+            }
+        }
+        var nodeLimit = "limit " + this.limit.value;
+        var query = `match (n:Object) ${whereNodes} with n as allnodes ${nodeLimit} with collect([id(allnodes),allnodes]) as nodes  match (m:Object)-[r]->(o:Object) ${whereEdges} with nodes, collect([[id(m),id(o)],type(r)]) as edges return nodes, edges`;
         applyFilters(query);
     }
 
+    
     render(){
         return(
             // <form onSubmit={this.handleSubmit}>
@@ -88,11 +99,12 @@ class FilterModule extends React.Component{
                                                         bsStyle={"primary"}
                                                         title={this.state.selectedNodeType}
                                                         id={`dropdown-basic`}>
-                                                        {this.state.nodeTypes.map((prop, key) => {
-                                                            return (
-                                                                <MenuItem eventKey={key} onClick={() => this.selectNodeType(prop)}>{prop}</MenuItem>
-                                                            );
-                                                        })}
+                                            <MenuItem eventKey={100} onClick={() => this.selectNodeType("All nodes")}>{"All nodes"}</MenuItem>
+                                            {this.state.nodeTypes.map((prop, key) => {
+                                                return (
+                                                    <MenuItem eventKey={key} onClick={() => this.selectNodeType(prop)}>{prop}</MenuItem>
+                                                );
+                                            })}
                                         </DropdownButton>
                                     </td>
                                 </tr>
@@ -103,18 +115,19 @@ class FilterModule extends React.Component{
                                                         bsStyle={"primary"}
                                                         title={this.state.selectedEdgeType}
                                                         id={`dropdown-basic`}>
-                                                        {this.state.edgeTypes.map((prop, key) => {
-                                                            return (
-                                                                <MenuItem eventKey={key} onClick={() => this.selectEdgeType(prop)}>{prop}</MenuItem>
-                                                            );
-                                                        })}
+                                            <MenuItem eventKey={100} onClick={() => this.selectEdgeType("All edges")}>{"All edges"}</MenuItem>
+                                            {this.state.edgeTypes.map((prop, key) => {
+                                                return (
+                                                    <MenuItem eventKey={key} onClick={() => this.selectEdgeType(prop)}>{prop}</MenuItem>
+                                                );
+                                            })}
                                         </DropdownButton>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>{"Node limit"}</td>
                                     <td>
-                                        <FormControl type="number" defaultValue={this.state.nodeLmimit}></FormControl>
+                                        <FormControl type="number" defaultValue={this.state.nodeLmimit} inputRef={limit => this.limit = limit}></FormControl>
                                     </td>
                                 </tr>
                             </tbody>

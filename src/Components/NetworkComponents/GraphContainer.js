@@ -74,7 +74,7 @@ class GraphContainer extends React.Component {
                 nodes: response.results[0].data[0].row[0],
                 links: response.results[0].data[0].row[1]
             }
-        }, () => { api_cypherQuery("match (o:Object)-->(a:Attribute)-->(v:Value) return id(o), o.title, a.title, v.value order by id(o)", this.infoCallback, this.props.con_config); });
+        }, () => { api_cypherQuery("match (o:Object)-->(a:Attribute)-->(v:Value) return id(o), o.title, a.title, v.value, v.interval order by id(o)", this.infoCallback, this.props.con_config); });
     }
 
     infoCallback(response){
@@ -82,12 +82,12 @@ class GraphContainer extends React.Component {
         
         const attrsHashmap = response_table.reduce((obj, item) => {
             if(obj[item.row[0]]){
-                obj[item.row[0]].attributes.push([item.row[2], item.row[3]]);
+                obj[item.row[0]].attributes.push([item.row[2], item.row[3], item.row[4]]);
             } else {
                 let objr = new Object();
                 objr.id = item.row[0];
                 objr.attributes = [];
-                objr.attributes.push([item.row[2], item.row[3]]);
+                objr.attributes.push([item.row[2], item.row[3], item.row[4]]);
                 obj[item.row[0]] = objr;
             }
             return obj;
