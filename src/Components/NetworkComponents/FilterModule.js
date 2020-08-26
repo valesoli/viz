@@ -76,7 +76,7 @@ class FilterModule extends React.Component{
             // <form onSubmit={this.handleSubmit}>
                 <Card
                     title="Filter Module"
-                    category="Focus on the information that matters"
+                    // category="Focus on the information that matters"
                     stats={<Button bsStyle="info" pullRight fill type="submit" onClick={() => this.handleSubmit()}>{"Filter"}</Button>}
                     content={
                         <Table striped hover style={{marginBottom: "0px"}}>

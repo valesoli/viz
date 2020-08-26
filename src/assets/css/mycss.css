@@ -4,3 +4,10 @@
 .my-content{
     min-height: 100px !important;
 }
+.card-user .author{
+    margin-top: -100px !important;
+}
+.main-panel > .content{
+    padding-top:10px !important;
+    min-height: calc(100vh - 123px) !important; 
+}

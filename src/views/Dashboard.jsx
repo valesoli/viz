@@ -73,6 +73,7 @@ class Dashboard extends Component {
     let NetworkCardNodelegend;
     let NetworkCardEdgelegend;
     let NetworkCardBar;
+    let ExtraModules;
     if(!this.state.connected){
         NetworkCardContent = 
           <Jumbotron>
@@ -97,6 +98,7 @@ class Dashboard extends Component {
         NetworkCardNodelegend = '';
         NetworkCardEdgelegend = '';
         NetworkCardBar = '';
+        ExtraModules = '';
     } else {
       NetworkCardContent = <GraphContainer con_config={ this.props.connection.neo4j_config } visual={this.props.visual} query={this.props.query}/>
       // NetworkCardContent = <MyVis con_config={ this.props.connection.neo4j_config } visual={this.props.visual} data={my_data}/>;
@@ -105,19 +107,27 @@ class Dashboard extends Component {
       NetworkCardNodelegend = this.createLegend(this.props.visual, "node");
       NetworkCardEdgelegend = this.createLegend(this.props.visual, "edge");
       NetworkCardBar = <TempSlider temporality={ this.props.temporality }/>;
+      ExtraModules = <Col md={3}>
+                        <Row>
+                          <NodeVisualizer con_config={ this.props.connection.neo4j_config } visual={this.props.visual}/>              
+                        </Row>
+                        <Row>
+                          <FilterModule/>
+                        </Row>
+                    </Col>
       // NetworkCardlegend = '';
     }
-    return [NetworkCardContent, NetworkCardNodelegend, NetworkCardEdgelegend, NetworkCardBar];
+    return [NetworkCardContent, NetworkCardNodelegend, NetworkCardEdgelegend, NetworkCardBar,ExtraModules];
   }
 
   render() {
-    let [NetworkCardContent, NetworkCardNodelegend, NetworkCardEdgeLegend, NetworkCardBar] = this.buildNetworkCard();
+    let [NetworkCardContent, NetworkCardNodelegend, NetworkCardEdgeLegend, NetworkCardBar,ExtraModules] = this.buildNetworkCard();
     
     return (
       <div className="content">
         <Grid fluid>
           <Row>
-            <Col md={9}>
+            <Col md={this.state.connected?9:12}>
               <Card
                 id="chartHours"
                 title="Graph"
@@ -131,14 +141,7 @@ class Dashboard extends Component {
                 }
               />
             </Col>
-            <Col md={3}>
-                <Row>
-                  <NodeVisualizer con_config={ this.props.connection.neo4j_config } visual={this.props.visual}/>              
-                </Row>
-                <Row>
-                  <FilterModule/>
-                </Row>
-            </Col>
+            {ExtraModules}
           </Row>
           {/* <Row>
             <Col md={6}>

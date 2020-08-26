@@ -5,6 +5,7 @@ import Button from "components/CustomButton/CustomButton.jsx";
 import { api_cypherQuery } from '../../Services/GraphService/graphQueryService';
 import { changeMe, changeHer } from "./GraphContainer";
 
+import {Jumbotron} from 'react-bootstrap';
 import avatar from "assets/img/faces/face-3.jpg";
 
 class AttributesDisplayer extends React.Component{
@@ -59,24 +60,45 @@ class NodeVisualizer extends React.Component{
         this.setState({ nodeType: nodeTitle, nodeAttributes: formated_array});
     }
 
+    buildContent(){
+        if(this.state.nodeType != "MockType"){
+            return (
+                <UserCard
+                    bgColor={this.props.visual? this.props.visual.nodeColors[this.state.nodeType] : null}
+                    avatar={this.props.visual? this.props.visual.nodeAvatars[this.state.nodeType] : "pe-7s-users"}
+                    name={this.state.nodeType}
+                    description={
+                        <div>
+                            {this.state.nodeAttributes.map((item, index) => (
+                                <AttributesDisplayer key={index} attribute={item} />
+                            ))}
+                        </div>
+                    }
+                />
+            );
+        } else {
+            return (
+                <Jumbotron style={{paddingRight:'15px', paddingLeft:'15px', paddingTop:'5px', paddingBottom:'5px'}}>
+                    <h1> Click a node! </h1>
+                    <p>
+                        If you'd like to visualize your node's attributes, please
+                        click it.
+                    </p>
+                </Jumbotron>
+            );
+        }
+    }
+
     render(){
+        let node_content = this.buildContent();
+
         return(
             <Card
+                style={{marginBottom:'10px'}}
                 statsIcon="fa pe-7s-magic-wand"
                 title="Selector Module"
                 content={
-                    <UserCard
-                        bgColor={this.props.visual? this.props.visual.nodeColors[this.state.nodeType] : null}
-                        avatar={this.props.visual? this.props.visual.nodeAvatars[this.state.nodeType] : "pe-7s-users"}
-                        name={this.state.nodeType}
-                        description={
-                            <div>
-                                {this.state.nodeAttributes.map((item, index) => (
-                                    <AttributesDisplayer key={index} attribute={item} />
-                                ))}
-                            </div>
-                        }
-                    />
+                    node_content
                 }
             />
         );
