@@ -13,6 +13,8 @@ export function connect(connection_values){
         temporality: {
             minDate: 1900,
             maxDate: 2000,
+            currentLow: 1900,
+            currentHigh:2000,
             granularity: 1,
             shouldHaveTextInput: false
         },
@@ -49,7 +51,17 @@ export function applyFilters(query){
     this.setState({
       query: query
     });
-  }
+}
+
+export function applyFilterAndSave(query, low, high){
+    let new_temp = this.state.temporality;
+    new_temp.currentLow = low;
+    new_temp.currentHigh = high;
+    this.setState({
+      query: query,
+      temporality: new_temp
+    });
+}
 
 const query = "match (n:Object) with collect([id(n),n]) as nodes match (m:Object)-[r]->(o:Object) with nodes, collect([[id(m),id(o)],type(r)]) as edges return nodes, edges";
 
@@ -66,6 +78,7 @@ class App extends React.Component{
         connect = connect.bind(this);
         visual_change = visual_change.bind(this);
         applyFilters = applyFilters.bind(this);
+        applyFilterAndSave = applyFilterAndSave.bind(this);
     }
     
     render(){

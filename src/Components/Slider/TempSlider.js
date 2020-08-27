@@ -2,7 +2,7 @@ import React from "react";
 import {Col, Row, Badge} from 'react-bootstrap';
 import Slider from '@material-ui/core/Slider';
 import { max } from "d3";
-import {applyFilters} from '../../App.js';
+import {applyFilterAndSave} from 'App.js';
 
 // const marks = [
 //     {
@@ -47,7 +47,7 @@ class TempSlider extends React.Component {
         super(props);
         // TODO: Tengo que conseguir los extremos desde el estado. Los tiene que levantar en test connection
         this.state = {
-            interval: [this.props.temporality.minDate, this.props.temporality.maxDate],
+            interval: [this.props.temporality.currentLow, this.props.temporality.currentHigh],
             marcas: this.buildMarks(this.props.temporality.minDate, this.props.temporality.maxDate, this.props.temporality.granularity),
             marca_minima: this.props.temporality.minDate, 
             marca_maxima: this.props.temporality.maxDate,
@@ -68,7 +68,7 @@ class TempSlider extends React.Component {
                     match (m:Object)-[r]->(o:Object) with nodes, collect([[id(m),id(o)],type(r)]) as edges return nodes, edges`;
         
         this.setState({interval: newValue});
-        applyFilters(query);
+        applyFilterAndSave(query,newValue[0],newValue[1]);
     };
 
     buildMarks(min, max, granularity){
