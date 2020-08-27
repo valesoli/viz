@@ -47,15 +47,15 @@ class Header extends Component {
   render() {
     return (
       <Navbar fluid>
-        <Navbar.Header>
+        {/* <Navbar.Header>
           <Navbar.Brand>
             <a href="#pablo">{"NADA"}</a>
           </Navbar.Brand>
           <Navbar.Toggle onClick={this.mobileSidebarToggle}>HOLa</Navbar.Toggle>
-        </Navbar.Header>
-        <Navbar.Collapse>
+        </Navbar.Header> */}
+        {/* <Navbar.Collapse>
           <AdminNavbarLinks />
-        </Navbar.Collapse>
+        </Navbar.Collapse> */}
       </Navbar>
     );
   }

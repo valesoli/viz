@@ -7,7 +7,16 @@
 .card-user .author{
     margin-top: -100px !important;
 }
+.main-panel{
+    width: calc(100% - 235px) !important;
+}
 .main-panel > .content{
     padding-top:10px !important;
     min-height: calc(100vh - 123px) !important; 
+}
+.sidebar{
+    width: 235px !important;
+}
+.sidebar-wrapper{
+    width: 235px !important;
 }

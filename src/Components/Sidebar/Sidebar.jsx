@@ -68,7 +68,7 @@ class Sidebar extends Component {
             href="https://github.com/joacorma/temp-graph-visualizer"
             className="simple-text logo-normal"
           >
-            Temp Graph Vis
+            Temp-G Vis
           </a>
         </div>
         <div className="sidebar-wrapper">
