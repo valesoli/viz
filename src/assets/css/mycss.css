@@ -12,7 +12,7 @@
 }
 .main-panel > .content{
     padding-top:10px !important;
-    min-height: calc(100vh - 123px) !important; 
+    min-height: calc(100vh - 111px) !important; 
 }
 .sidebar{
     width: 235px !important;

@@ -4,7 +4,7 @@ import Graph from "react-graph-vis";
 
 import { Button } from 'react-bootstrap';
 
-import { api_cypherQuery } from '../../Services/GraphService/graphQueryService';
+import { api_cypherQuery } from 'Services/GraphService/graphQueryService';
 import { onClickUpdateSelectionVis } from "./NodeVisualizer";
 import { timeHours } from "d3";
 
@@ -49,7 +49,7 @@ class GraphContainer extends React.Component {
                 height: '500px'
             },
             events : {
-                select: (event) => onClickUpdateSelectionVis(22, con_config)
+                selectNode: (event) => onClickUpdateSelectionVis(22, con_config)
             },
             query: query
         }
@@ -130,7 +130,7 @@ class GraphContainer extends React.Component {
                 edges: links
             },
             events : {
-                select: (params) => onClickUpdateSelectionVis(params.nodes[0], this.props.con_config)
+                selectNode: (params) => onClickUpdateSelectionVis(params.nodes[0], this.props.con_config)
             }
         });
     }
