@@ -20,7 +20,7 @@ import { NavLink } from "react-router-dom";
 
 import AdminNavbarLinks from "../Navbars/AdminNavbarLinks.jsx";
 
-import logo from "assets/img/reactlogo.png";
+import logo from "assets/img/temp-graph-vis-logo.png";
 
 class Sidebar extends Component {
   constructor(props) {
@@ -61,7 +61,7 @@ class Sidebar extends Component {
             className="simple-text logo-mini"
           >
             <div className="logo-img">
-              <img src={logo} alt="logo_image" />
+              <img src={logo} style={{marginTop:'-2px'}}alt="logo_image" />
             </div>
           </a>
           <a

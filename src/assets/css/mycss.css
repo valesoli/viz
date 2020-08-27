@@ -20,3 +20,6 @@
 .sidebar-wrapper{
     width: 235px !important;
 }
+.sidebar .logo{
+    padding: 5px 30px !important;
+}
