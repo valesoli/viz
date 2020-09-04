@@ -35,6 +35,7 @@ import TempSlider from "components/Slider/TempSlider";
 import FilterModule from "components/NetworkComponents/FilterModule";
 import NodeVisualizer from "components/NetworkComponents/NodeVisualizer";
 import { DataSet, Network } from 'vis-network/standalone';
+import QueryBox from "components/Query/QueryBox";
 
 class Dashboard extends Component {
   constructor(props){
@@ -68,12 +69,14 @@ class Dashboard extends Component {
     return legend;
   }
 
+ 
   buildNetworkCard(){
     let NetworkCardContent;
     let NetworkCardNodelegend;
     let NetworkCardEdgelegend;
     let NetworkCardBar;
     let ExtraModules;
+    let QueryModule;
     if(!this.state.connected){
         NetworkCardContent = 
           <Jumbotron>
@@ -99,6 +102,7 @@ class Dashboard extends Component {
         NetworkCardEdgelegend = '';
         NetworkCardBar = '';
         ExtraModules = '';
+        QueryModule = '';
     } else {
       NetworkCardContent = <GraphContainer con_config={ this.props.connection.neo4j_config } visual={this.props.visual} query={this.props.query}/>
       // NetworkCardContent = <MyVis con_config={ this.props.connection.neo4j_config } visual={this.props.visual} data={my_data}/>;
@@ -115,19 +119,25 @@ class Dashboard extends Component {
                           <FilterModule/>
                         </Row>
                     </Col>
+      QueryModule = <QueryBox/>
       // NetworkCardlegend = '';
     }
-    return [NetworkCardContent, NetworkCardNodelegend, NetworkCardEdgelegend, NetworkCardBar,ExtraModules];
+    return [NetworkCardContent, NetworkCardNodelegend, NetworkCardEdgelegend, NetworkCardBar,ExtraModules, QueryModule];
   }
 
   render() {
-    let [NetworkCardContent, NetworkCardNodelegend, NetworkCardEdgeLegend, NetworkCardBar,ExtraModules] = this.buildNetworkCard();
+    let [NetworkCardContent, NetworkCardNodelegend, NetworkCardEdgeLegend, NetworkCardBar,ExtraModules, QueryModule] = this.buildNetworkCard();
     
     return (
       <div className="content">
         <Grid fluid>
           <Row>
             <Col md={this.state.connected?9:12}>
+              <Card 
+                id="querybox"
+                title="Query"
+                content = {QueryModule}
+              />
               <Card
                 id="chartHours"
                 title="Graph"
