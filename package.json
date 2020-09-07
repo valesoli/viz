@@ -12,6 +12,7 @@
     "material-ui": "^0.20.2",
     "node-sass": "^4.14.1",
     "popper.js": "^1.16.1",
+    "rc-table": "^7.9.7",
     "react": "16.8.6",
     "react-bootstrap": "^0.32.4",
     "react-chartist": "0.13.3",

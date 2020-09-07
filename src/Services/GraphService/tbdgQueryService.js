@@ -1,5 +1,6 @@
 export function api_tbdgQuery(query, callback){
     let xhttp = new XMLHttpRequest();
+    let the_query = encodeURI(query)
 
     xhttp.onreadystatechange = function() {
         if(this.readyState !==4){
@@ -13,11 +14,9 @@ export function api_tbdgQuery(query, callback){
         }
         return true;
     };
-    xhttp.open("POST", "http://localhost:7474/query", true);
+    xhttp.open("POST", "http://localhost:7000/query", true);
     xhttp.setRequestHeader("Content-type", "application/json");
     // xhttp.setRequestHeader("Authorization", "Basic "+ btoa(con_config.NEO_USER + ':' + con_config.NEO_PASS));
     xhttp.setRequestHeader("Data-type", "json");
-    xhttp.send(JSON.stringify({
-        statements:[query.serialize()]
-        }));        
+    xhttp.send("query="+the_query);        
 }
