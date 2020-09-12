@@ -1,8 +1,7 @@
 import React from 'react';
 import "assets/css/mycss.css";
 
-import { Card } from "components/Card/Card.jsx";
-import { Table, DropdownButton, MenuItem } from 'react-bootstrap';
+import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 class GranularityConfigCard extends React.Component{
     constructor(props){

@@ -1,11 +1,9 @@
 import React from 'react';
 import {
-    Grid,
     Table
 } from "react-bootstrap";
 import { Card } from "components/Card/Card.jsx";
-import { theArray, tdeArray, colors } from "variables/Variables.jsx";
-import { FormInputs } from "components/FormInputs/FormInputs.jsx";
+import { theArray, tdeArray } from "variables/Variables.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import MyColorPicker from "components/CustomColorPicker/MyColorPicker";
 import { neo4j_config } from "variables/ConnectionVariables.jsx";
@@ -45,7 +43,7 @@ class EdgeConfigCard extends React.Component{
 
     receiveColor(type, color){
         this.state.edges.forEach(element => {
-            if(element.type == type){
+            if(element.type === type){
                 element.color = color.hex;
             }
         });

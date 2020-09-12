@@ -1,12 +1,8 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import Graph from "react-graph-vis";
-
-import { Button } from 'react-bootstrap';
 
 import { api_cypherQuery } from 'Services/GraphService/graphQueryService';
 import { onClickUpdateSelectionVis } from "./NodeVisualizer";
-import { timeHours } from "d3";
 
 class GraphContainer extends React.Component {
     constructor(props){
@@ -84,16 +80,16 @@ class GraphContainer extends React.Component {
             if(obj[item.row[0]]){
                 obj[item.row[0]].attributes.push([item.row[2], item.row[3], item.row[4]]);
             } else {
-                let objr = new Object();
-                objr.id = item.row[0];
-                objr.attributes = [];
-                objr.attributes.push([item.row[2], item.row[3], item.row[4]]);
+                let objr = {
+                    id : item.row[0],
+                    attributes : []
+                }
+                objr.attributes.push([item.row[2], item.row[3], item.row[4]])
                 obj[item.row[0]] = objr;
             }
             return obj;
           }, {});
           
-        const mergedAttrsArray = Object.values(attrsHashmap);
         this.setState({
             attrs: attrsHashmap
         }, this.buildNodes);

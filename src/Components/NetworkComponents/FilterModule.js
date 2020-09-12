@@ -64,15 +64,15 @@ class FilterModule extends React.Component{
     handleSubmit(){
         var whereNodes = "";
         var whereEdges = "";
-        if(this.state.selectedNodeType != "All nodes"){
+        if(this.state.selectedNodeType !== "All nodes"){
             whereNodes += "where n.title = \"" + this.state.selectedNodeType + "\"";
             whereEdges += "where (m.title = \"" + this.state.selectedNodeType + "\" or o.title = \"" + this.state.selectedNodeType + "\")";
-            if(this.state.selectedEdgeType != "All edges"){
+            if(this.state.selectedEdgeType !== "All edges"){
                 whereEdges += " and type(r) = \"" + this.state.selectedEdgeType + "\"";
             }
         }
         else{
-            if(this.state.selectedEdgeType != "All edges"){
+            if(this.state.selectedEdgeType !== "All edges"){
                 whereEdges += "where type(r) = \"" + this.state.selectedEdgeType + "\"";
             }
         }

@@ -1,9 +1,6 @@
 import React from 'react';
 import TempGraphPlatform from "layouts/TempGraphPlatform.jsx";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import AdminNavbar from "components/Navbars/AdminNavbar";
-import Dashboard from 'views/Dashboard';
-import Configuration from 'views/Configuration';
 
 export function connect(connection_values){
     //TODO: Hacer un fetch a la base para verificar que la información de conexión es correcta y recibir los valores de 

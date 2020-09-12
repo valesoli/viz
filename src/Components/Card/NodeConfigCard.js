@@ -1,14 +1,12 @@
 import React from 'react';
-import { Grid, Table, DropdownButton, MenuItem} from "react-bootstrap";
+import { Table, DropdownButton, MenuItem} from "react-bootstrap";
 import { Card } from "components/Card/Card.jsx";
-import { thArray, tdArray, colors } from "variables/Variables.jsx";
-import { FormInputs } from "components/FormInputs/FormInputs.jsx";
+import { thArray, tdArray } from "variables/Variables.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import MyColorPicker from "components/CustomColorPicker/MyColorPicker";
 import { visual_change } from "App";
 import { neo4j_config } from "variables/ConnectionVariables.jsx";
 import { api_cypherQuery } from '../../Services/GraphService/graphQueryService';
-import { color } from 'd3';
 
 class NodeConfigCard extends React.Component{  
     constructor(props){
@@ -54,7 +52,7 @@ class NodeConfigCard extends React.Component{
         var found = false;
         var mainAttr = this.state.mainAttr;
         for(var i = 0; i < mainAttr.length; i++){
-            if(mainAttr[i].key == key){
+            if(mainAttr[i].key === key){
                 mainAttr[i].value = value;
                 found = true;
                 break;
@@ -70,7 +68,7 @@ class NodeConfigCard extends React.Component{
         var found = false;
         var defaultAttr = this.state.defaultAttr;
         for(var i = 0; i < defaultAttr.length; i++){
-            if(defaultAttr[i].key == key){
+            if(defaultAttr[i].key === key){
                 defaultAttr[i].value = value;
                 found = true;
                 break;
@@ -92,7 +90,7 @@ class NodeConfigCard extends React.Component{
 
     colorChange(type, color){
         this.state.nodes.forEach(element => {
-            if(element.type == type){
+            if(element.type === type){
                 element.color = color.hex;
             }
         });
@@ -114,42 +112,43 @@ class NodeConfigCard extends React.Component{
                         </thead>
                         <tbody>
                             {this.state.nodes.map((prop, key) => {
-                                console.log(prop.color);
                                 return (
-                                <tr key={key}>
-                                    <td key={key+"1"}>{prop.type}</td>
-                                    <td key={key+"2"}>{<MyColorPicker color={prop.color} myType={prop.type} parentChange={this.colorChange}/>}</td>                                    
-                                    <td key={key+"3"}>
-                                        <DropdownButton style={{width: "100%"}}
-                                                        bsStyle={"primary"}
-                                                        title={this.state.mainAttr.map((val) => {                                                            
+                                    <tr key={key}>
+                                        <td key={key+"1"}>{prop.type}</td>
+                                        <td key={key+"2"}>
+                                            <MyColorPicker color={prop.color} myType={prop.type} parentChange={this.colorChange}/>
+                                        </td>                                    
+                                        <td key={key+"3"}>
+                                            <DropdownButton style={{width: "100%"}}
+                                                            bsStyle={"primary"}
+                                                            title={this.state.mainAttr.map((val) => {                                                            
                                                             if(val.key == key)
                                                                 return val.value;
-                                                        })}
-                                                        id={`dropdown-basic`}>
-                                                        {prop.allAttrs.map((prop, key2) => {
-                                                            return (
-                                                            <MenuItem eventKey={key2} onClick={() => this.changeValueMain(key, prop)}>{prop}</MenuItem>
-                                                            );
-                                                        })}
-                                        </DropdownButton>
-                                    </td>
-                                    <td key={key+"4"}>
-                                        <DropdownButton style={{width: "100%"}}
-                                                        bsStyle={"primary"}
-                                                        title={this.state.defaultAttr.map((val) => {
-                                                            if(val.key == key)
-                                                                return val.value;
-                                                        })}
-                                                        id={`dropdown-basic`}>
-                                                        {prop.allAttrs.map((prop, key2) => {
-                                                            return (
-                                                            <MenuItem eventKey={key2} onClick={() => this.changeValueDefault(key, prop)}>{prop}</MenuItem>
-                                                            );
-                                                        })}
-                                        </DropdownButton>
-                                    </td> 
-                                </tr>
+                                                            })}
+                                                            id={`dropdown-basic`}>
+                                                            {prop.allAttrs.map((prop, key2) => {
+                                                                return (
+                                                                <MenuItem eventKey={key2} onClick={() => this.changeValueMain(key, prop)}>{prop}</MenuItem>
+                                                                );
+                                                            })}
+                                            </DropdownButton>
+                                        </td>
+                                        <td key={key+"4"}>
+                                            <DropdownButton style={{width: "100%"}}
+                                                            bsStyle={"primary"}
+                                                            title={this.state.defaultAttr.map((val) => {
+                                                                if(val.key === key)
+                                                                    return val.value;
+                                                            })}
+                                                            id={`dropdown-basic`}>
+                                                            {prop.allAttrs.map((prop, key2) => {
+                                                                return (
+                                                                <MenuItem eventKey={key2} onClick={() => this.changeValueDefault(key, prop)}>{prop}</MenuItem>
+                                                                );
+                                                            })}
+                                            </DropdownButton>
+                                        </td> 
+                                    </tr>
                                 );
                             })}
                         </tbody>

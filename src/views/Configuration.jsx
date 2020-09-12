@@ -19,17 +19,13 @@ import React, { Component } from "react";
 import {
   Grid,
   Row,
-  Col,
-  FormGroup,
-  ControlLabel,
-  FormControl
+  Col
 } from "react-bootstrap";
 
 import DbConfigCard from 'components/Card/DbConfigCard';
 import NodeConfigCard from "components/Card/NodeConfigCard";
 import EdgeConfigCard from "components/Card/EdgeConfigCard";
 import GranularityConfigCard from "components/Card/GranularityConfigCard";
-import avatar from "assets/img/faces/face-3.jpg";
 
 
 class Configuration extends Component {

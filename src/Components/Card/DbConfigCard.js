@@ -2,7 +2,6 @@ import React from 'react';
 import { Card } from './Card';
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-import { neo4j_config } from "variables/ConnectionVariables";
 
 import { connect } from "App";
 

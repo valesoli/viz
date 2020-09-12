@@ -16,25 +16,14 @@
 
 */
 import React, { Component } from "react";
-import ChartistGraph from "react-chartist";
 import { Grid, Row, Col, Button, Jumbotron } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 
 import { Card } from "components/Card/Card.jsx";
-import { StatsCard } from "components/StatsCard/StatsCard.jsx";
-import { Tasks } from "components/Tasks/Tasks.jsx";
-import {
-  dataBar,
-  optionsBar,
-  responsiveBar,
-  legendBar,
-  legendNodes
-} from "variables/Variables.jsx";
 import GraphContainer from "components/NetworkComponents/GraphContainer";
 import TempSlider from "components/Slider/TempSlider";
 import FilterModule from "components/NetworkComponents/FilterModule";
 import NodeVisualizer from "components/NetworkComponents/NodeVisualizer";
-import { DataSet, Network } from 'vis-network/standalone';
 import QueryBox from "components/Query/QueryBox";
 
 class Dashboard extends Component {
@@ -59,9 +48,9 @@ class Dashboard extends Component {
   createLegend(json, type) {
     var legend = [];
 
-    let colors = type == "node"?json.nodeColors:json.edgeColors;
+    let colors = type === "node"?json.nodeColors:json.edgeColors;
     for (const [index, [key, value]] of Object.entries(Object.entries(colors))) {
-      var type = "fa fa-circle text";
+      type = "fa fa-circle text";
       legend.push(<i className={type} style={{color: value}} key={index} />);
       legend.push(" ");
       legend.push(key);

@@ -1,18 +1,11 @@
 import React from 'react';
 import Card from 'components/Card/Card.jsx';
 import { UserCard } from "components/UserCard/UserCard.jsx";
-import Button from "components/CustomButton/CustomButton.jsx";
 import { api_cypherQuery } from '../../Services/GraphService/graphQueryService';
-import { changeMe, changeHer } from "./GraphContainer";
 
 import {Jumbotron} from 'react-bootstrap';
-import avatar from "assets/img/faces/face-3.jpg";
 
 class AttributesDisplayer extends React.Component{
-    constructor(props){
-        super(props);
-    }
-
     render(){
         return(
             <div>
@@ -61,7 +54,7 @@ class NodeVisualizer extends React.Component{
     }
 
     buildContent(){
-        if(this.state.nodeType != "MockType"){
+        if(this.state.nodeType !== "MockType"){
             return (
                 <UserCard
                     bgColor={this.props.visual? this.props.visual.nodeColors[this.state.nodeType] : null}

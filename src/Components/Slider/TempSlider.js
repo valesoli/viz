@@ -1,7 +1,6 @@
 import React from "react";
-import {Col, Row, Badge} from 'react-bootstrap';
+import {Badge} from 'react-bootstrap';
 import Slider from '@material-ui/core/Slider';
-import { max } from "d3";
 import {applyFilterAndSave} from 'App.js';
 
 // const marks = [
@@ -74,11 +73,10 @@ class TempSlider extends React.Component {
     buildMarks(min, max, granularity){
         let marks = []
         //Supongo que 10 es un buen numero para ponerle label
-        let labelPeriod = Math.abs(max-min)/granularity/10
         for(let i=min;i<max;i+=granularity){
             marks.push({
                 value: i,
-                label: (i-min)%10 == 0?i.toString():'',
+                label: (i-min)%10 === 0?i.toString():'',
             })
         }
         marks.push({
