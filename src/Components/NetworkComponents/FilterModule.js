@@ -102,7 +102,7 @@ class FilterModule extends React.Component{
                                             <MenuItem eventKey={100} onClick={() => this.selectNodeType("All nodes")}>{"All nodes"}</MenuItem>
                                             {this.state.nodeTypes.map((prop, key) => {
                                                 return (
-                                                    <MenuItem eventKey={key} onClick={() => this.selectNodeType(prop)}>{prop}</MenuItem>
+                                                    <MenuItem key={key} eventKey={key} onClick={() => this.selectNodeType(prop)}>{prop}</MenuItem>
                                                 );
                                             })}
                                         </DropdownButton>
@@ -118,7 +118,7 @@ class FilterModule extends React.Component{
                                             <MenuItem eventKey={100} onClick={() => this.selectEdgeType("All edges")}>{"All edges"}</MenuItem>
                                             {this.state.edgeTypes.map((prop, key) => {
                                                 return (
-                                                    <MenuItem eventKey={key} onClick={() => this.selectEdgeType(prop)}>{prop}</MenuItem>
+                                                    <MenuItem key={key}  eventKey={key} onClick={() => this.selectEdgeType(prop)}>{prop}</MenuItem>
                                                 );
                                             })}
                                         </DropdownButton>

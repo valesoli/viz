@@ -17,7 +17,7 @@ class AttributesDisplayer extends React.Component{
 }
 
 export function onClickUpdateSelectionVis(id, con_config){
-    api_cypherQuery("match (o:Object)-->(a:Attribute)-->(v:Value) where id(o) = " + id + " return o.title, a.title, v.value, v.interval", onNodeClickCallback, con_config);
+    api_cypherQuery("match (o:Object)-->(a:Attribute)-->(v:Value) where o.id = " + id + " return o.title, a.title, v.value, v.interval", onNodeClickCallback, con_config);
 }
 var onNodeClickCallback;
 
@@ -31,7 +31,6 @@ class NodeVisualizer extends React.Component{
             nodeAttributes: [["MockAttr1", "MockVal1"],["MockAttr2", "MockVal2"]]
         }
                 
-        console.log("Creación del Modulo NodeVis")
         onNodeClickCallback = this.onNodeClickCallbackInt.bind(this);
     }
 

@@ -1,6 +1,6 @@
 import React from "react";
 import Graph from "react-graph-vis";
-
+import { api_tbdgQuery } from 'Services/GraphService/tbdgQueryService';
 import { api_cypherQuery } from 'Services/GraphService/graphQueryService';
 import { onClickUpdateSelectionVis } from "./NodeVisualizer";
 
@@ -13,17 +13,10 @@ class GraphContainer extends React.Component {
             con_config: con_config,
             graph: {
                 nodes: [
-                  { id: 1, label: "Node 1", title: "node 1 tootip text" },
-                  { id: 2, label: "Node 2", title: "node 2 tootip text" },
-                  { id: 3, label: "Node 3", title: "node 3 tootip text" },
-                  { id: 4, label: "Node 4", title: "node 4 tootip text" },
-                  { id: 5, label: "Node 5", title: "node 5 tootip text" }
+                  
                 ],
                 edges: [
-                  { from: 1, to: 2 },
-                  { from: 1, to: 3 },
-                  { from: 2, to: 4 },
-                  { from: 2, to: 5 }
+                  
                 ]
             },
             options : {
@@ -51,29 +44,45 @@ class GraphContainer extends React.Component {
         }
 
         //Binding
-        this.networkCallback = this.networkCallback.bind(this);
-        this.infoCallback = this.infoCallback.bind(this);
+        this.nodesCallback = this.nodesCallback.bind(this);
+        this.edgesCallback = this.edgesCallback.bind(this);
+        this.attributesCallback = this.attributesCallback.bind(this);
         this.buildNodes = this.buildNodes.bind(this);
     }
     
     componentDidMount(){
-        api_cypherQuery(this.state.query, this.networkCallback, this.props.con_config);
+        api_tbdgQuery(this.state.query, this.nodesCallback);
     }
 
     componentWillReceiveProps(props){
-        api_cypherQuery(props.query, this.networkCallback, this.props.con_config);
+        api_tbdgQuery(props.query, this.nodesCallback);
     }
 
-    networkCallback(response){
-        this.setState({
-            base: {
-                nodes: response.results[0].data[0].row[0],
-                links: response.results[0].data[0].row[1]
+    nodesCallback(response){
+        var data = new Map();
+        var x;
+        response.data.forEach(elem => {
+            for(x in elem){
+                var key = elem[x].id;
+                if(key !== undefined && !data.has(key))
+                    data.set(key, elem[x]);
             }
-        }, () => { api_cypherQuery("match (o:Object)-->(a:Attribute)-->(v:Value) return id(o), o.title, a.title, v.value, v.interval order by id(o)", this.infoCallback, this.props.con_config); });
+        });
+        
+        var nodeIds = [];
+        for(let id of data.keys()){
+            nodeIds.push(id);
+        }
+
+        var query = "match (o:Object)-->(a:Attribute)-->(v:Value) where o.id in [" + nodeIds  + "] return o.id, o.title, a.title, v.value, v.interval order by o.id";
+
+        this.setState({
+            baseNodes: data,
+            nodeIds: nodeIds
+        }, () => { api_cypherQuery(query, this.attributesCallback, this.props.con_config); });
     }
 
-    infoCallback(response){
+    attributesCallback(response){
         let response_table = response.results[0].data;
         
         const attrsHashmap = response_table.reduce((obj, item) => {
@@ -90,40 +99,54 @@ class GraphContainer extends React.Component {
             return obj;
           }, {});
           
+        var query = "match (n:Object)-[r]->(m:Object) where n.id in [" + this.state.nodeIds + "] and m.id in [" + this.state.nodeIds + "] return collect([[n.id,m.id], type(r)])";
+
         this.setState({
             attrs: attrsHashmap
+        }, api_cypherQuery(query, this.edgesCallback, this.props.con_config));
+    }
+
+    edgesCallback(response){
+        var edges = response.results[0].data[0].row[0];
+        //console.log(response.results[0].data);        
+        this.setState({
+            baseEdges: edges
         }, this.buildNodes);
     }
 
     buildNodes(){
         let nodes = [];
-        let links = [];
+        let edges = [];
         var attrs = this.state.attrs;
+        
+        var baseNodes = this.state.baseNodes;
+        for(let e of baseNodes.entries()){
+            nodes.push({
+                id: e[0], 
+                title: attrs[e[0]] !== undefined ? attrs[e[0]].attributes[0][1] : e[1].title, 
+                group: e[1].title,
+                color: this.props.visual.nodeColors[e[1].title]
+            });
+        }
+        console.log(nodes);
 
-        this.state.base.nodes.forEach(e => {
-            nodes.push(
-                {
-                    id: e[0], 
-                    title: attrs[e[0]].attributes[0][1] || e[1].title, 
-                    group: e[1].title,
-                    color: this.props.visual.nodeColors[e[1].title]
-                })
-        });
-        this.state.base.links.forEach(e => {
-            links.push(
-                {
-                    from: e[0][0], 
-                    to: e[0][1],
-                    title: e[1],
-                    color: this.props.visual.edgeColors[e[1]],
-                    arrows: 'to'
-                })
-        });
+        if(this.state.baseEdges !== undefined){
+            this.state.baseEdges.forEach(e => {
+                edges.push(
+                    {
+                        from: e[0][0], 
+                        to: e[0][1],
+                        title: e[1],
+                        color: this.props.visual.edgeColors[e[1]],
+                        arrows: 'to'
+                    })
+            });
+        }
 
         this.setState({
             graph: {
                 nodes: nodes,
-                edges: links
+                edges: edges
             },
             events : {
                 selectNode: (params) => onClickUpdateSelectionVis(params.nodes[0], this.props.con_config)

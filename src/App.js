@@ -60,7 +60,7 @@ export function applyFilterAndSave(query, low, high){
     });
 }
 
-const query = "match (n:Object) with collect([id(n),n]) as nodes match (m:Object)-[r]->(o:Object) with nodes, collect([[id(m),id(o)],type(r)]) as edges return nodes, edges";
+const query = "select n, f, m match (n) - [f:Friend] -> (m)";
 
 class App extends React.Component{
     constructor(props){

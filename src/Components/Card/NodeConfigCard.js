@@ -122,13 +122,13 @@ class NodeConfigCard extends React.Component{
                                             <DropdownButton style={{width: "100%"}}
                                                             bsStyle={"primary"}
                                                             title={this.state.mainAttr.map((val) => {                                                            
-                                                            if(val.key == key)
-                                                                return val.value;
+                                                                if(val.key === key)
+                                                                    return val.value;
                                                             })}
                                                             id={`dropdown-basic`}>
                                                             {prop.allAttrs.map((prop, key2) => {
                                                                 return (
-                                                                <MenuItem eventKey={key2} onClick={() => this.changeValueMain(key, prop)}>{prop}</MenuItem>
+                                                                <MenuItem key={key2} eventKey={key2} onClick={() => this.changeValueMain(key, prop)}>{prop}</MenuItem>
                                                                 );
                                                             })}
                                             </DropdownButton>
@@ -143,7 +143,7 @@ class NodeConfigCard extends React.Component{
                                                             id={`dropdown-basic`}>
                                                             {prop.allAttrs.map((prop, key2) => {
                                                                 return (
-                                                                <MenuItem eventKey={key2} onClick={() => this.changeValueDefault(key, prop)}>{prop}</MenuItem>
+                                                                <MenuItem key={key2} eventKey={key2} onClick={() => this.changeValueDefault(key, prop)}>{prop}</MenuItem>
                                                                 );
                                                             })}
                                             </DropdownButton>
