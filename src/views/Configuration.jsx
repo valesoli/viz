@@ -22,10 +22,10 @@ import {
   Col
 } from "react-bootstrap";
 
-import DbConfigCard from 'components/Card/DbConfigCard';
-import NodeConfigCard from "components/Card/NodeConfigCard";
-import EdgeConfigCard from "components/Card/EdgeConfigCard";
-import GranularityConfigCard from "components/Card/GranularityConfigCard";
+import DbConfigCard from 'containers/ConfigurationCards/DbConfigCard';
+import NodeConfigCard from "containers/ConfigurationCards/NodeConfigCard";
+import EdgeConfigCard from "containers/ConfigurationCards/EdgeConfigCard";
+import GranularityConfigCard from "containers/ConfigurationCards/GranularityConfigCard";
 
 
 class Configuration extends Component {

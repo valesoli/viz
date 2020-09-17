@@ -3,25 +3,6 @@ import {Badge} from 'react-bootstrap';
 import Slider from '@material-ui/core/Slider';
 import {applyFilterAndSave} from 'App.js';
 
-// const marks = [
-//     {
-//       value: 1900,
-//       label: '1900',
-//     },
-//     {
-//       value: 1965,
-//       label: '1965',
-//     },
-//     {
-//       value: 1980,
-//       label: '1980',
-//     },
-//     {
-//       value: 1995,
-//       label: '1995',
-//     }
-// ];
-
 //Esta es la funcion que si te fijas en el constructor le bindeo el 'this' para que cuando llame a this.setState cambie
 export function sliderCallback(years){
     let array = [];
