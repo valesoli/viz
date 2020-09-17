@@ -6,7 +6,7 @@ import Button from "components/CustomButton/CustomButton.jsx";
 import MyColorPicker from "components/CustomColorPicker/MyColorPicker";
 import { visual_change } from "App";
 import { neo4j_config } from "variables/ConnectionVariables.jsx";
-import { api_cypherQuery } from '../../Services/GraphService/graphQueryService';
+import { api_cypherQuery } from 'core/services/graphQueryService';
 
 class NodeConfigCard extends React.Component{  
     constructor(props){

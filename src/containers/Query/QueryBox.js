@@ -1,7 +1,7 @@
 import React from 'react';
 import {UnControlled as CodeMirror} from 'react-codemirror2';
 import Table from 'rc-table';
-import {api_tbdgQuery} from 'Services/GraphService/tbdgQueryService';
+import {api_tbdgQuery} from 'core/services/tbdgQueryService';
 
 class QueryBox extends React.Component{
     constructor(props){

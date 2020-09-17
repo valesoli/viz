@@ -24,7 +24,7 @@ import GraphContainer from "components/NetworkComponents/GraphContainer";
 import TempSlider from "components/Slider/TempSlider";
 import FilterModule from "components/NetworkComponents/FilterModule";
 import NodeVisualizer from "components/NetworkComponents/NodeVisualizer";
-import QueryBox from "components/Query/QueryBox";
+import QueryBox from "containers/Query/QueryBox";
 
 class Dashboard extends Component {
   constructor(props){

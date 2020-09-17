@@ -1,7 +1,7 @@
 import React from "react";
 import Graph from "react-graph-vis";
-import { api_tbdgQuery } from 'Services/GraphService/tbdgQueryService';
-import { api_cypherQuery } from 'Services/GraphService/graphQueryService';
+import { api_tbdgQuery } from 'core/services/tbdgQueryService';
+import { api_cypherQuery } from 'core/services/graphQueryService';
 import { onClickUpdateSelectionVis } from "./NodeVisualizer";
 
 class GraphContainer extends React.Component {

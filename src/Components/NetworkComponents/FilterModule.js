@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from "components/Card/Card.jsx";
 import { neo4j_config } from "variables/ConnectionVariables.jsx";
-import { api_cypherQuery } from '../../Services/GraphService/graphQueryService';
+import { api_cypherQuery } from 'core/services/graphQueryService';
 import { Table, DropdownButton, MenuItem} from "react-bootstrap";
 import FormControl from 'react-bootstrap/lib/FormControl';
 import Button from "components/CustomButton/CustomButton.jsx";

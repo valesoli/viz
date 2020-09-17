@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from 'components/Card/Card.jsx';
 import { UserCard } from "components/UserCard/UserCard.jsx";
-import { api_cypherQuery } from '../../Services/GraphService/graphQueryService';
+import { api_cypherQuery } from 'core/services/graphQueryService';
 
 import {Jumbotron} from 'react-bootstrap';
 
