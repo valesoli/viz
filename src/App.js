@@ -1,5 +1,5 @@
 import React from 'react';
-import TempGraphPlatform from "layouts/TempGraphPlatform.jsx";
+import TempGraphPlatform from "views/TempGraphPlatform.jsx";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 export function connect(connection_values){
@@ -81,27 +81,15 @@ class App extends React.Component{
     render(){
         return(
             <BrowserRouter>
-            
-            {/* <div id="main-panel" className="main-panel" ref="mainPanel">
-                <AdminNavbar/>
                 <Switch>
-                    <Route path="/visualizer">
-                        <Dashboard connection={this.state.connection_config} visual={this.state.visual}/>
-                    </Route>
-                    <Route path="/config">
-                        <Configuration connection={this.state.connection_config} visual={this.state.visual}/>
-                    </Route>
-                </Switch>
-            </div> */}
-                <Switch>
-                <Route path="/platform" render={props => <TempGraphPlatform {...props}  
+                    <Route path="/platform" render={props => <TempGraphPlatform {...props}  
                                                             connection={this.state.connection_config} 
                                                             visual={this.state.visual} 
                                                             temporality={this.state.temporality}
                                                             query={this.state.query}
                                                             />
                                                 } />
-                <Redirect from="/" to="/platform/visualizer" />
+                    <Redirect from="/" to="/platform/visualizer" />
                 </Switch>
             </BrowserRouter>
         );
