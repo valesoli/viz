@@ -3,10 +3,10 @@ import {
     Table
 } from "react-bootstrap";
 import { Card } from "components/Card/Card.jsx";
-import { theArray, tdeArray } from "variables/Variables.jsx";
+import { theArray, tdeArray } from "core/variables/Variables.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import MyColorPicker from "containers/CustomColorPicker/MyColorPicker";
-import { neo4j_config } from "variables/ConnectionVariables.jsx";
+import { neo4j_config } from "core/variables/ConnectionVariables.jsx";
 import { api_cypherQuery } from 'core/services/graphQueryService';
 import { visual_change } from 'App';
 

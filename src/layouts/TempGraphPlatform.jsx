@@ -10,9 +10,9 @@ import NotificationSystem from "react-notification-system";
 
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Footer from "components/Footer/Footer";
-import Sidebar from "containers/Sidebar/Sidebar";
+import Sidebar from "components/Sidebar/Sidebar";
 
-import { style } from "variables/Variables.jsx";
+import { style } from "core/variables/Variables.jsx";
 
 import routes from "routes.js";
 

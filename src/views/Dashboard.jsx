@@ -20,10 +20,10 @@ import { Grid, Row, Col, Button, Jumbotron } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 
 import { Card } from "components/Card/Card.jsx";
-import GraphContainer from "components/NetworkComponents/GraphContainer";
+import GraphContainer from "containers/NetworkComponents/GraphContainer";
 import TempSlider from "components/Slider/TempSlider";
-import FilterModule from "components/NetworkComponents/FilterModule";
-import NodeVisualizer from "components/NetworkComponents/NodeVisualizer";
+import FilterModule from "containers/NetworkComponents/FilterModule";
+import NodeVisualizer from "containers/NetworkComponents/NodeVisualizer";
 import QueryBox from "containers/QueryBox/QueryBox";
 
 class Dashboard extends Component {
