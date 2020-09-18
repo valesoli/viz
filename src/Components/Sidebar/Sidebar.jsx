@@ -18,7 +18,7 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 
-import AdminNavbarLinks from "../../components/Navbars/AdminNavbarLinks.jsx";
+import AdminNavbarLinks from "components/Navbars/AdminNavbarLinks.jsx";
 
 import logo from "assets/img/temp-graph-vis-logo.png";
 

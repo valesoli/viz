@@ -30,8 +30,7 @@ class TempSlider extends React.Component {
             interval: [this.props.temporality.currentLow, this.props.temporality.currentHigh],
             marcas: this.buildMarks(this.props.temporality.minDate, this.props.temporality.maxDate, this.props.temporality.granularity),
             marca_minima: this.props.temporality.minDate, 
-            marca_maxima: this.props.temporality.maxDate,
-            should_have_text_input: false
+            marca_maxima: this.props.temporality.maxDate
         };
         
         sliderCallback = sliderCallback.bind(this);

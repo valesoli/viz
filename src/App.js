@@ -82,14 +82,14 @@ class App extends React.Component{
         return(
             <BrowserRouter>
                 <Switch>
-                    <Route path="/platform" render={props => <TempGraphPlatform {...props}  
-                                                            connection={this.state.connection_config} 
-                                                            visual={this.state.visual} 
-                                                            temporality={this.state.temporality}
-                                                            query={this.state.query}
-                                                            />
-                                                } />
-                    <Redirect from="/" to="/platform/visualizer" />
+                        <Route path="/platform" render={props => <TempGraphPlatform {...props}
+                            connection={this.state.connection_config}
+                            visual={this.state.visual}
+                            temporality={this.state.temporality}
+                            query={this.state.query}
+                        />
+                        } />
+                        <Redirect from="/" to="/platform/visualizer" />
                 </Switch>
             </BrowserRouter>
         );

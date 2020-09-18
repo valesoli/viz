@@ -12,6 +12,7 @@ import Sidebar from "components/Sidebar/Sidebar";
 
 import { style } from "core/variables/Variables.jsx";
 
+import ConnectionConfigContextProvider from 'core/store/ConnectionConfigContext';
 import routes from "routes.js";
 
 import image from "assets/img/sidebar-4.jpg";
@@ -33,16 +34,18 @@ class TempGraphPlatform extends Component {
           <Route
             path={prop.layout + prop.path}
             render={props => (
-              <prop.component
-                {...props}
-                connection = {this.props.connection}
-                query = {this.props.query}
-                visual = {this.props.visual}
-                temporality = {this.props.temporality}
-              />
-            )}
-            key={key}
-          />
+                <ConnectionConfigContextProvider> 
+                <prop.component
+                  {...props}
+                  connection={this.props.connection}
+                  query = {this.props.query}
+                  visual = {this.props.visual}
+                  temporality={this.props.temporality}
+                />
+                </ConnectionConfigContextProvider>
+              )}
+              key={key}
+            />
         );
       } else {
         return null;
