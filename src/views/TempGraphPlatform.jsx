@@ -10,9 +10,8 @@ import { Route, Switch } from "react-router-dom";
 import Footer from "components/Footer/Footer";
 import Sidebar from "components/Sidebar/Sidebar";
 
-import { style } from "core/variables/Variables.jsx";
-
 import ConnectionConfigContextProvider from 'core/store/ConnectionConfigContext';
+import VisualConfigContextProvider from 'core/store/VisualConfigContext';
 import routes from "routes.js";
 
 import image from "assets/img/sidebar-4.jpg";
@@ -35,6 +34,7 @@ class TempGraphPlatform extends Component {
             path={prop.layout + prop.path}
             render={props => (
                 <ConnectionConfigContextProvider> 
+                <VisualConfigContextProvider> 
                 <prop.component
                   {...props}
                   connection={this.props.connection}
@@ -42,6 +42,7 @@ class TempGraphPlatform extends Component {
                   visual = {this.props.visual}
                   temporality={this.props.temporality}
                 />
+                </VisualConfigContextProvider>
                 </ConnectionConfigContextProvider>
               )}
               key={key}

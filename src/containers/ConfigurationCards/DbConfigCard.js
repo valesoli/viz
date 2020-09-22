@@ -9,9 +9,9 @@ import { ConnectionConfigContext } from 'core/store/ConnectionConfigContext';
 //ToDo: Cubrir la contraseña del form
 const DbConfigCard = (props) => {
   const { dispatch } = useContext(ConnectionConfigContext);
-  const [ connectionUrl, setConnectionUrl ] = useState('');
-  const [ username, setUsername ] = useState('');
-  const [ password, setPassword ] = useState('');
+  const [ connectionUrl, setConnectionUrl ] = useState('http://localhost:7474/db/data/transaction/commit');
+  const [ username, setUsername ] = useState('neo4j');
+  const [ password, setPassword ] = useState('admin');
 
   const handleSubmit = (e) => {
     e.preventDefault();

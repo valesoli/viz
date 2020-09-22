@@ -77,3 +77,29 @@ export function api_cypherQuery(queryParam, callback, con_config){
         statements:[{statement:query,parameters:params}]
         }));        
 }
+
+export function api_cypherQuery2(queryParam, connectionConfig){
+    let query = queryParam;
+    let params = {};
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function() {
+        if(this.readyState !==4){
+            return;
+        }
+        if (this.status === 200) {
+            let results = JSON.parse(this.responseText);
+            return results;            
+        } else {
+            return null;
+        }
+        return true;
+    };
+    xhttp.open("POST", connectionConfig.url, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.setRequestHeader("Authorization", "Basic "+ btoa(connectionConfig.user + ':' + connectionConfig.pass));
+    xhttp.setRequestHeader("Data-type", "json");
+    xhttp.send(JSON.stringify({
+        statements:[{statement:query,parameters:params}]
+        }));        
+}

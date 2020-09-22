@@ -1,21 +1,8 @@
 /*!
-
-=========================================================
-* Light Bootstrap Dashboard React - v1.3.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard-react
 * Copyright 2019 Creative Tim (https://www.creative-tim.com)
 * Licensed under MIT (https://github.com/creativetimofficial/light-bootstrap-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
 */
-import React, { Component } from "react";
+import React, { useContext } from "react";
 import {
   Grid,
   Row,
@@ -26,37 +13,15 @@ import DbConfigCard from 'containers/ConfigurationCards/DbConfigCard';
 import NodeConfigCard from "containers/ConfigurationCards/NodeConfigCard";
 import EdgeConfigCard from "containers/ConfigurationCards/EdgeConfigCard";
 import GranularityConfigCard from "containers/ConfigurationCards/GranularityConfigCard";
+import { ConnectionConfigContext } from "core/store/ConnectionConfigContext";
+import { VisualConfigContext } from "core/store/VisualConfigContext";
 
+const Configuration = (props) => {
+  const { connectionConfig } = useContext(ConnectionConfigContext);
+  const { visualConfig } = useContext(VisualConfigContext);
 
-class Configuration extends Component {
-  constructor(props){
-    super(props);
-    this.state = {connected: this.props.connection.connected}
-  }
-
-  componentWillReceiveProps(props){
-    this.setState({connected: props.connection.connected});
-  }
-
-  getVisualConfig(){
-    if(this.state.connected){
-      return (
-        <Row>
-            <Col md={9}>
-              <NodeConfigCard visual={this.props.visual}/>
-            </Col>
-            <Col md={3}>
-              <EdgeConfigCard visual={this.props.visual}/>
-            </Col>
-        </Row>
-      );
-    } else {
-      return '';
-    }
-  }
-
-  getGranularityCard(){
-    if(this.state.connected){
+  function getGranularityCard(){
+    if(connectionConfig.connected){
       return (
         <Row>
           <Col md={12} style={{marginBottom:'-20px'}}>
@@ -68,25 +33,38 @@ class Configuration extends Component {
       return '';
     }
   }
+  
 
-  render() {
-    let granularityCard = this.getGranularityCard();
-    let visualCards = this.getVisualConfig();
-
-    return (
-      <div className="content">
-        <Grid fluid>
-          <Row>
-            <Col md={12} style={{marginBottom:'-20px'}}>
-              <DbConfigCard connection={this.props.connection} visual={this.props.visual}/>
+  function getVisualConfig(){
+    if(connectionConfig.connected){
+      return (
+        <Row>
+            <Col md={9}>
+              <NodeConfigCard visual={visualConfig}/>
             </Col>
-          </Row>
-          {granularityCard}
-          {visualCards}
-        </Grid>
-      </div>
-    );
+            <Col md={3}>
+              <EdgeConfigCard visual={visualConfig}/>
+            </Col>
+        </Row>
+      );
+    } else {
+      return '';
+    }
   }
-}
 
+  return (
+    <div className="content">
+      <Grid fluid>
+        <Row>
+          <Col md={12} style={{marginBottom:'-20px'}}>
+            <DbConfigCard/> 
+          </Col>
+        </Row>
+        {getGranularityCard()}
+        {getVisualConfig()}
+      </Grid>
+    </div>
+  );
+}
+ 
 export default Configuration;
