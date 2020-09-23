@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const fetchEdgesTypes = async (key, connectionConfig) => {
-    const query = "match (:Object)-[r]->(:Object) return collect(distinct type(r))";
+export const fetchNeoQuery = async (key, connectionConfig, inputQuery) => {
+    const query = inputQuery;
     const config = {
         method: 'post',
         url: connectionConfig.url,

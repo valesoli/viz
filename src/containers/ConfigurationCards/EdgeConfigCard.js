@@ -2,13 +2,12 @@ import React, { useState, useContext } from 'react';
 import { useQuery } from 'react-query';
 import { ConnectionConfigContext } from 'core/store/ConnectionConfigContext';
 import { VisualConfigContext } from 'core/store/VisualConfigContext';
-import { fetchEdgesTypes } from 'core/services/configQueryServices';
+import { fetchNeoQuery } from 'core/services/configQueryServices';
 import { Table } from "react-bootstrap";
 import { Card } from "components/Card/Card.jsx";
 import { theArray, tdeArray } from "core/variables/Variables.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import MyColorPicker from "containers/CustomColorPicker/MyColorPicker";
-import { visual_change } from 'App';
 
 const EdgeConfigCard = (props) => {
     const { connectionConfig } = useContext(ConnectionConfigContext);
@@ -26,7 +25,7 @@ const EdgeConfigCard = (props) => {
         setEdges(newEdges);
     }
     
-    const { data, status } = useQuery(['edges', connectionConfig], fetchEdgesTypes, {
+    const { data, status } = useQuery(['edges', connectionConfig, "match (:Object)-[r]->(:Object) return collect(distinct type(r))"], fetchNeoQuery, {
         onSuccess: edgesTypesCallback
     });
 
