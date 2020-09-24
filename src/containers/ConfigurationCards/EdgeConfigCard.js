@@ -8,6 +8,7 @@ import { Card } from "components/Card/Card.jsx";
 import { theArray, tdeArray } from "core/variables/Variables.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import MyColorPicker from "containers/CustomColorPicker/MyColorPicker";
+import Loader from 'react-loader-spinner';
 
 
 const EdgeConfigCard = (props) => {
@@ -51,7 +52,9 @@ const EdgeConfigCard = (props) => {
     return (
         <div>
         {edges == null && (
-            <div>WAITING PA</div>
+            <div style={{textAlign: "center"}}>
+                <Loader type="ThreeDots" color="#00BFFF" height={80} width={80} />
+            </div>
         )}
         {edges != null && (
             <Card

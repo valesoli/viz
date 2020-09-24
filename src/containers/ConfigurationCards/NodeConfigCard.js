@@ -8,6 +8,7 @@ import { Card } from "components/Card/Card.jsx";
 import { thArray, tdArray } from "core/variables/Variables.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import MyColorPicker from "containers/CustomColorPicker/MyColorPicker";
+import Loader from 'react-loader-spinner';
 
 const NodeConfigCard = (props) => {
     const { connectionConfig } = useContext(ConnectionConfigContext);
@@ -92,7 +93,9 @@ const NodeConfigCard = (props) => {
     return (
         <>
         {nodeInfo == null && (
-            <div>WAITING</div>
+            <div style={{textAlign: "center"}}>
+                <Loader type="ThreeDots" color="#00BFFF" height={80} width={80} />
+            </div>
         )}
         {nodeInfo != null && (
             <Card

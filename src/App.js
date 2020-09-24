@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import ConnectionConfigContextProvider from 'core/store/ConnectionConfigContext';
 import VisualConfigContextProvider from 'core/store/VisualConfigContext';
 import SelectedNodeContextProvider from 'core/store/SelectedNodeContext';
+import TemporalityContextProvider from 'core/store/TemporalityContext';
 
 export function connect(connection_values){
     //TODO: Hacer un fetch a la base para verificar que la información de conexión es correcta y recibir los valores de 
@@ -86,6 +87,7 @@ class App extends React.Component{
             <ConnectionConfigContextProvider> 
             <VisualConfigContextProvider> 
             <SelectedNodeContextProvider>
+            <TemporalityContextProvider>
                 <BrowserRouter>
                     <Switch>
                             <Route path="/platform" render={props => <TempGraphPlatform {...props}
@@ -98,6 +100,7 @@ class App extends React.Component{
                             <Redirect from="/" to="/platform/visualizer" />
                     </Switch>
                 </BrowserRouter>
+            </TemporalityContextProvider>
             </SelectedNodeContextProvider>
             </VisualConfigContextProvider>
             </ConnectionConfigContextProvider>

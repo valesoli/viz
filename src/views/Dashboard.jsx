@@ -9,7 +9,7 @@ import { NavLink } from "react-router-dom";
 
 import { Card } from "components/Card/Card.jsx";
 import GraphContainer from "containers/NetworkComponents/GraphContainer";
-import TempSlider from "components/Slider/TempSlider";
+import TempSliderContainer from "containers/TempSliderContainer/TempSliderContainer";
 import FilterModule from "containers/NetworkComponents/FilterModule";
 import NodeVisualizer from "containers/NetworkComponents/NodeVisualizer";
 import QueryBox from "containers/QueryBox/QueryBox";
@@ -62,7 +62,7 @@ const Dashboard = (props) => {
       // ToDo: revisar legend
       NetworkCardNodelegend = createLegend(visualConfig, "node");
       NetworkCardEdgelegend = createLegend(visualConfig, "edge");
-      NetworkCardBar = <TempSlider temporality={{ minDate: 1900, maxDate: 2000, currentLow: 1900, currentHigh:2000, granularity: 1, shouldHaveTextInput: false }}/>;
+      NetworkCardBar = <TempSliderContainer/>;
       ExtraModules = <Col md={3}>
                         <Row>
                           <NodeVisualizer/>              
