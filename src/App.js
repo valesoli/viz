@@ -1,6 +1,9 @@
 import React from 'react';
 import TempGraphPlatform from "views/TempGraphPlatform.jsx";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import ConnectionConfigContextProvider from 'core/store/ConnectionConfigContext';
+import VisualConfigContextProvider from 'core/store/VisualConfigContext';
+import SelectedNodeContextProvider from 'core/store/SelectedNodeContext';
 
 export function connect(connection_values){
     //TODO: Hacer un fetch a la base para verificar que la información de conexión es correcta y recibir los valores de 
@@ -80,18 +83,24 @@ class App extends React.Component{
     
     render(){
         return(
-            <BrowserRouter>
-                <Switch>
-                        <Route path="/platform" render={props => <TempGraphPlatform {...props}
-                            connection={this.state.connection_config}
-                            visual={this.state.visual}
-                            temporality={this.state.temporality}
-                            query={this.state.query}
-                        />
-                        } />
-                        <Redirect from="/" to="/platform/visualizer" />
-                </Switch>
-            </BrowserRouter>
+            <ConnectionConfigContextProvider> 
+            <VisualConfigContextProvider> 
+            <SelectedNodeContextProvider>
+                <BrowserRouter>
+                    <Switch>
+                            <Route path="/platform" render={props => <TempGraphPlatform {...props}
+                                connection={this.state.connection_config}
+                                visual={this.state.visual}
+                                temporality={this.state.temporality}
+                                query={this.state.query}
+                            />
+                            } />
+                            <Redirect from="/" to="/platform/visualizer" />
+                    </Switch>
+                </BrowserRouter>
+            </SelectedNodeContextProvider>
+            </VisualConfigContextProvider>
+            </ConnectionConfigContextProvider>
         );
     }
 }

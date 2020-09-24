@@ -9,25 +9,28 @@ import { theArray, tdeArray } from "core/variables/Variables.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import MyColorPicker from "containers/CustomColorPicker/MyColorPicker";
 
+
 const EdgeConfigCard = (props) => {
     const { connectionConfig } = useContext(ConnectionConfigContext);
     const { visualConfig, dispatch } = useContext(VisualConfigContext);
-    const [edges, setEdges] = useState({});
-
-    const edgesTypesCallback = (response) => {
+    const [edges, setEdges] = useState(null);
+    const responseFormatter = (response) => {
         let response_table = response.data.results[0].data[0].row[0];
-        var newEdges = [];
+        let newEdges = [];
         for(var i = 0; i < response_table.length; i++){
             tdeArray[i].type = response_table[i];
             tdeArray[i].color = visualConfig.edgeColors[response_table[i]];
             newEdges.push(tdeArray[i]);
         }
         setEdges(newEdges);
+        return newEdges;
     }
     
-    const { data, status } = useQuery(['edges', connectionConfig, "match (:Object)-[r]->(:Object) return collect(distinct type(r))"], fetchNeoQuery, {
-        onSuccess: edgesTypesCallback
-    });
+    const { data , status } = useQuery(['edges', connectionConfig, 
+                                    "match (:Object)-[r]->(:Object) return collect(distinct type(r))",
+                                    ], fetchNeoQuery,{
+                                        onSuccess: responseFormatter
+                                    });
 
     function receiveColor(type, color){
         edges.forEach(element => {
@@ -47,10 +50,10 @@ const EdgeConfigCard = (props) => {
 
     return (
         <div>
-        {status === 'loading' && (
+        {edges == null && (
             <div>WAITING PA</div>
         )}
-        {status === 'success' && (
+        {edges != null && (
             <Card
                 title="Edges Configuration"
                 ctTableResponsive

@@ -2,7 +2,6 @@ import React from "react";
 import Graph from "react-graph-vis";
 import { api_tbdgQuery } from 'core/services/tbdgQueryService';
 import { api_cypherQuery } from 'core/services/graphQueryService';
-import { onClickUpdateSelectionVis } from "./NodeVisualizer";
 
 class GraphContainer extends React.Component {
     constructor(props){
@@ -38,7 +37,7 @@ class GraphContainer extends React.Component {
                 height: '500px'
             },
             events : {
-                selectNode: (event) => onClickUpdateSelectionVis(22, con_config)
+                // selectNode: (event) => onClickUpdateSelectionVis(22, con_config)
             },
             query: query
         }
@@ -149,7 +148,7 @@ class GraphContainer extends React.Component {
                 edges: edges
             },
             events : {
-                selectNode: (params) => onClickUpdateSelectionVis(params.nodes[0], this.props.con_config)
+                // selectNode: (params) => onClickUpdateSelectionVis(params.nodes[0], this.props.con_config)
             }
         });
     }

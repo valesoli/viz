@@ -12,16 +12,14 @@ import MyColorPicker from "containers/CustomColorPicker/MyColorPicker";
 const NodeConfigCard = (props) => {
     const { connectionConfig } = useContext(ConnectionConfigContext);
     const { visualConfig, dispatch } = useContext(VisualConfigContext);
-    const [nodes, setNodes] = useState(tdArray);
-    const [mainAttr, setMainAttr] = useState({key:"0", value:"Select"});
-    const [defaultAttr, setDefaultAttr] = useState({key:"0", value:"Select"});
+    const [ nodeInfo, setNodeInfo ] = useState(null);
 
-    const nodesTypesCallback = (response) => {
+    const responseFormatter = (response) => {
         let response_table = response.data.results[0].data;        
-        var newNodes = [];
-        var newMainAttr = [];
-        var newDefaultAttr = [];
-        for(var i = 0; i < response_table.length; i++){
+        let newNodes = [];
+        let newMainAttr = [];
+        let newDefaultAttr = [];
+        for(let i = 0; i < response_table.length; i++){
             tdArray[i].type = response_table[i].row[0];
             tdArray[i].color = visualConfig.nodeColors[response_table[i].row[0]];
             tdArray[i].attribute = response_table[i].row[1][0];
@@ -31,20 +29,21 @@ const NodeConfigCard = (props) => {
             newMainAttr.push({key: i, value: tdArray[i].attribute});
             newDefaultAttr.push({key: i, value: tdArray[i].default});
         }
-        setNodes(newNodes);
-        setMainAttr(newMainAttr);
-        setDefaultAttr(newDefaultAttr);
+        setNodeInfo({nodes: newNodes, mainAttr: newMainAttr, defaultAttr: newDefaultAttr});
+        return response;
     }
 
-    const { data, status } = useQuery(['nodes', connectionConfig, "match (o:Object)-->(a:Attribute)-->(v:Value) return o.title, collect(distinct a.title) order by o.title"], fetchNeoQuery, {
-        onSuccess: nodesTypesCallback 
-    });
+    const { data, status } = useQuery(["nodes", connectionConfig, 
+                                    "match (o:Object)-->(a:Attribute)-->(v:Value) return o.title, collect(distinct a.title) order by o.title"
+                                    ],  fetchNeoQuery, {
+                                        onSuccess: responseFormatter
+                                    });
 
 
     function changeValueMain(key, value){
-        var found = false;
-        var changingMainAttr = mainAttr;
-        for(var i = 0; i < changingMainAttr.length; i++){
+        let found = false;
+        let changingMainAttr = nodeInfo.mainAttr;
+        for(let i = 0; i < changingMainAttr.length; i++){
             if(changingMainAttr[i].key === key){
                 changingMainAttr[i].value = value;
                 found = true;
@@ -54,13 +53,13 @@ const NodeConfigCard = (props) => {
         if(!found){
             changingMainAttr.push({ key: key, value: value});
         }
-        setMainAttr(changingMainAttr);
+        nodeInfo.mainAttr = changingMainAttr;
     }
 
     function changeValueDefault(key, value) {
-        var found = false;
-        var changingDefaultAttr = defaultAttr;
-        for(var i = 0; i < changingDefaultAttr.length; i++){
+        let found = false;
+        let changingDefaultAttr = nodeInfo.defaultAttr;
+        for(let i = 0; i < changingDefaultAttr.length; i++){
             if(changingDefaultAttr[i].key === key){
                 changingDefaultAttr[i].value = value;
                 found = true;
@@ -70,12 +69,12 @@ const NodeConfigCard = (props) => {
         if(!found){
             changingDefaultAttr.push({ key: key, value: value});
         }
-        setDefaultAttr(changingDefaultAttr); 
+        nodeInfo.defaultAttr = changingDefaultAttr;
     }
 
 
     function colorChange(type, color){
-        nodes.forEach(element => {
+        nodeInfo.nodes.forEach(element => {
             if(element.type === type){
                 element.color = color.hex;
             }
@@ -84,7 +83,7 @@ const NodeConfigCard = (props) => {
 
     function confirmChanges(){
         let nodeColors={};
-        nodes.forEach(element => {
+        nodeInfo.nodes.forEach(element => {
             nodeColors[element.type] = element.color;
         });
         dispatch({type: 'CHANGE_NODES', nodeColors: nodeColors});
@@ -92,10 +91,10 @@ const NodeConfigCard = (props) => {
 
     return (
         <>
-        {status === 'loading' && (
+        {nodeInfo == null && (
             <div>WAITING</div>
         )}
-        {status === 'success' && (
+        {nodeInfo != null && (
             <Card
                 title="Nodes Configuration"
                 ctTableResponsive
@@ -109,7 +108,7 @@ const NodeConfigCard = (props) => {
                         </tr>
                         </thead>
                         <tbody>
-                            {nodes.map((prop, key) => {
+                            {nodeInfo.nodes.map((prop, key) => {
                                 return (
                                     <tr key={key}>
                                         <td key={key+"1"}>{prop.type}</td>
@@ -119,7 +118,7 @@ const NodeConfigCard = (props) => {
                                         <td key={key+"3"}>
                                             <DropdownButton style={{width: "100%"}}
                                                             bsStyle={"primary"}
-                                                            title={mainAttr.map((val) => {                                                            
+                                                            title={nodeInfo.mainAttr.map((val) => {                                                            
                                                                 if(val.key === key)
                                                                     return val.value;
                                                             })}
@@ -134,7 +133,7 @@ const NodeConfigCard = (props) => {
                                         <td key={key+"4"}>
                                             <DropdownButton style={{width: "100%"}}
                                                             bsStyle={"primary"}
-                                                            title={defaultAttr.map((val) => {
+                                                            title={nodeInfo.defaultAttr.map((val) => {
                                                                 if(val.key === key)
                                                                     return val.value;
                                                             })}

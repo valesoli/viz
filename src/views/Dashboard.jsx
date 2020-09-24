@@ -1,21 +1,9 @@
 /*!
-
-=========================================================
-* Light Bootstrap Dashboard React - v1.3.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard-react
 * Copyright 2019 Creative Tim (https://www.creative-tim.com)
 * Licensed under MIT (https://github.com/creativetimofficial/light-bootstrap-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
 */
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import { Grid, Row, Col, Button, Jumbotron } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 
@@ -25,27 +13,14 @@ import TempSlider from "components/Slider/TempSlider";
 import FilterModule from "containers/NetworkComponents/FilterModule";
 import NodeVisualizer from "containers/NetworkComponents/NodeVisualizer";
 import QueryBox from "containers/QueryBox/QueryBox";
+import { VisualConfigContext } from "core/store/VisualConfigContext";
+import { ConnectionConfigContext } from "core/store/ConnectionConfigContext";
 
-class Dashboard extends Component {
-  constructor(props){
-    super(props);
-    this.state = { 
-      connected: props.connection.connected,
-      query: props.query
-    };    
-  }
+const Dashboard = (props) => {
+  const { connectionConfig } = useContext(ConnectionConfigContext);
+  const { visualConfig } = useContext(VisualConfigContext);
 
-  componentDidMount() {
-
-  }
-
-  componentWillUnmount() {
-    if (this.chart) {
-      this.chart.dispose();
-    }
-  }
-
-  createLegend(json, type) {
+  function createLegend(json, type) {
     var legend = [];
 
     let colors = type === "node"?json.nodeColors:json.edgeColors;
@@ -57,16 +32,11 @@ class Dashboard extends Component {
     }
     return legend;
   }
-
- 
-  buildNetworkCard(){
-    let NetworkCardContent;
-    let NetworkCardNodelegend;
-    let NetworkCardEdgelegend;
-    let NetworkCardBar;
-    let ExtraModules;
-    let QueryModule;
-    if(!this.state.connected){
+  
+  function buildNetworkCard(){
+    let NetworkCardContent, NetworkCardNodelegend, NetworkCardEdgelegend, NetworkCardBar;
+    let ExtraModules, QueryModule;
+    if(!connectionConfig.connected){
         NetworkCardContent = 
           <Jumbotron>
             <h1>Bienvenid@!</h1>
@@ -80,29 +50,22 @@ class Dashboard extends Component {
                 className="nav-link"
                 activeClassName="active"
               >
-                
-                  <i className='pe-7s-config' />   Configuración
-                
+                <i className='pe-7s-config' />   Configuración
               </NavLink>
               </Button>
           </Jumbotron>
         ;
-        NetworkCardNodelegend = '';
-        NetworkCardEdgelegend = '';
-        NetworkCardBar = '';
-        ExtraModules = '';
-        QueryModule = '';
+        NetworkCardNodelegend = NetworkCardEdgelegend = NetworkCardBar = '';
+        ExtraModules = QueryModule = '';
     } else {
-      NetworkCardContent = <GraphContainer con_config={ this.props.connection.neo4j_config } visual={this.props.visual} query={this.props.query}/>
-      // NetworkCardContent = <MyVis con_config={ this.props.connection.neo4j_config } visual={this.props.visual} data={my_data}/>;
-      // NetworkCardContent = <NetworkVis con_config={ this.props.connection.neo4j_config } visual={this.props.visual}/>;
+      NetworkCardContent = <GraphContainer/>
       // ToDo: revisar legend
-      NetworkCardNodelegend = this.createLegend(this.props.visual, "node");
-      NetworkCardEdgelegend = this.createLegend(this.props.visual, "edge");
-      NetworkCardBar = <TempSlider temporality={ this.props.temporality }/>;
+      NetworkCardNodelegend = createLegend(visualConfig, "node");
+      NetworkCardEdgelegend = createLegend(visualConfig, "edge");
+      NetworkCardBar = <TempSlider temporality={{ minDate: 1900, maxDate: 2000, currentLow: 1900, currentHigh:2000, granularity: 1, shouldHaveTextInput: false }}/>;
       ExtraModules = <Col md={3}>
                         <Row>
-                          <NodeVisualizer con_config={ this.props.connection.neo4j_config } visual={this.props.visual}/>              
+                          <NodeVisualizer/>              
                         </Row>
                         <Row>
                           <FilterModule/>
@@ -114,75 +77,36 @@ class Dashboard extends Component {
     return [NetworkCardContent, NetworkCardNodelegend, NetworkCardEdgelegend, NetworkCardBar,ExtraModules, QueryModule];
   }
 
-  render() {
-    let [NetworkCardContent, NetworkCardNodelegend, NetworkCardEdgeLegend, NetworkCardBar,ExtraModules, QueryModule] = this.buildNetworkCard();
-    
-    return (
-      <div className="content">
-        <Grid fluid>
-          <Row>
-            <Col md={this.state.connected?9:12}>
-              <Card 
-                id="querybox"
-                title="Query"
-                content = {QueryModule}
-              />
-              <Card
-                id="chartHours"
-                title="Graph"
-                slider={NetworkCardBar}
-                content={NetworkCardContent}
-                legend={
-                  <div className="legend" style={{height:'35px', display:'block'}}>
-                    <div style={{float:'left'}}>{NetworkCardNodelegend}</div>
-                    <div style={{float:'right'}}>{NetworkCardEdgeLegend}</div>
-                  </div>
-                }
-              />
-            </Col>
-            {ExtraModules}
-          </Row>
-          {/* <Row>
-            <Col md={6}>
-              <Card
-                id="chartActivity"
-                title="2014 Sales"
-                category="All products including Taxes"
-                stats="Data information certified"
-                statsIcon="fa fa-check"
-                content={
-                  <div className="ct-chart">
-                    <ChartistGraph
-                      data={dataBar}
-                      type="Bar"
-                      options={optionsBar}
-                      responsiveOptions={responsiveBar}
-                    />
-                  </div>
-                }
-              />
-            </Col>
+  let [NetworkCardContent, NetworkCardNodelegend, NetworkCardEdgeLegend, NetworkCardBar,ExtraModules, QueryModule] = buildNetworkCard()
 
-            <Col md={6}>
-              <Card
-                title="Tasks"
-                category="Backend development"
-                stats="Updated 3 minutes ago"
-                statsIcon="fa fa-history"
-                content={
-                  <div className="table-full-width">
-                    <table className="table">
-                      <Tasks />
-                    </table>
-                  </div>
-                }
-              />
-            </Col>
-          </Row> */}
-        </Grid>
-      </div>
-    );
-  }
+  return (
+    <div className="content">
+      <Grid fluid>
+        <Row>
+          <Col md={connectionConfig.connected?9:12}>
+            <Card 
+              id="querybox"
+              title="Query"
+              content = {QueryModule}
+            />
+            <Card
+              id="chartHours"
+              title="Graph"
+              slider={NetworkCardBar}
+              content={NetworkCardContent}
+              legend={
+                <div className="legend" style={{height:'35px', display:'block'}}>
+                  <div style={{float:'left'}}>{NetworkCardNodelegend}</div>
+                  <div style={{float:'right'}}>{NetworkCardEdgeLegend}</div>
+                </div>
+              }
+            />
+          </Col>
+          {ExtraModules}
+        </Row>
+      </Grid>
+    </div>
+  );
 }
-
+ 
 export default Dashboard;

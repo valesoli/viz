@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import Card from 'components/Card/Card.jsx';
 import { UserCard } from "components/UserCard/UserCard.jsx";
-import { api_cypherQuery } from 'core/services/graphQueryService';
 
 import {Jumbotron} from 'react-bootstrap';
+import { SelectedNodeContext } from 'core/store/SelectedNodeContext';
+import { useQuery } from 'react-query';
+import { fetchNeoQuery } from 'core/services/configQueryServices';
+import { VisualConfigContext } from 'core/store/VisualConfigContext';
+import { ConnectionConfigContext } from 'core/store/ConnectionConfigContext';
 
 class AttributesDisplayer extends React.Component{
     render(){
@@ -16,52 +20,41 @@ class AttributesDisplayer extends React.Component{
     }
 }
 
-export function onClickUpdateSelectionVis(id, con_config){
-    api_cypherQuery("match (o:Object)-->(a:Attribute)-->(v:Value) where o.id = " + id + " return o.title, a.title, v.value, v.interval", onNodeClickCallback, con_config);
-}
-var onNodeClickCallback;
+const NodeVisualizer = () => {
+    const { selectedNodeId } = useContext(SelectedNodeContext);
+    const { connectionConfig } = useContext(ConnectionConfigContext);
+    const { visualConfig } = useContext(VisualConfigContext);
+    const [ selectedNode, setSelectedNode ] = useState( {
+        nodeType: "MockType",
+        nodeAttributes: [["MockAttr1", "MockVal1"],["MockAttr2", "MockVal2"]]
+    });
 
-class NodeVisualizer extends React.Component{
-    constructor(props){
-        super(props);
-        this.refs = React.createRef();
-
-        this.state = {
-            nodeType: "MockType",
-            nodeAttributes: [["MockAttr1", "MockVal1"],["MockAttr2", "MockVal2"]]
+    function nodeSelectionCallback(response){
+        if( selectedNodeId == 0){
+            return;
         }
-                
-        onNodeClickCallback = this.onNodeClickCallbackInt.bind(this);
-    }
-
-    componentDidMount(){
-    }
-
-    componentWillUnmount(){
-    }
-
-    componentDidUpdate(){
-    }
-
-    onNodeClickCallbackInt(response){
-        let response_array = response.results[0].data;
+        let response_array = response.data.results[0].data;
         let formated_array = response_array.map((e) => {
             return [e.row[1], e.row[2], e.row[3]];
         })
         let nodeTitle = response_array[0].row[0];
-        this.setState({ nodeType: nodeTitle, nodeAttributes: formated_array});
+        setSelectedNode({nodeType: nodeTitle, nodeAttributes: formated_array});
     }
 
-    buildContent(){
-        if(this.state.nodeType !== "MockType"){
+    const { data, status } = useQuery(['selectedNode', connectionConfig, "match (o:Object)-->(a:Attribute)-->(v:Value) where o.id = " + selectedNodeId + " return o.title, a.title, v.value, v.interval" ], fetchNeoQuery, {
+        onSuccess: nodeSelectionCallback
+    });
+
+    function buildContent(){
+        if(selectedNode.nodeType !== "MockType"){
             return (
                 <UserCard
-                    bgColor={this.props.visual? this.props.visual.nodeColors[this.state.nodeType] : null}
-                    avatar={this.props.visual? this.props.visual.nodeAvatars[this.state.nodeType] : "pe-7s-users"}
-                    name={this.state.nodeType}
+                    bgColor={visualConfig.nodeColors[selectedNode.nodeType]}
+                    avatar={visualConfig.nodeAvatars[selectedNode.nodeType]}
+                    name={selectedNode.nodeType}
                     description={
                         <div>
-                            {this.state.nodeAttributes.map((item, index) => (
+                            {selectedNode.nodeAttributes.map((item, index) => (
                                 <AttributesDisplayer key={index} attribute={item} />
                             ))}
                         </div>
@@ -81,20 +74,16 @@ class NodeVisualizer extends React.Component{
         }
     }
 
-    render(){
-        let node_content = this.buildContent();
-
-        return(
-            <Card
-                style={{marginBottom:'10px'}}
-                statsIcon="fa pe-7s-magic-wand"
-                title="Selector Module"
-                content={
-                    node_content
-                }
-            />
-        );
-    }
+    return (
+        <Card
+            style={{marginBottom:'10px'}}
+            statsIcon="fa pe-7s-magic-wand"
+            title="Selector Module"
+            content={
+                buildContent() 
+            }
+        />
+    );
 }
-
+ 
 export default NodeVisualizer;
