@@ -18,7 +18,7 @@ const VisualConfigContextProvider = (props) => {
             },
             edgeColors: {
                 LivedIn: "#33cccc", 
-                Friend: "#f6ecd2", 
+                Friend: "#f6b202", 
                 Fan: "#ff9f88"
             }
         })

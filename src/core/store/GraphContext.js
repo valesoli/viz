@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer, useState } from 'react';
 import { useQuery } from 'react-query';
 import { ConnectionConfigContext } from './ConnectionConfigContext';
 import { GraphReducer } from './GraphReducer';
@@ -8,6 +8,7 @@ import { VisualConfigContext } from './VisualConfigContext';
 export const GraphContext = createContext();
 
 const GraphContextProvider = (props) => {
+    const [ query, setQuery ] = useState("select n, f, m match (n) - [f:Friend] -> (m)");
     const { connectionConfig } = useContext(ConnectionConfigContext);
     const { visualConfig } = useContext(VisualConfigContext);
     const [ graph, dispatch ] = useReducer(GraphReducer,
@@ -26,7 +27,6 @@ const GraphContextProvider = (props) => {
                 { from: 2, to: 5 }
             ]
         })
-    const query = "select n, f, m match (n) - [f:Friend] -> (m)";
     const updateGraph = (data) => {
         dispatch({type:"UPDATE_GRAPH", graph:data});
     }
@@ -34,7 +34,7 @@ const GraphContextProvider = (props) => {
         onSuccess: updateGraph
     });
     return (  
-        <GraphContext.Provider value={{ graph, dispatch }}>
+        <GraphContext.Provider value={{ graph, dispatch, query, setQuery}}>
             {props.children}
         </GraphContext.Provider>
     );

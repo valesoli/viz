@@ -1,14 +1,12 @@
 import React, { useContext } from "react";
 import Graph from "react-graph-vis";
-import { api_tbdgQuery } from 'core/services/tbdgQueryService';
-import { api_cypherQuery } from 'core/services/graphQueryService';
 import { GraphContext } from "core/store/GraphContext";
 import { ConnectionConfigContext } from "core/store/ConnectionConfigContext";
 import { VisualConfigContext } from "core/store/VisualConfigContext";
+import { SelectedNodeContext } from "core/store/SelectedNodeContext";
 
 const GraphContainer = (props) => {
-    const { connectionConfig } = useContext(ConnectionConfigContext);
-    const { visualConfig } = useContext(VisualConfigContext);
+    const { setSelectedNodeId } = useContext(SelectedNodeContext);
     // I need some way to store the nodes and edges
     // and only have access to what i want to show
     const { graph } = useContext(GraphContext);
@@ -33,7 +31,7 @@ const GraphContainer = (props) => {
     // Here we have the function that must be on each node. We have to think if its
     // something that will be constant or that will change along the work
     const events = {
-        // selectNode: (params) => onClickUpdateSelectionVis(params.nodes[0], this.props.con_config)
+        selectNode: (params) => setSelectedNodeId(params.nodes[0])
     }
     return ( 
         <Graph

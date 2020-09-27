@@ -558,7 +558,7 @@ var legendNodes = {
   colors: ["#33cccc", "#f6ecd2", "#ff9f88", "#fb7777", "#9dd8d8"]
 };
 
-const colors = ["#33cccc", "#f6ecd2", "#ff9f88", "#fb7777", "#9dd8d8"];
+const colors = ["#33cccc", "#F6B202", "#ff9f88", "#fb7777", "#9dd8d8"];
 
 // Data for Bar Chart
 var dataBar = {

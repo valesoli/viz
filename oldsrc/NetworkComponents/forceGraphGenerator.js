@@ -3,6 +3,10 @@ import * as d3 from "d3";
 import {createContextMenu} from "./utils";
 import styles from "./forceGraph.module.css";
 import { onClickUpdateSelectionVis } from './NodeVisualizer';
+import { 
+    nodeLegends
+} from '../../variables/Variables';
+import { legendNodes } from "variables/Variables";
 
 export function runForceGraph( container, linksData, nodesData, nodeHoverTooltip, edgeHoverTooltip) {
     const links = linksData.map((d) => Object.assign({}, d));
@@ -32,6 +36,13 @@ export function runForceGraph( container, linksData, nodesData, nodeHoverTooltip
     const width = containerRect.width;
 
     const color = (d) => { return colors[d.type.length%5]; };
+    const colornew = (d) => { 
+        for (var i = 0; i < legendNodes.names.length; i++) {
+            if(legendNodes.names[i] == d.type)
+                return legendNodes.colors[i];
+        }
+        return legendNodes.colors[i-1];
+    } 
 
     const icon = (d) => {
         return d.gender === "male" ? "\uf222" : "\uf221";
@@ -200,7 +211,7 @@ export function runForceGraph( container, linksData, nodesData, nodeHoverTooltip
                         createContextMenu(d, menuItems, width, height, '#graphSvg');
                     })
                     .attr("r", 12)
-                    .attr("fill", d => color(d)))
+                    .attr("fill", d => colornew(d)))
                 .call(drag(simulation));
 
             link = link
