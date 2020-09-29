@@ -32,7 +32,6 @@ const neoQuery = async (connectionConfig, query) =>{
             "statements":[{"statement":query}]
         }
     }
-    console.log(connectionConfig)
 
     let response = await axios(config);
     return response;

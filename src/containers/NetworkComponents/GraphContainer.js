@@ -4,6 +4,7 @@ import { GraphContext } from "core/store/GraphContext";
 import { ConnectionConfigContext } from "core/store/ConnectionConfigContext";
 import { VisualConfigContext } from "core/store/VisualConfigContext";
 import { SelectedNodeContext } from "core/store/SelectedNodeContext";
+import { Jumbotron } from "react-bootstrap";
 
 const GraphContainer = (props) => {
     const { setSelectedNodeId } = useContext(SelectedNodeContext);
@@ -46,10 +47,11 @@ const GraphContainer = (props) => {
                     }}
                 />
             :
-                <div>
-                    {
-                    graph.info.description
-                    }
+                <div className="callout">
+                    <h4 className="text-info">Error!</h4>
+                    <p>
+                        {graph.info.description}
+                    </p>
                 </div>
             }
         </>
