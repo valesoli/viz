@@ -2,25 +2,49 @@ import React, { useContext, useState } from 'react';
 import { Card } from 'components/Card/Card';
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
+import {tryConnection} from "core/services/configQueryServices";
 
-import { connect } from "App";
 import { ConnectionConfigContext } from 'core/store/ConnectionConfigContext';
+import { TemporalityContext } from 'core/store/TemporalityContext';
 
 //ToDo: Cubrir la contraseña del form
 const DbConfigCard = (props) => {
   const { dispatch } = useContext(ConnectionConfigContext);
+  const { setMinDate, setMaxDate } = useContext(TemporalityContext);
   const [ connectionUrl, setConnectionUrl ] = useState('http://localhost:7474/db/data/transaction/commit');
   const [ username, setUsername ] = useState('neo4j');
   const [ password, setPassword ] = useState('admin');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch({type: 'CHANGE_CONFIG', config:{
-      connected: null, 
-      url: connectionUrl, 
-      user: username, 
-      pass: password 
-    }})
+    tryConnection(connectionUrl, username, password)
+    .then( response => {
+      let years = response.data.results[0].data[0].row[0];
+      let min = years[0];
+      let max = years[years.length -1];
+      setMinDate(min);
+      setMaxDate(max);
+      dispatch(
+        {
+          type: "CHANGE_CONFIG",
+          config: {
+            connected: null, 
+            url: connectionUrl, 
+            user: username, 
+            pass: password 
+          }
+        }
+      )
+      } 
+    )
+    .catch(
+      err => {
+        console.log(`This is the error: ${err}`);
+        dispatch({
+          type: "CONNECTION_FAILED"
+        });
+      }
+    );
     // TODO: Acá hay que empezar a trabajar con el resto de las variables que se inicializan en el connect
   }
 

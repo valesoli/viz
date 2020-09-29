@@ -9,7 +9,7 @@ const TemporalityContextProvider = (props) => {
     const [ shouldHaveTextInput, setShouldHaveTextInput ] = useState(false);
 
     return (  
-        <TemporalityContext.Provider value={{ minDate, maxDate, granularity, shouldHaveTextInput }}>
+        <TemporalityContext.Provider value={{ minDate, maxDate, setMinDate, setMaxDate, granularity, shouldHaveTextInput }}>
             {props.children}
         </TemporalityContext.Provider>
     );

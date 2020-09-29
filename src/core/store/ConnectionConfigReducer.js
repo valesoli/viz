@@ -11,6 +11,17 @@ export const ConnectionConfigReducer = (state, action) => {
                     pass: action.config.pass
                 }               
             );
+            break;
+        case 'CONNECTION_FAILED':
+            return (
+                {
+                    connected: false,
+                    url: state.url,
+                    user: state.user,
+                    pass: state.pass
+                }
+            );
+            break;
         default:
             return state;
     }
