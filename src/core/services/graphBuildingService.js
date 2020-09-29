@@ -1,8 +1,15 @@
 import axios from 'axios';
 
 export const fetchGraph = async (key, connectionConfig, visualConfig, inputQuery) => {
+    if(!connectionConfig.connected) return null;
     let nodesResponse = await tbdgQuery(inputQuery);
-    const nodesProcessed = nodesCallback(nodesResponse); 
+    const nodesProcessed = nodesCallback(nodesResponse);
+    console.log(nodesResponse);
+    if(nodesProcessed == 1){
+        return {info:{success:false, description:nodesResponse.data.message}};
+    } else if (nodesProcessed == 2){
+        return {info:{success:false, description:"No results found"}};
+    }
     let attributesResponse = await neoQuery(connectionConfig, nodesProcessed.query);
     const attributesProcessed = attributesCallback(attributesResponse, nodesProcessed.nodeIds);
     let edgesResponse = await neoQuery(connectionConfig, attributesProcessed.query);
@@ -10,7 +17,7 @@ export const fetchGraph = async (key, connectionConfig, visualConfig, inputQuery
 
 
     let {graph, events} = buildNodes(nodesProcessed.baseNodes, edgesProcessed, attributesProcessed.attrs, visualConfig);
-    return {nodes: graph.nodes, edges: graph.edges};
+    return {info: {success: true, description: "SUCCESS"}, nodes: graph.nodes, edges: graph.edges};
 }
 
 const neoQuery = async (connectionConfig, query) =>{
@@ -49,6 +56,8 @@ const tbdgQuery = async (query) =>{
 const nodesCallback = (response) => {
     let data = new Map();
     let x;
+    if(!response.data.success) return 1;
+    if(response.data.data.length == 0) return 2;
     response.data.data.forEach(elem => {
         for(x in elem){
             var key = elem[x].id;

@@ -33,16 +33,26 @@ const GraphContainer = (props) => {
     const events = {
         selectNode: (params) => setSelectedNodeId(params.nodes[0])
     }
-    return ( 
-        <Graph
-            key={events}
-            graph={graph}
-            options={options}
-            events={events}
-            getNetwork={network => {
-            //  if you want access to vis.js network api you can set the state in a parent component using this property
-            }}
-        />
+    return (
+        <>
+            {graph.info.success ? 
+                <Graph
+                    key={events}
+                    graph={graph}
+                    options={options}
+                    events={events}
+                    getNetwork={network => {
+                    //  if you want access to vis.js network api you can set the state in a parent component using this property
+                    }}
+                />
+            :
+                <div>
+                    {
+                    graph.info.description
+                    }
+                </div>
+            }
+        </>
     );
 }
  

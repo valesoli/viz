@@ -3,9 +3,8 @@ import { useQuery } from 'react-query';
 import { ConnectionConfigContext } from 'core/store/ConnectionConfigContext';
 import { VisualConfigContext } from 'core/store/VisualConfigContext';
 import { fetchNeoQuery } from 'core/services/configQueryServices';
-import { Table, DropdownButton, MenuItem} from "react-bootstrap";
+import { Table, DropdownButton, MenuItem, Dropdown} from "react-bootstrap";
 import { Card } from "components/Card/Card.jsx";
-import { thArray, tdArray } from "core/variables/Variables.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import MyColorPicker from "containers/CustomColorPicker/MyColorPicker";
 import Loader from 'react-loader-spinner';
@@ -21,14 +20,15 @@ const NodeConfigCard = (props) => {
         let newMainAttr = [];
         let newDefaultAttr = [];
         for(let i = 0; i < response_table.length; i++){
-            tdArray[i].type = response_table[i].row[0];
-            tdArray[i].color = visualConfig.nodeColors[response_table[i].row[0]];
-            tdArray[i].attribute = response_table[i].row[1][0];
-            tdArray[i].default = response_table[i].row[1][0];
-            tdArray[i].allAttrs = response_table[i].row[1];
-            newNodes.push(tdArray[i]);
-            newMainAttr.push({key: i, value: tdArray[i].attribute});
-            newDefaultAttr.push({key: i, value: tdArray[i].default});
+            let td = {type: '', color: '', attribute: '', default: '', allAttrs: ''};
+            td.type = response_table[i].row[0];
+            td.color = visualConfig.nodeColors[response_table[i].row[0]];
+            td.attribute = response_table[i].row[1][0];
+            td.default = response_table[i].row[1][0];
+            td.allAttrs = response_table[i].row[1];
+            newNodes.push(td);
+            newMainAttr.push({key: i, value: td.attribute});
+            newDefaultAttr.push({key: i, value: td.default});
         }
         setNodeInfo({nodes: newNodes, mainAttr: newMainAttr, defaultAttr: newDefaultAttr});
         return response;
@@ -105,9 +105,10 @@ const NodeConfigCard = (props) => {
                     <Table striped hover style={{marginBottom: "0px"}}>
                         <thead>
                         <tr>
-                            {thArray.map((prop, key) => {
-                                return <th key={key}>{prop}</th>;
-                            })}
+                                <th key={1}>TYPE</th>
+                                <th key={2}>COLOR</th>
+                                <th key={3}>MAIN ATTRIBUTE</th>
+                                <th key={4}>DEFAULT</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -121,14 +122,11 @@ const NodeConfigCard = (props) => {
                                         <td key={key+"3"}>
                                             <DropdownButton style={{width: "100%"}}
                                                             bsStyle={"primary"}
-                                                            title={nodeInfo.mainAttr.map((val) => {                                                            
-                                                                if(val.key === key)
-                                                                    return val.value;
-                                                            })}
+                                                            title={nodeInfo.mainAttr[key].value}
                                                             id={`dropdown-basic`}>
                                                             {prop.allAttrs.map((prop, key2) => {
                                                                 return (
-                                                                <MenuItem key={key2} eventKey={key2} onClick={() => changeValueMain(key, prop)}>{prop}</MenuItem>
+                                                                <MenuItem key={key2} eventKey={key2} onClick={() => {changeValueMain(key, prop);}}>{prop}</MenuItem>
                                                                 );
                                                             })}
                                             </DropdownButton>

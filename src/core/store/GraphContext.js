@@ -25,13 +25,23 @@ const GraphContextProvider = (props) => {
                 { from: 1, to: 3 },
                 { from: 2, to: 4 },
                 { from: 2, to: 5 }
-            ]
+            ],
+            info: {
+                success: true,
+                description: '' 
+            } 
         })
     const updateGraph = (data) => {
-        dispatch({type:"UPDATE_GRAPH", graph:data});
+        if(data == null) return;
+        if(data.info.success){
+            dispatch({type:"UPDATE_GRAPH", graph:data});
+        } else {
+            dispatch({type:"ERROR", error: data.info.description});
+        }
     }
+
     const { data, status } = useQuery(["graph", connectionConfig, visualConfig, query], fetchGraph, {
-        onSuccess: updateGraph
+        onSuccess: updateGraph,
     });
     return (  
         <GraphContext.Provider value={{ graph, dispatch, query, setQuery}}>
