@@ -1,73 +1,75 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Card } from "components/Card/Card.jsx";
 import { neo4j_config } from "core/variables/ConnectionVariables.jsx";
 import { api_cypherQuery } from 'core/services/graphQueryService';
 import { Table, DropdownButton, MenuItem} from "react-bootstrap";
 import FormControl from 'react-bootstrap/lib/FormControl';
 import Button from "components/CustomButton/CustomButton.jsx";
-import {applyFilters} from '../../App.js';
+import { FiltersContext } from "core/store/FiltersContext";
+import { ConnectionConfigContext } from "core/store/ConnectionConfigContext";
+import { fetchNeoQuery } from 'core/services/configQueryServices';
+import { useQuery } from 'react-query';
+import { set } from 'd3';
 
 const FilterModule = (props) => {
+    const { filters, dispatch } = useContext(FiltersContext);
+    const { connectionConfig } = useContext(ConnectionConfigContext);
     const [ nodeTypes, setNodeTypes ] = useState([]);
     const [ edgeTypes, setEdgeTypes ] = useState([]);
-    const [ nodeLimit, setNodeLimit ] = useState(100);
-    const [ selectedNodeType, setSelectedNodeType ] = useState('All nodes');
-    const [ selectedEdgeType,  setSelectedEdgeType ] = useState('All edges');
+    const [ test, setTest ] = useState("test");
 
-    // Acá cargaba los valores, pero ahora en vez de hacerlo así deberíamos sacarlos de algún contexto
-    // api_cypherQuery("match (o:Object)-[e]-(:Object) return collect(distinct o.title), collect(distinct type(e))", this.nodeTypesCallback, neo4j_config);
-
-    const nodeTypesCallback = (response) => {
-        let newNodeTypes = response.results[0].data[0].row[0];
-        let newEdgeTypes = response.results[0].data[0].row[1];
-        setNodeTypes(newNodeTypes);
-        setEdgeTypes(newEdgeTypes);
-    }
-
-    const createLegend = (json) => {
-        var legend = [];
-        for (var i = 0; i < json["names"].length; i++) {
-          var type = "fa fa-circle text-" + json["types"][i];
-          legend.push(<i className={type} key={i} />);
-          legend.push(" ");
-          legend.push(json["names"][i]);
+    const nodeTypesResponseFormatter = (response) => {
+        let response_table = response.data.results[0].data;        
+        let nodeTypes = ["All nodes"];
+        for(let i = 0; i < response_table.length; i++){
+            nodeTypes.push(response_table[i].row[0]);
         }
-        return legend;
-    }
-    
-    const selectNodeType = (value) => {
-        setSelectedNodeType(value);
+        setNodeTypes(nodeTypes);
+        return response;
     }
 
-    const selectEdgeType = (value) => {
-        setSelectedEdgeType(value);
+    const edgeTypesResponseFormatter = (response) => {
+        let response_table = response.data.results[0].data;        
+        let edgeTypes = ["All edges"];
+        for(let i = 0; i < response_table.length; i++){
+            edgeTypes.push(response_table[i].row[0]);
+        }
+        setEdgeTypes(edgeTypes);
+        return response;
     }
+
+    const { data, status } = useQuery(["nodeTypes", connectionConfig, "match (o:Object) return distinct o.title"],  fetchNeoQuery, {
+        onSuccess: nodeTypesResponseFormatter
+    });
+
+    const { data2, status2 } = useQuery(["edgeTypes", connectionConfig, "match (:Object)-[r]->(:Object) return distinct type(r)"],  fetchNeoQuery, {
+        onSuccess: edgeTypesResponseFormatter
+    });
 
     const handleSubmit = () => {
-        var whereNodes = "";
-        var whereEdges = "";
-        if(selectedNodeType !== "All nodes"){
-            whereNodes += "where n.title = \"" + selectedNodeType + "\"";
-            whereEdges += "where (m.title = \"" + selectedNodeType + "\" or o.title = \"" + selectedNodeType + "\")";
-            if(selectedEdgeType !== "All edges"){
-                whereEdges += " and type(r) = \"" + selectedEdgeType + "\"";
-            }
-        }
-        else{
-            if(selectedEdgeType !== "All edges"){
-                whereEdges += "where type(r) = \"" + selectedEdgeType + "\"";
-            }
-        }
-        let nodeLimitString = "limit " + nodeLimit;
-        let query = `match (n:Object) ${whereNodes} with n as allnodes ${nodeLimitString} with collect([id(allnodes),allnodes]) as nodes  match (m:Object)-[r]->(o:Object) ${whereEdges} with nodes, collect([[id(m),id(o)],type(r)]) as edges return nodes, edges`;
-        applyFilters(query);
+        dispatch({type:"UPDATE_FILTERS", filters:filters});
+    }
+
+    const setSelectedNodeType = (value) => {
+        filters.nodeTypes = [value];
+        dispatch({type:"UPDATE_NODETYPES", nodeTypes:filters.nodeTypes});
+    }
+
+    const setSelectedEdgeType = (value) => {
+        filters.edgeTypes = [value];
+        dispatch({type:"UPDATE_EDGETYPES", edgeTypes:filters.edgeTypes});
+    }
+
+    const setSelectedNodeLimit = (event) => {
+        filters.nodeLimit = event.target.value;
+        dispatch({type:"UPDATE_NODELIMIT", nodeLimit:filters.nodeLimit});
     }
 
     return (
         <Card
             title="Filter Module"
-            // category="Focus on the information that matters"
-            stats={<Button bsStyle="info" pullRight fill type="submit" onClick={() => handleSubmit}>{"Filter"}</Button>}
+            //category="Focus on the information that matters"
+            //stats={<Button bsStyle="info" pullRight fill type="submit" onClick={() => handleSubmit()}>{"Filter"}</Button>}
             content={
                 <Table striped hover style={{marginBottom: "0px"}}>
                     <tbody>
@@ -76,9 +78,8 @@ const FilterModule = (props) => {
                             <td>
                                 <DropdownButton style={{width: "100%"}}
                                                 bsStyle={"primary"}
-                                                title={selectedNodeType}
+                                                title={filters.nodeTypes[0]}
                                                 id={`dropdown-basic`}>
-                                    <MenuItem eventKey={100} onClick={() => setSelectedNodeType("All nodes")}>{"All nodes"}</MenuItem>
                                     {nodeTypes.map((prop, key) => {
                                         return (
                                             <MenuItem key={key} eventKey={key} onClick={() => setSelectedNodeType(prop)}>{prop}</MenuItem>
@@ -92,12 +93,11 @@ const FilterModule = (props) => {
                             <td>
                                 <DropdownButton style={{width: "100%"}}
                                                 bsStyle={"primary"}
-                                                title={selectedEdgeType}
+                                                title={filters.edgeTypes[0]}
                                                 id={`dropdown-basic`}>
-                                    <MenuItem eventKey={100} onClick={() => setSelectedEdgeType("All edges")}>{"All edges"}</MenuItem>
                                     {edgeTypes.map((prop, key) => {
                                         return (
-                                            <MenuItem key={key}  eventKey={key} onClick={() => setSelectedEdgeType(prop)}>{prop}</MenuItem>
+                                            <MenuItem key={key} eventKey={key} onClick={() => setSelectedEdgeType(prop)}>{prop}</MenuItem>
                                         );
                                     })}
                                 </DropdownButton>
@@ -106,7 +106,7 @@ const FilterModule = (props) => {
                         <tr>
                             <td>{"Node limit"}</td>
                             <td>
-                                <FormControl type="number" defaultValue={nodeLimit} ></FormControl>
+                                <FormControl type="number" defaultValue={filters.nodeLimit} onChange={(event) => setSelectedNodeLimit(event)}></FormControl>
                             </td>
                         </tr>
                     </tbody>

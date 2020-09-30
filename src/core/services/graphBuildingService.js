@@ -1,10 +1,9 @@
 import axios from 'axios';
 
-export const fetchGraph = async (key, connectionConfig, visualConfig, inputQuery) => {
+export const fetchGraph = async (key, connectionConfig, visualConfig, inputQuery, filters) => {
     if(!connectionConfig.connected) return null;
     let nodesResponse = await tbdgQuery(inputQuery);
     const nodesProcessed = nodesCallback(nodesResponse);
-    console.log(nodesResponse);
     if(nodesProcessed == 1){
         return {info:{success:false, description:nodesResponse.data.message}};
     } else if (nodesProcessed == 2){
@@ -16,7 +15,7 @@ export const fetchGraph = async (key, connectionConfig, visualConfig, inputQuery
     const edgesProcessed = edgesCallback(edgesResponse);
 
 
-    let {graph, events} = buildNodes(nodesProcessed.baseNodes, edgesProcessed, attributesProcessed.attrs, visualConfig);
+    let {graph, events} = buildNodes(nodesProcessed.baseNodes, edgesProcessed, attributesProcessed.attrs, visualConfig, filters);
     return {info: {success: true, description: "SUCCESS"}, nodes: graph.nodes, edges: graph.edges};
 }
 
@@ -79,7 +78,6 @@ const nodesCallback = (response) => {
 }
 
 const attributesCallback = (response, nodeIds) => {
-    console.log(response);
     let response_table = response.data.results[0].data;
     
     const attrsHashmap = response_table.reduce((obj, item) => {
@@ -110,29 +108,35 @@ const edgesCallback = (response) => {
     return baseEdges;
 }
 
-const buildNodes = (baseNodes, baseEdges, attrs, visualConfig) => {
+const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters) => {
     let nodes = [];
     let edges = [];
-    
+    let nodeCount = 0;
     for(let e of baseNodes.entries()){
-        nodes.push({
-            id: e[0], 
-            title: attrs[e[0]] !== undefined ? attrs[e[0]].attributes[0][1] : e[1].title, 
-            group: e[1].title,
-            color: visualConfig.nodeColors[e[1].title]
-        });
+        if(nodeCount < filters.nodeLimit){
+            if(filters.nodeTypes[0] == "All nodes" || filters.nodeTypes.indexOf(e[1].title) > -1){
+                nodes.push({
+                    id: e[0], 
+                    title: attrs[e[0]] !== undefined ? attrs[e[0]].attributes[0][1] : e[1].title, 
+                    group: e[1].title,
+                    color: visualConfig.nodeColors[e[1].title]
+                });
+                nodeCount++;
+            }
+        }
     }
 
     if(baseEdges !== undefined){
         baseEdges.forEach(e => {
-            edges.push(
-                {
+            if(filters.edgeTypes[0] == "All edges" || filters.edgeTypes.indexOf(e[1]) > -1){
+                edges.push({
                     from: e[0][0], 
                     to: e[0][1],
                     title: e[1],
                     color: visualConfig.edgeColors[e[1]],
                     arrows: 'to'
-                })
+                });
+            }
         });
     }
 

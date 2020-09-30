@@ -6,6 +6,7 @@ import VisualConfigContextProvider from 'core/store/VisualConfigContext';
 import SelectedNodeContextProvider from 'core/store/SelectedNodeContext';
 import TemporalityContextProvider from 'core/store/TemporalityContext';
 import GraphContextProvider from 'core/store/GraphContext';
+import FiltersContextProvider from 'core/store/FiltersContext';
 
 export function connect(connection_values){
     //TODO: Hacer un fetch a la base para verificar que la información de conexión es correcta y recibir los valores de 
@@ -89,6 +90,7 @@ class App extends React.Component{
             <VisualConfigContextProvider> 
             <SelectedNodeContextProvider>
             <TemporalityContextProvider>
+            <FiltersContextProvider>
             <GraphContextProvider>
                 <BrowserRouter>
                     <Switch>
@@ -103,6 +105,7 @@ class App extends React.Component{
                     </Switch>
                 </BrowserRouter>
             </GraphContextProvider>
+            </FiltersContextProvider>
             </TemporalityContextProvider>
             </SelectedNodeContextProvider>
             </VisualConfigContextProvider>
