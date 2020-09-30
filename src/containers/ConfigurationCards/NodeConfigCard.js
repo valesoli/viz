@@ -55,9 +55,14 @@ const NodeConfigCard = (props) => {
             changingMainAttr.push({ key: key, value: value});
         }
         nodeInfo.mainAttr = changingMainAttr;
-    }
-
-    function changeValueDefault(key, value) {
+        let nodeMainAttrs={};
+        nodeInfo.nodes.forEach(element => {
+            nodeMainAttrs[element.type] = element.mainAttr;
+        });
+        dispatch({type: 'CHANGE_MAIN_ATTR', nodeMainAttrs: nodeMainAttrs}); 
+    } 
+    
+    function changeValueDefault(key, value) { 
         let found = false;
         let changingDefaultAttr = nodeInfo.defaultAttr;
         for(let i = 0; i < changingDefaultAttr.length; i++){
@@ -71,6 +76,11 @@ const NodeConfigCard = (props) => {
             changingDefaultAttr.push({ key: key, value: value});
         }
         nodeInfo.defaultAttr = changingDefaultAttr;
+        let nodeDefaultAttrs={};
+        nodeInfo.nodes.forEach(element => {
+            nodeDefaultAttrs[element.type] = element.defaultAttr;
+        });
+        dispatch({type: 'CHANGE_DEFAULT_ATTR', nodeDefaultAttrs: nodeDefaultAttrs});
     }
 
 
@@ -80,9 +90,6 @@ const NodeConfigCard = (props) => {
                 element.color = color.hex;
             }
         });
-    }
-
-    function confirmChanges(){
         let nodeColors={};
         nodeInfo.nodes.forEach(element => {
             nodeColors[element.type] = element.color;
@@ -151,13 +158,6 @@ const NodeConfigCard = (props) => {
                             })}
                         </tbody>
                     </Table>
-                }
-                legend={
-                    <div className="pull-right">
-                        <Button bsStyle="info" pullRight fill onClick={confirmChanges}>
-                            Confirm Changes
-                        </Button>
-                    </div>
                 }
             />
 

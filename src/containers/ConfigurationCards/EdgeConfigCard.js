@@ -45,6 +45,11 @@ const EdgeConfigCard = (props) => {
         element.color = color.hex;
       }
     });
+    let edgesColors = {};
+    edges.forEach((element) => {
+      edgesColors[element.type] = element.color;
+    });
+    dispatch({ type: "CHANGE_EDGES", edgeColors: edgesColors });
   }
 
   function confirmChanges() {
@@ -92,13 +97,6 @@ const EdgeConfigCard = (props) => {
                 })}
               </tbody>
             </Table>
-          }
-          legend={
-            <div className="pull-right">
-              <Button bsStyle="info" pullRight fill onClick={confirmChanges}>
-                Confirm Changes
-              </Button>
-            </div>
           }
         />
       }
