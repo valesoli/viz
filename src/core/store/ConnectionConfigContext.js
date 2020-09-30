@@ -7,9 +7,10 @@ const ConnectionConfigContextProvider = (props) => {
     const [ connectionConfig, dispatch ] = useReducer( ConnectionConfigReducer,
         {
             connected: false, 
-            url: 'http://:7474/db/data/transaction/commit',
-            user: '',
-            pass: ''
+            url: 'http://localhost:7474/db/data/transaction/commit',
+            user: 'neo4j',
+            pass: 'admin',
+            info: ''
         }
     )
     return (  

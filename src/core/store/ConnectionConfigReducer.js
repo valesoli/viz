@@ -8,7 +8,8 @@ export const ConnectionConfigReducer = (state, action) => {
                     connected: true,
                     url: action.config.url,
                     user: action.config.user,
-                    pass: action.config.pass
+                    pass: action.config.pass,
+                    info: action.config.info
                 }               
             );
             break;
@@ -18,7 +19,8 @@ export const ConnectionConfigReducer = (state, action) => {
                     connected: false,
                     url: state.url,
                     user: state.user,
-                    pass: state.pass
+                    pass: state.pass,
+                    info: action.config.info
                 }
             );
             break;

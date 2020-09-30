@@ -9,13 +9,13 @@ import { TemporalityContext } from "core/store/TemporalityContext";
 
 //ToDo: Cubrir la contraseña del form
 const DbConfigCard = (props) => {
-  const { dispatch } = useContext(ConnectionConfigContext);
+  const { connectionConfig, dispatch } = useContext(ConnectionConfigContext);
   const { setMinDate, setMaxDate } = useContext(TemporalityContext);
   const [connectionUrl, setConnectionUrl] = useState(
-    "http://localhost:7474/db/data/transaction/commit"
+    connectionConfig.url
   );
-  const [username, setUsername] = useState("neo4j");
-  const [password, setPassword] = useState("admin");
+  const [username, setUsername] = useState(connectionConfig.user);
+  const [password, setPassword] = useState(connectionConfig.pass);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,13 +33,17 @@ const DbConfigCard = (props) => {
             url: connectionUrl,
             user: username,
             pass: password,
+            info: { success: 1, val:"SUCCESS"}
           },
         });
       })
       .catch((err) => {
-        console.log(`This is the error: ${err}`);
+        console.log(err);
         dispatch({
           type: "CONNECTION_FAILED",
+          config:{
+            info: {success: 2, val: err.toString()}
+          }
         });
       });
   };
@@ -78,9 +82,14 @@ const DbConfigCard = (props) => {
               },
             ]}
           />
-          <Button bsStyle="info" pullRight fill type="submit">
-            Test Connection
-          </Button>
+          <div className="pull-right">
+            {connectionConfig.info.success == 2?<div className="callout pull-left" style={{marginTop: 0, marginBottom: 0, marginRight: '5px', paddingTop: '9px', paddingBottom: '9px'}}>{connectionConfig.info.val}</div>:''}
+            <div className="pull-right" >
+              <Button bsStyle="info" fill type="submit">
+                Test Connection {connectionConfig.info.success == 1?<i className="fa fa-check-circle"/>:connectionConfig.info.success == 2?<i className="fa fa-times-circle"/>:''}
+              </Button>
+            </div>
+          </div>
           <div className="clearfix" />
         </form>
       }
