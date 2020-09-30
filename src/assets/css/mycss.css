@@ -4,15 +4,20 @@
 .my-content{
     min-height: 100px !important;
 }
+.card{
+    margin-bottom: 5px !important;
+}
 .card-user .author{
     margin-top: -100px !important;
 }
 .main-panel{
     width: calc(100% - 235px) !important;
+    height: 100% !important;
 }
 .main-panel > .content{
     padding-top:10px !important;
-    min-height: calc(100vh - 111px) !important; 
+    min-height: calc(100vh - 111px) !important;
+    height: 100% !important; 
 }
 .sidebar{
     width: 235px !important;
@@ -33,4 +38,7 @@
   border-left-width: 5px;
   border-radius: 3px;
   border-left-color: #5bc0de;
+}
+.container-fluid{
+    height: 100% !important;
 }

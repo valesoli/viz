@@ -37,9 +37,9 @@ const QueryBox = (props) => {
   
 
   return (
-    <div>
+    <div className="container-fluid">
       <form id="query-form" method="post" onSubmit={handleSubmit}>
-        <div className="form-group">
+        <div className="form-group" style={{float:"left"}}>
             {/* <label form="query">Query: </label> */}
             {/* <textarea class="form-control" id="query" name="query"></textarea> */}                        
           <CodeMirror
@@ -55,7 +55,9 @@ const QueryBox = (props) => {
             }}
           />
         </div>
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <div style={{float:"right"}}>
+          <button type="submit" className="btn btn-primary" >Submit</button>
+        </div>
       </form>
 
       <div id="message">{message}</div>

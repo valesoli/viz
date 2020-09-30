@@ -56,13 +56,12 @@ const EdgeConfigCard = (props) => {
   }
 
   return (
-    <div>
-      {edges == null && (
+    <>
+      {edges == null ?  
         <div style={{ textAlign: "center" }}>
           <Loader type="ThreeDots" color="#00BFFF" height={80} width={80} />
         </div>
-      )}
-      {edges != null && (
+      :
         <Card
           title="Edges Configuration"
           ctTableResponsive
@@ -102,8 +101,8 @@ const EdgeConfigCard = (props) => {
             </div>
           }
         />
-      )}
-    </div>
+      }
+    </>
   );
 };
 

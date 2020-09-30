@@ -23,8 +23,8 @@ const Configuration = (props) => {
   function getGranularityCard(){
     if(connectionConfig.connected){
       return (
-        <Row>
-          <Col md={12} style={{marginBottom:'-20px'}}>
+        <Row style={{marginBottom:'15px'}}>
+          <Col md={12}>
             <GranularityConfigCard/>
           </Col>
         </Row>
@@ -38,11 +38,11 @@ const Configuration = (props) => {
   function getVisualConfig(){
     if(connectionConfig.connected){
       return (
-        <Row>
-            <Col md={9}>
+        <Row style={{marginBottom:'15px'}}>
+            <Col md={9} style={{paddingRight: '5px'}}>
               <NodeConfigCard visual={visualConfig}/>
             </Col>
-            <Col md={3}>
+            <Col md={3} style={{paddingLeft: '5px'}}>
               <EdgeConfigCard visual={visualConfig}/>
             </Col>
         </Row>
@@ -55,8 +55,8 @@ const Configuration = (props) => {
   return (
     <div className="content">
       <Grid fluid>
-        <Row>
-          <Col md={12} style={{marginBottom:'-20px'}}>
+        <Row style={{marginBottom:'15px'}}>
+          <Col md={12}> 
             <DbConfigCard/> 
           </Col>
         </Row>

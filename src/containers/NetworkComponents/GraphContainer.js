@@ -35,7 +35,7 @@ const GraphContainer = (props) => {
         selectNode: (params) => setSelectedNodeId(params.nodes[0])
     }
     return (
-        <>
+        <div style={{height: '500px'}}>
             {graph.info.success ? 
                 <Graph
                     key={events}
@@ -54,7 +54,7 @@ const GraphContainer = (props) => {
                     </p>
                 </div>
             }
-        </>
+        </div>
     );
 }
  

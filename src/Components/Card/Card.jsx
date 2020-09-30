@@ -24,14 +24,23 @@ export class Card extends Component {
       );
     }
   }
-
-  render() {
-    return (
-      <div className={"card" + (this.props.plain ? " card-plain" : "")} style={this.props.style}>
+  getHeader(){
+    if(this.props.title == null && this.props.category == null){
+      return '';
+    } else {
+      return( 
         <div className={"header" + (this.props.hCenter ? " text-center" : "")}>
           <h4 className="title">{this.props.title}</h4>
           <p className="category">{this.props.category}</p>
         </div>
+      );
+    }
+  }
+
+  render() {
+    return (
+      <div className={"card" + (this.props.plain ? " card-plain" : "")} style={this.props.style}>
+        {this.getHeader()}
         <div
           className={
             "content" +

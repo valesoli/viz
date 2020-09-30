@@ -63,13 +63,9 @@ const Dashboard = (props) => {
       NetworkCardNodelegend = createLegend(visualConfig, "node");
       NetworkCardEdgelegend = createLegend(visualConfig, "edge");
       NetworkCardBar = <TempSliderContainer/>;
-      ExtraModules = <Col md={3}>
-                        <Row>
-                          <NodeVisualizer/>              
-                        </Row>
-                        <Row>
-                          <FilterModule/>
-                        </Row>
+      ExtraModules = <Col md={3} style={{height:'100%',  paddingLeft:'5px'}}>
+                        <NodeVisualizer/>              
+                        <FilterModule/>
                     </Col>
       QueryModule = <QueryBox/>
       // NetworkCardlegend = '';
@@ -82,13 +78,18 @@ const Dashboard = (props) => {
   return (
     <div className="content">
       <Grid fluid>
-        <Row>
-          <Col md={connectionConfig.connected?9:12}>
-            <Card 
-              id="querybox"
-              title="Query"
-              content = {QueryModule}
-            />
+        <Row style={{height: '100%'}}>
+          <Col md={connectionConfig.connected?9:12} style={{height:'100%', paddingRight: '5px'}}>
+            {
+              connectionConfig.connected
+              ?
+              <Card 
+                id="querybox"
+                content = {QueryModule}
+              />
+              :
+              ''
+            }
             <Card
               id="chartHours"
               title="Graph"
