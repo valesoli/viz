@@ -44,7 +44,7 @@ const tbdgQuery = async (query) =>{
             "Content-type": "application/json",
             "Data-type": "json"
         },
-        data: "query="+ encodeURI(query)
+        data: "query="+ encodeURIComponent(query)
     }
 
     let response = await axios(config);
