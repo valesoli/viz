@@ -5,6 +5,7 @@ import { GraphReducer } from './GraphReducer';
 import { fetchGraph } from "core/services/graphBuildingService";
 import { VisualConfigContext } from './VisualConfigContext';
 import { FiltersContext } from './FiltersContext';
+import { TemporalityContext } from './TemporalityContext';
 
 export const GraphContext = createContext();
 
@@ -13,6 +14,7 @@ const GraphContextProvider = (props) => {
     const { connectionConfig } = useContext(ConnectionConfigContext);
     const { visualConfig } = useContext(VisualConfigContext);
     const { filters } = useContext(FiltersContext);
+    const { interval } = useContext(TemporalityContext);
     const [ graph, dispatch ] = useReducer(GraphReducer,
         {
             nodes: [
@@ -42,8 +44,8 @@ const GraphContextProvider = (props) => {
         }
     }
 
-    const { data, status } = useQuery(["graph", connectionConfig, visualConfig, query, filters], fetchGraph, {
-        onSuccess: updateGraph,
+    const { data, status } = useQuery(["graph", connectionConfig, visualConfig, query, filters, interval], fetchGraph, {
+        onSuccess: updateGraph
     });
     
     return (  

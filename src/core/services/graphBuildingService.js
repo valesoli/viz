@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const fetchGraph = async (key, connectionConfig, visualConfig, inputQuery, filters) => {
+export const fetchGraph = async (key, connectionConfig, visualConfig, inputQuery, filters, interval) => {
     if(!connectionConfig.connected) return null;
     let nodesResponse = await tbdgQuery(inputQuery);
     const nodesProcessed = nodesCallback(nodesResponse);
@@ -15,7 +15,7 @@ export const fetchGraph = async (key, connectionConfig, visualConfig, inputQuery
     const edgesProcessed = edgesCallback(edgesResponse);
 
 
-    let {graph, events} = buildNodes(nodesProcessed.baseNodes, edgesProcessed, attributesProcessed.attrs, visualConfig, filters);
+    let {graph, events} = buildNodes(nodesProcessed.baseNodes, edgesProcessed, attributesProcessed.attrs, visualConfig, filters, interval);
     return {info: {success: true, description: "SUCCESS"}, nodes: graph.nodes, edges: graph.edges};
 }
 
@@ -108,20 +108,30 @@ const edgesCallback = (response) => {
     return baseEdges;
 }
 
-const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters) => {
+const isInInterval = (stringInterval, numInterval) => {
+    let vals = stringInterval.split("—");
+    if(parseInt(vals[0]) >= numInterval[0] && (vals[1] === "Now" || parseInt(vals[1]) <= numInterval[1]))
+        return true;
+    return false;
+}
+
+
+const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval) => {
     let nodes = [];
     let edges = [];
     let nodeCount = 0;
     for(let e of baseNodes.entries()){
         if(nodeCount < filters.nodeLimit){
             if(filters.nodeTypes[0] == "All nodes" || filters.nodeTypes.indexOf(e[1].title) > -1){
-                nodes.push({
-                    id: e[0], 
-                    title: attrs[e[0]] !== undefined ? attrs[e[0]].attributes[0][1] : e[1].title, 
-                    group: e[1].title,
-                    color: visualConfig.nodeColors[e[1].title]
-                });
-                nodeCount++;
+                if(isInInterval(e[1].interval[0], interval)){
+                    nodes.push({
+                        id: e[0], 
+                        title: attrs[e[0]] !== undefined ? attrs[e[0]].attributes[0][1] : e[1].title, 
+                        group: e[1].title,
+                        color: visualConfig.nodeColors[e[1].title]
+                    });
+                    nodeCount++;
+                }
             }
         }
     }

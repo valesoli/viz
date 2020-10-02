@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import {Badge} from 'react-bootstrap';
 import Slider from '@material-ui/core/Slider';
-import {applyFilterAndSave} from 'App.js';
 
 import { TemporalityContext } from 'core/store/TemporalityContext';
 
@@ -26,9 +25,9 @@ export function sliderCallback(years){
 
 const TempSliderContainer = () => {
     // Inicializo el intervalo con lo que traiga del contexto creo
-    const { minDate, maxDate, granularity } = useContext(TemporalityContext);
+    const { minDate, maxDate, interval, setInterval, granularity } = useContext(TemporalityContext);
     const [ marks, setMarks ] = useState(buildMarks(minDate, maxDate, granularity));
-    const [ interval, setInterval ] = useState([minDate,maxDate]);
+    const [ localInterval, setLocalInterval ] = useState([interval[0],interval[1]]);
 
     function buildMarks(min, max, granularity){
         let marks = []
@@ -46,13 +45,17 @@ const TempSliderContainer = () => {
         return marks;
     }
 
+    function handleSubmit(event, newValue){
+        setInterval(newValue);
+    }
+
     function handleChange(event, newValue){
         //refreshGraph(newValue[0], newValue[1]);
         // let query = `match (n:Object) where toInteger(split(n.interval[0], '—')[0]) > ${newValue[0]} AND toInteger(split(n.interval[0], '—')[0]) < ${newValue[1]}
         //             with collect([id(n),n]) as nodes 
         //             match (m:Object)-[r]->(o:Object) with nodes, collect([[id(m),id(o)],type(r)]) as edges return nodes, edges`;
         
-        setInterval(newValue);
+        setLocalInterval(newValue);
         // applyFilterAndSave(query,newValue[0],newValue[1]);
     };
 
@@ -67,7 +70,8 @@ const TempSliderContainer = () => {
                     max={maxDate}
                     valueLabelDisplay="auto"
                     onChange={handleChange}
-                    value={interval}
+                    onChangeCommitted={handleSubmit}
+                    value={localInterval}
                 />
             </div>
             <div style={{width:"20%"}}>

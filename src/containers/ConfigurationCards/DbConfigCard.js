@@ -10,7 +10,7 @@ import { TemporalityContext } from "core/store/TemporalityContext";
 //ToDo: Cubrir la contraseña del form
 const DbConfigCard = (props) => {
   const { connectionConfig, dispatch } = useContext(ConnectionConfigContext);
-  const { setMinDate, setMaxDate } = useContext(TemporalityContext);
+  const { setMinDate, setMaxDate, setInterval } = useContext(TemporalityContext);
   const [connectionUrl, setConnectionUrl] = useState(
     connectionConfig.url
   );
@@ -26,6 +26,7 @@ const DbConfigCard = (props) => {
         let max = years[years.length - 1];
         setMinDate(min);
         setMaxDate(max);
+        setInterval([min,max])
         dispatch({
           type: "CHANGE_CONFIG",
           config: {

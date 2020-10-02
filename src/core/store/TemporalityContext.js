@@ -5,11 +5,11 @@ export const TemporalityContext = createContext();
 const TemporalityContextProvider = (props) => {
     const [ minDate, setMinDate ] = useState(1900);
     const [ maxDate, setMaxDate ] = useState(2000);
+    const [ interval, setInterval ] = useState([minDate,maxDate]);
     const  [ granularity, setGranularity ] = useState(1);
-    const [ shouldHaveTextInput, setShouldHaveTextInput ] = useState(false);
 
     return (  
-        <TemporalityContext.Provider value={{ minDate, maxDate, setMinDate, setMaxDate, granularity, shouldHaveTextInput }}>
+        <TemporalityContext.Provider value={{ minDate, maxDate, setMinDate, setMaxDate, interval, setInterval, granularity }}>
             {props.children}
         </TemporalityContext.Provider>
     );
