@@ -48,7 +48,7 @@ export const helper_initializeTable = (data) => {
     // table.show();
     // dataTable.columns.adjust().draw();
     let table = <Table columns={columns} data={data}/>;
-    console.log(columns);
-    console.log(data);
+    // console.log(columns);
+    // console.log(data);
     return table;
 }

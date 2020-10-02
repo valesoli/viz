@@ -6,6 +6,7 @@ import { tryConnection } from "core/services/configQueryServices";
 
 import { ConnectionConfigContext } from "core/store/ConnectionConfigContext";
 import { TemporalityContext } from "core/store/TemporalityContext";
+import { api_getYears } from "core/services/graphQueryService";
 
 //ToDo: Cubrir la contraseña del form
 const DbConfigCard = (props) => {
@@ -23,7 +24,10 @@ const DbConfigCard = (props) => {
       .then((response) => {
         let years = response.data.results[0].data[0].row[0];
         let min = years[0];
-        let max = years[years.length - 1];
+        // let today = new Date();
+        // max = today.getFullyear() 
+        // Entiendo que el máximo debería ser el día/año de la fecha 
+        let max = 2020; 
         setMinDate(min);
         setMaxDate(max);
         setInterval([min,max])
