@@ -7,7 +7,7 @@ import { helper_elapsedTimeMessage, helper_initializeTable } from 'containers/Qu
 
 const QueryBox = (props) => {
   const { query, setQuery } = useContext(GraphContext);
-  const [ localQuery, setLocalQuery ] = useState(query);
+  const [ localQuery, setLocalQuery ] = useState();
   const [ message, setMessage ] = useState('');
   const [ result, setResult ] = useState(null);
 
@@ -31,8 +31,32 @@ const QueryBox = (props) => {
 
   const handleSubmit = (event) => {
       event.preventDefault();
-      setQuery(localQuery);
-      // api_tbdgQuery(this.state.chicos_query, this.handleResponse)
+      let parsedQuery = stripAttributes(localQuery);
+      setQuery(parsedQuery);      
+  }
+
+  const stripAttributes = (query) => {
+    let loweredCase = query.toLowerCase();
+    let selectStart = loweredCase.indexOf("select");
+    let matchStart = loweredCase.indexOf("match");
+    let selectClause = loweredCase.slice(selectStart, matchStart);
+    let fields = selectClause.split(",");
+    let newFields = [];
+    for(let i = 0; i< fields.length; i++){
+      let attrStart = fields[i].indexOf(".");
+      let newField = fields[i];
+      if(attrStart >= 0)
+        newField = fields[i].slice(0, attrStart)
+      newFields.push(newField);
+    }
+    let newSelectClause = "";
+    for(let j = 0; j < newFields.length; j++){
+      newSelectClause += newFields[j] + ",";
+    }
+    newSelectClause = newSelectClause.slice(0, newSelectClause.length - 1);
+    let theRest = query.slice(matchStart);
+    let newQuery = newSelectClause + " " + theRest;
+    return newQuery;
   }
   
 
