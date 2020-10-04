@@ -11,9 +11,14 @@ export const fetchGraph = async (key, connectionConfig, visualConfig, inputQuery
     }
     let attributesResponse = await neoQuery(connectionConfig, nodesProcessed.query);
     const attributesProcessed = attributesCallback(attributesResponse, nodesProcessed.nodeIds);
-    let edgesResponse = await neoQuery(connectionConfig, attributesProcessed.query);
-    const edgesProcessed = edgesCallback(edgesResponse);
-
+    let edgesProcessed;
+    if(nodesProcessed.path){
+        edgesProcessed = nodesProcessed.baseEdges;
+    }
+    else {
+        let edgesResponse = await neoQuery(connectionConfig, attributesProcessed.query);
+        edgesProcessed = edgesCallback(edgesResponse);
+    }
 
     let {graph, events} = buildNodes(nodesProcessed.baseNodes, edgesProcessed, attributesProcessed.attrs, visualConfig, filters, interval);
     return {info: {success: true, description: "SUCCESS"}, nodes: graph.nodes, edges: graph.edges};
@@ -53,26 +58,78 @@ const tbdgQuery = async (query) =>{
 
 const nodesCallback = (response) => {
     let data = new Map();
-    let x;
+    let baseEdges = [];
+    let e, o, p;
+    let objects = [];
+    let isPath = false;
     if(!response.data.success) return 1;
     if(response.data.data.length == 0) return 2;
-    response.data.data.forEach(elem => {
-        for(x in elem){
-            var key = elem[x].id;
-            if(key !== undefined && !data.has(key))
-                data.set(key, elem[x]);
+    objects = Object.keys(response.data.data[0]);
+    if(response.data.data[0][objects[0]] == undefined || response.data.data[0][objects[0]].path == undefined){
+        response.data.data.forEach(elem => {
+            for(e in elem){
+                var key = elem[e].id;
+                if(key !== undefined && !data.has(key))
+                    data.set(key, elem[e]);
+            }
+        });
+    }
+    else{
+        isPath = true;
+        for(let elem in response.data.data){
+            for(let o in objects){
+                let path = response.data.data[elem][objects[o]].path;
+                let lastNode = null;
+                for(let p in path){
+                    var key = path[p].id;
+                    if(key !== undefined){
+                        if(!data.has(key))
+                            data.set(key, path[p]);                                          
+                        if(lastNode != null){
+                            baseEdges.push([[lastNode, key],"Friend"]);
+                            lastNode = key;
+                        }
+                        else
+                            lastNode = key;
+                    }
+                }
+            }
         }
-    });
+        // response.data.data.forEach(elem => {
+        //     for(o in objects){
+        //             var path = response.data.data[elem][o].path;
+        //             console.log("path: " + path);
+        //             let lastNode = null;
+        //             for(p in path){
+        //                 var key = path[p].id;
+        //                 console.log("key: " + key);
+        //                 if(key !== undefined){
+        //                     if(!data.has(key))
+        //                         data.set(key, path[p]);                                          
+        //                     console.log("lastnode: " + lastNode);
+        //                     if(lastNode != null){
+        //                         baseEdges.push([[lastNode, key],"Friend"]);
+        //                         lastNode = key;
+        //                     }
+        //                     else
+        //                         lastNode = key;
+        //                 }
+        //             }
+        //     }
+        // });
+    }
     
     let nodeIds = [];
     for(let id of data.keys()){
         nodeIds.push(id);
     }
 
-    let query = "match (o:Object)-->(a:Attribute)-->(v:Value) where o.id in [" + nodeIds  + "] return o.id, o.title, a.title, v.value, v.interval order by o.id";
+    let query = "match (o:Object)-->(a:Attribute)-->(v:Value) where o.id in [" + nodeIds + "] return o.id, o.title, a.title, v.value, v.interval order by o.id";
     return {
         query: query,
+        path: isPath,
         baseNodes: data,
+        baseEdges: baseEdges,
         nodeIds: nodeIds
     }
 }
