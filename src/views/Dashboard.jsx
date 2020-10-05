@@ -13,8 +13,8 @@ import TempSliderContainer from "containers/TempSliderContainer/TempSliderContai
 import FilterModule from "containers/NetworkComponents/FilterModule";
 import NodeVisualizer from "containers/NetworkComponents/NodeVisualizer";
 import QueryBox from "containers/QueryBox/QueryBox";
-import { VisualConfigContext } from "core/store/VisualConfigContext";
-import { ConnectionConfigContext } from "core/store/ConnectionConfigContext";
+import { VisualConfigContext } from "core/store/VisualConfigContext/VisualConfigContext";
+import { ConnectionConfigContext } from "core/store/ConnectionConfigContext/ConnectionConfigContext";
 
 const Dashboard = (props) => {
   const { connectionConfig } = useContext(ConnectionConfigContext);

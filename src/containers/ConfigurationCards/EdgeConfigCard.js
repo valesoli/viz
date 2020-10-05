@@ -1,11 +1,10 @@
 import React, { useState, useContext } from "react";
 import { useQuery } from "react-query";
-import { ConnectionConfigContext } from "core/store/ConnectionConfigContext";
-import { VisualConfigContext } from "core/store/VisualConfigContext";
+import { ConnectionConfigContext } from "core/store/ConnectionConfigContext/ConnectionConfigContext";
+import { VisualConfigContext } from "core/store/VisualConfigContext/VisualConfigContext";
 import { fetchNeoQuery } from "core/services/configQueryServices";
 import { Table } from "react-bootstrap";
 import { Card } from "components/Card/Card.jsx";
-import Button from "components/CustomButton/CustomButton.jsx";
 import MyColorPicker from "containers/CustomColorPicker/MyColorPicker";
 import Loader from "react-loader-spinner";
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import TempGraphPlatform from "views/TempGraphPlatform.jsx";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import ConnectionConfigContextProvider from 'core/store/ConnectionConfigContext';
-import VisualConfigContextProvider from 'core/store/VisualConfigContext';
+import ConnectionConfigContextProvider from 'core/store/ConnectionConfigContext/ConnectionConfigContext';
+import VisualConfigContextProvider from 'core/store/VisualConfigContext/VisualConfigContext';
 import SelectedNodeContextProvider from 'core/store/SelectedNodeContext';
-import GraphContextProvider from 'core/store/GraphContext';
-import FiltersContextProvider from 'core/store/FiltersContext';
+import GraphContextProvider from 'core/store/GraphContext/GraphContext';
+import FiltersContextProvider from 'core/store/FiltersContext/FiltersContext';
 
 export function connect(connection_values){
     //TODO: Hacer un fetch a la base para verificar que la información de conexión es correcta y recibir los valores de 

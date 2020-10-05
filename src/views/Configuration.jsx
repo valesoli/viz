@@ -13,8 +13,8 @@ import DbConfigCard from 'containers/ConfigurationCards/DbConfigCard';
 import NodeConfigCard from "containers/ConfigurationCards/NodeConfigCard";
 import EdgeConfigCard from "containers/ConfigurationCards/EdgeConfigCard";
 import GranularityConfigCard from "containers/ConfigurationCards/GranularityConfigCard";
-import { ConnectionConfigContext } from "core/store/ConnectionConfigContext";
-import { VisualConfigContext } from "core/store/VisualConfigContext";
+import { ConnectionConfigContext } from "core/store/ConnectionConfigContext/ConnectionConfigContext";
+import { VisualConfigContext } from "core/store/VisualConfigContext/VisualConfigContext";
 
 const Configuration = (props) => {
   const { connectionConfig } = useContext(ConnectionConfigContext);

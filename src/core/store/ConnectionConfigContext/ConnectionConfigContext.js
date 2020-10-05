@@ -1,5 +1,5 @@
 import React, { createContext, useReducer } from 'react';
-import { ConnectionConfigReducer } from 'core/store/ConnectionConfigReducer';
+import { ConnectionConfigReducer } from 'core/store/ConnectionConfigContext/ConnectionConfigReducer';
 
 export const ConnectionConfigContext = createContext();
 

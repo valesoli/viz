@@ -1,10 +1,7 @@
 import React, { useContext } from "react";
 import Graph from "react-graph-vis";
-import { GraphContext } from "core/store/GraphContext";
-import { ConnectionConfigContext } from "core/store/ConnectionConfigContext";
-import { VisualConfigContext } from "core/store/VisualConfigContext";
+import { GraphContext } from "core/store/GraphContext/GraphContext";
 import { SelectedNodeContext } from "core/store/SelectedNodeContext";
-import { Jumbotron } from "react-bootstrap";
 
 const GraphContainer = (props) => {
     const { setSelectedNodeId } = useContext(SelectedNodeContext);

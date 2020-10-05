@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import {Badge} from 'react-bootstrap';
 import Slider from '@material-ui/core/Slider';
 
-import { GraphContext } from 'core/store/GraphContext';
+import { GraphContext } from 'core/store/GraphContext/GraphContext';
 
 
 export function sliderCallback(years){

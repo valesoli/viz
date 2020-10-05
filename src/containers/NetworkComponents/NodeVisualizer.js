@@ -6,8 +6,8 @@ import {Jumbotron} from 'react-bootstrap';
 import { SelectedNodeContext } from 'core/store/SelectedNodeContext';
 import { useQuery } from 'react-query';
 import { fetchNeoQuery } from 'core/services/configQueryServices';
-import { VisualConfigContext } from 'core/store/VisualConfigContext';
-import { ConnectionConfigContext } from 'core/store/ConnectionConfigContext';
+import { VisualConfigContext } from 'core/store/VisualConfigContext/VisualConfigContext';
+import { ConnectionConfigContext } from 'core/store/ConnectionConfigContext/ConnectionConfigContext';
 
 class AttributesDisplayer extends React.Component{
     render(){

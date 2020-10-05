@@ -4,8 +4,8 @@ import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import { tryConnection } from "core/services/configQueryServices";
 
-import { ConnectionConfigContext } from "core/store/ConnectionConfigContext";
-import { GraphContext } from "core/store/GraphContext";
+import { ConnectionConfigContext } from "core/store/ConnectionConfigContext/ConnectionConfigContext";
+import { GraphContext } from "core/store/GraphContext/GraphContext";
 
 //ToDo: Cubrir la contraseña del form
 const DbConfigCard = (props) => {

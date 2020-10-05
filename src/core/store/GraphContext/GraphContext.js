@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useReducer, useState } from 'react';
 import { useQuery } from 'react-query';
-import { ConnectionConfigContext } from './ConnectionConfigContext';
-import { GraphReducer } from './GraphReducer';
+import { ConnectionConfigContext } from 'core/store/ConnectionConfigContext/ConnectionConfigContext';
+import { GraphReducer } from 'core/store/GraphContext/GraphReducer';
 import { fetchGraph } from "core/services/graphBuildingService";
-import { VisualConfigContext } from './VisualConfigContext';
-import { FiltersContext } from './FiltersContext';
+import { VisualConfigContext } from 'core/store/VisualConfigContext/VisualConfigContext';
+import { FiltersContext } from 'core/store/FiltersContext/FiltersContext';
 
 export const GraphContext = createContext();
 

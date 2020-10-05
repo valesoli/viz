@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import {UnControlled as CodeMirror} from 'react-codemirror2';
-import { GraphContext } from 'core/store/GraphContext';
+import { GraphContext } from 'core/store/GraphContext/GraphContext';
 import { helper_elapsedTimeMessage, helper_initializeTable } from 'containers/QueryBox/QueryBoxHelper';
 
 const QueryBox = (props) => {
