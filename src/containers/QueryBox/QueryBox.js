@@ -67,7 +67,6 @@ const QueryBox = (props) => {
             {/* <label form="query">Query: </label> */}
             {/* <textarea class="form-control" id="query" name="query"></textarea> */}                        
           <CodeMirror
-            value={query}
             options={{
               mode: 'application/x-cypher-query',
               theme: 'default',
