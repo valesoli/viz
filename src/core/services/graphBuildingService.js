@@ -165,10 +165,12 @@ const edgesCallback = (response) => {
     return baseEdges;
 }
 
-const isInInterval = (stringInterval, numInterval) => {
+export const isInInterval = (stringInterval, numInterval) => {
     let vals = stringInterval.split("—");
-    if(parseInt(vals[0]) >= numInterval[0] && (vals[1] === "Now" || parseInt(vals[1]) <= numInterval[1]))
+    vals[0] = parseInt(vals[0])
+    if((numInterval[0] <= vals[0] && vals[0] <= numInterval[1]) || (vals[0] <= numInterval[0] && (vals[1] == "Now" || parseInt(vals[1]) >= numInterval[0]))){
         return true;
+    }
     return false;
 }
 
