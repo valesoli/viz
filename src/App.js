@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import ConnectionConfigContextProvider from 'core/store/ConnectionConfigContext';
 import VisualConfigContextProvider from 'core/store/VisualConfigContext';
 import SelectedNodeContextProvider from 'core/store/SelectedNodeContext';
-import TemporalityContextProvider from 'core/store/TemporalityContext';
 import GraphContextProvider from 'core/store/GraphContext';
 import FiltersContextProvider from 'core/store/FiltersContext';
 
@@ -89,7 +88,6 @@ class App extends React.Component{
             <ConnectionConfigContextProvider> 
             <VisualConfigContextProvider> 
             <SelectedNodeContextProvider>
-            <TemporalityContextProvider>
             <FiltersContextProvider>
             <GraphContextProvider>
                 <BrowserRouter>
@@ -106,7 +104,6 @@ class App extends React.Component{
                 </BrowserRouter>
             </GraphContextProvider>
             </FiltersContextProvider>
-            </TemporalityContextProvider>
             </SelectedNodeContextProvider>
             </VisualConfigContextProvider>
             </ConnectionConfigContextProvider>

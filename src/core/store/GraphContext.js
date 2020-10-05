@@ -5,7 +5,6 @@ import { GraphReducer } from './GraphReducer';
 import { fetchGraph } from "core/services/graphBuildingService";
 import { VisualConfigContext } from './VisualConfigContext';
 import { FiltersContext } from './FiltersContext';
-import { TemporalityContext } from './TemporalityContext';
 
 export const GraphContext = createContext();
 
@@ -14,7 +13,11 @@ const GraphContextProvider = (props) => {
     const { connectionConfig } = useContext(ConnectionConfigContext);
     const { visualConfig } = useContext(VisualConfigContext);
     const { filters } = useContext(FiltersContext);
-    const { interval } = useContext(TemporalityContext);
+
+    const [ dateExtremes, setDateExtremes ] = useState([1900,2000])
+    const [ interval, setInterval ] = useState([dateExtremes[0],dateExtremes[1]]);
+    const  [ granularity, setGranularity ] = useState(1);
+
     const [ graph, dispatch ] = useReducer(GraphReducer,
         {
             nodes: [
@@ -35,6 +38,7 @@ const GraphContextProvider = (props) => {
                 description: '' 
             } 
         });
+
     const updateGraph = (data) => {
         if(data == null) return;
         if(data.info.success){
@@ -47,9 +51,15 @@ const GraphContextProvider = (props) => {
     const { data, status } = useQuery(["graph", connectionConfig, visualConfig, query, filters, interval], fetchGraph, {
         onSuccess: updateGraph
     });
+
+    const setOneDateExtreme = (which, val) => {
+        let newDateExtremes = dateExtremes;
+        newDateExtremes[which] = val;
+        setDateExtremes(newDateExtremes);
+    }
     
     return (  
-        <GraphContext.Provider value={{ graph, dispatch, query, setQuery}}>
+        <GraphContext.Provider value={{ graph, dispatch, query, setQuery, dateExtremes, setOneDateExtreme, interval, setInterval, granularity}}>
             {props.children}
         </GraphContext.Provider>
     );

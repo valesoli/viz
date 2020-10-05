@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import {Badge} from 'react-bootstrap';
 import Slider from '@material-ui/core/Slider';
 
-import { TemporalityContext } from 'core/store/TemporalityContext';
+import { GraphContext } from 'core/store/GraphContext';
 
 
 export function sliderCallback(years){
@@ -25,8 +25,8 @@ export function sliderCallback(years){
 
 const TempSliderContainer = () => {
     // Inicializo el intervalo con lo que traiga del contexto creo
-    const { minDate, maxDate, interval, setInterval, granularity } = useContext(TemporalityContext);
-    const [ marks, setMarks ] = useState(buildMarks(minDate, maxDate, granularity));
+    const { dateExtremes, interval, setInterval, granularity } = useContext(GraphContext);
+    const [ marks, setMarks ] = useState(buildMarks(dateExtremes[0], dateExtremes[1], granularity));
     const [ localInterval, setLocalInterval ] = useState([interval[0],interval[1]]);
 
     function buildMarks(min, max, granularity){
@@ -66,8 +66,8 @@ const TempSliderContainer = () => {
                     aria-labelledby="discrete-slider-custom"
                     step={null}
                     marks={marks}
-                    min={minDate}
-                    max={maxDate}
+                    min={dateExtremes[0]}
+                    max={dateExtremes[1]}
                     valueLabelDisplay="auto"
                     onChange={handleChange}
                     onChangeCommitted={handleSubmit}

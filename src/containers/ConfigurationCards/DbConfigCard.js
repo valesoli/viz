@@ -5,13 +5,12 @@ import Button from "components/CustomButton/CustomButton.jsx";
 import { tryConnection } from "core/services/configQueryServices";
 
 import { ConnectionConfigContext } from "core/store/ConnectionConfigContext";
-import { TemporalityContext } from "core/store/TemporalityContext";
-import { api_getYears } from "core/services/graphQueryService";
+import { GraphContext } from "core/store/GraphContext";
 
 //ToDo: Cubrir la contraseña del form
 const DbConfigCard = (props) => {
   const { connectionConfig, dispatch } = useContext(ConnectionConfigContext);
-  const { setMinDate, setMaxDate, setInterval } = useContext(TemporalityContext);
+  const { setOneDateExtreme, setInterval } = useContext(GraphContext);
   const [connectionUrl, setConnectionUrl] = useState(
     connectionConfig.url
   );
@@ -24,12 +23,12 @@ const DbConfigCard = (props) => {
       .then((response) => {
         let years = response.data.results[0].data[0].row[0];
         let min = years[0];
-        // let today = new Date();
+       // let today = new Date();
         // max = today.getFullyear() 
         // Entiendo que el máximo debería ser el día/año de la fecha 
         let max = 2020; 
-        setMinDate(min);
-        setMaxDate(max);
+        setOneDateExtreme(0,min);
+        setOneDateExtreme(1,max);
         setInterval([min,max])
         dispatch({
           type: "CHANGE_CONFIG",

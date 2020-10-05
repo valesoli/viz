@@ -2,6 +2,7 @@ import React, { createContext, useState } from 'react';
 
 export const TemporalityContext = createContext();
 
+//@deprecated
 const TemporalityContextProvider = (props) => {
     const [ minDate, setMinDate ] = useState(1900);
     const [ maxDate, setMaxDate ] = useState(2000);

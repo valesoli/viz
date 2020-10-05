@@ -1,7 +1,5 @@
 import React, { useState, useContext } from 'react';
 import {UnControlled as CodeMirror} from 'react-codemirror2';
-import Table from 'rc-table';
-import {api_tbdgQuery} from 'core/services/tbdgQueryService';
 import { GraphContext } from 'core/store/GraphContext';
 import { helper_elapsedTimeMessage, helper_initializeTable } from 'containers/QueryBox/QueryBoxHelper';
 
