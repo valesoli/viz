@@ -4,7 +4,7 @@ import { GraphContext } from 'core/store/GraphContext/GraphContext';
 import { helper_elapsedTimeMessage, helper_initializeTable } from 'containers/QueryBox/QueryBoxHelper';
 
 const QueryBox = (props) => {
-  const { query, setQuery } = useContext(GraphContext);
+  const { setQuery } = useContext(GraphContext);
   const [ localQuery, setLocalQuery ] = useState();
   const [ message, setMessage ] = useState('');
   const [ result, setResult ] = useState(null);

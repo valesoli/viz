@@ -12,10 +12,18 @@ import { ConnectionConfigContext } from 'core/store/ConnectionConfigContext/Conn
 class AttributesDisplayer extends React.Component{
     render(){
         return(
-            <div>
-                {this.props.attribute[0] + "\t"}
-                <span className="badge badge-pill badge-primary">{this.props.attribute[1] + "\t" + this.props.attribute[2]}</span>
-            </div>
+            <>
+                <hr/>
+                <div className="container-fluid">
+                    <div style={{float:"left", fontWeight:"bold"}}>
+                        {this.props.attribute[0]}
+                    </div>
+                    <div style={{float:"right"}}>
+                        <span className="badge badge-pill badge-primary">{this.props.attribute[1]}</span>
+                        <span className="badge badge-pill badge-primary">{this.props.attribute[2]}</span>
+                    </div>
+                </div>
+            </>
         );
     }
 }
