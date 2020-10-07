@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-export const fetchGraph = async (key, connectionConfig, visualConfig, inputQuery, filters, interval) => {
+export const fetchGraph = async (key, connectionConfig, visualConfig, relationshipsConfig, inputQuery, filters, interval) => {
     if(!connectionConfig.connected) return null;
     let nodesResponse = await tbdgQuery(inputQuery);
-    const nodesProcessed = nodesCallback(nodesResponse);
+    const nodesProcessed = nodesCallback(nodesResponse, relationshipsConfig);
     if(nodesProcessed == 1){
         return {info:{success:false, description:nodesResponse.data.message}};
     } else if (nodesProcessed == 2){
@@ -56,7 +56,7 @@ const tbdgQuery = async (query) =>{
     return response;
 }
 
-const nodesCallback = (response) => {
+const nodesCallback = (response, relationshipsConfig) => {
     let data = new Map();
     let baseEdges = [];
     let e, o, p;
@@ -86,11 +86,12 @@ const nodesCallback = (response) => {
                         if(!data.has(key))
                             data.set(key, path[p]);                                          
                         if(lastNode != null){
-                            baseEdges.push([[lastNode, key],"Friend"]);
-                            lastNode = key;
+                            let relationship = [lastNode.title,path[p].title];
+                            baseEdges.push([[lastNode.id, key], findRelationship(relationshipsConfig, relationship)]);
+                            lastNode = path[p];
                         }
                         else
-                            lastNode = key;
+                            lastNode = path[p];
                     }
                 }
             }
@@ -132,6 +133,18 @@ const nodesCallback = (response) => {
         baseEdges: baseEdges,
         nodeIds: nodeIds
     }
+}
+
+const findRelationship = (relationshipsConfig, relationship) => {
+    let result = undefined;
+    for(let i=0; i< relationshipsConfig.map.length; i++){
+        let item = relationshipsConfig.map[i][0];
+        if(item[0] == relationship[0] && item[1] == relationship[1]){
+            result = relationshipsConfig.map[i][1];
+            break;
+        }
+    }
+    return result;
 }
 
 const attributesCallback = (response, nodeIds) => {

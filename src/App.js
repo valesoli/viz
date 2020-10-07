@@ -6,6 +6,7 @@ import VisualConfigContextProvider from 'core/store/VisualConfigContext/VisualCo
 import SelectedNodeContextProvider from 'core/store/SelectedNodeContext';
 import GraphContextProvider from 'core/store/GraphContext/GraphContext';
 import FiltersContextProvider from 'core/store/FiltersContext/FiltersContext';
+import RelationshipsContextProvider from 'core/store/RelationshipsContext/RelationshipsContext';
 
 export function connect(connection_values){
     //TODO: Hacer un fetch a la base para verificar que la información de conexión es correcta y recibir los valores de 
@@ -86,7 +87,8 @@ class App extends React.Component{
     render(){
         return(
             <ConnectionConfigContextProvider> 
-            <VisualConfigContextProvider> 
+            <VisualConfigContextProvider>
+            <RelationshipsContextProvider>
             <SelectedNodeContextProvider>
             <FiltersContextProvider>
             <GraphContextProvider>
@@ -105,6 +107,7 @@ class App extends React.Component{
             </GraphContextProvider>
             </FiltersContextProvider>
             </SelectedNodeContextProvider>
+            </RelationshipsContextProvider> 
             </VisualConfigContextProvider>
             </ConnectionConfigContextProvider>
         );

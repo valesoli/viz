@@ -38,8 +38,7 @@ const NodeConfigCard = (props) => {
                                     "match (o:Object)-->(a:Attribute)-->(v:Value) return o.title, collect(distinct a.title) order by o.title"
                                     ],  fetchNeoQuery, {
                                         onSuccess: responseFormatter
-                                    });
-
+    });
 
     function changeValueMain(key, value){
         let found = false;

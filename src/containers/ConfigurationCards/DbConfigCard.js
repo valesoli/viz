@@ -1,11 +1,12 @@
 import React, { useContext, useState } from "react";
+import { useQuery } from 'react-query';
 import { Card } from "components/Card/Card";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-import { tryConnection } from "core/services/configQueryServices";
-
+import { tryConnection, fetchNeoQuery } from "core/services/configQueryServices";
 import { ConnectionConfigContext } from "core/store/ConnectionConfigContext/ConnectionConfigContext";
 import { GraphContext } from "core/store/GraphContext/GraphContext";
+import { RelationshipsContext } from "core/store/RelationshipsContext/RelationshipsContext";
 
 //ToDo: Cubrir la contraseña del form
 const DbConfigCard = (props) => {
@@ -16,6 +17,7 @@ const DbConfigCard = (props) => {
   );
   const [username, setUsername] = useState(connectionConfig.user);
   const [password, setPassword] = useState(connectionConfig.pass);
+  const { relationshipsConfig, dispatch2 } = useContext(RelationshipsContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -47,6 +49,26 @@ const DbConfigCard = (props) => {
           type: "CONNECTION_FAILED",
           config:{
             info: {success: 2, val: err.toString()}
+          }
+        });
+      });
+
+      fetchNeoQuery("relatioships", connectionConfig, "match (n:Object)-[r]->(m:Object) return distinct [n.title, m.title], type(r)")
+      .then((response) => {
+        let response_table = response.data.results[0].data;        
+        for(let i=0; i<response_table.length; i++){
+          let nodes = response_table[i].row[0];
+          let relationship = response_table[i].row[1];
+          relationshipsConfig.map.push([nodes, relationship]);
+        }
+        dispatch2({
+          type: "CHANGE_MAP",
+          config: {
+            map: relationshipsConfig.map,
+            info: {
+              success: true,
+              description: ''
+            }
           }
         });
       });

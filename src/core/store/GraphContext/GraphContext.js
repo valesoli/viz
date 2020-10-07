@@ -4,6 +4,7 @@ import { ConnectionConfigContext } from 'core/store/ConnectionConfigContext/Conn
 import { GraphReducer } from 'core/store/GraphContext/GraphReducer';
 import { fetchGraph } from "core/services/graphBuildingService";
 import { VisualConfigContext } from 'core/store/VisualConfigContext/VisualConfigContext';
+import { RelationshipsContext } from 'core/store/RelationshipsContext/RelationshipsContext';
 import { FiltersContext } from 'core/store/FiltersContext/FiltersContext';
 
 export const GraphContext = createContext();
@@ -12,6 +13,7 @@ const GraphContextProvider = (props) => {
     const [ query, setQuery ] = useState("select n, f, m match (n) - [f:Friend] -> (m)");
     const { connectionConfig } = useContext(ConnectionConfigContext);
     const { visualConfig } = useContext(VisualConfigContext);
+    const { relationshipsConfig } = useContext(RelationshipsContext);
     const { filters } = useContext(FiltersContext);
 
     const [ dateExtremes, setDateExtremes ] = useState([1900,2000])
@@ -48,7 +50,7 @@ const GraphContextProvider = (props) => {
         }
     }
 
-    const { data, status } = useQuery(["graph", connectionConfig, visualConfig, query, filters, interval], fetchGraph, {
+    const { data, status } = useQuery(["graph", connectionConfig, visualConfig, relationshipsConfig, query, filters, interval], fetchGraph, {
         onSuccess: updateGraph
     });
 
