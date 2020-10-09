@@ -180,11 +180,21 @@ const edgesCallback = (response) => {
 
 export const isInInterval = (stringInterval, numInterval) => {
     let vals = stringInterval.split("—");
+    let normalizedPropertyInterval = normalizeInterval(vals);
+    let normalizedLimitInterval = normalizeInterval(numInterval);
     vals[0] = parseInt(vals[0])
     if((numInterval[0] <= vals[0] && vals[0] <= numInterval[1]) || (vals[0] <= numInterval[0] && (vals[1] == "Now" || parseInt(vals[1]) >= numInterval[0]))){
         return true;
     }
     return false;
+}
+
+export const normalizeInterval = (interval) => {
+    //Encontrar que formato tiene
+    let minInterval = Date.parse(interval[0]);
+    let maxInterval = Date.parse(interval[1]);
+    return [minInterval,maxInterval];
+
 }
 
 
