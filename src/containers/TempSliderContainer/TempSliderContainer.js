@@ -3,6 +3,7 @@ import {Badge} from 'react-bootstrap';
 import Slider from '@material-ui/core/Slider';
 
 import { GraphContext } from 'core/store/GraphContext/GraphContext';
+import { normalizeInterval } from 'core/services/graphBuildingService';
 
 
 export function sliderCallback(years){
@@ -29,13 +30,15 @@ const TempSliderContainer = () => {
     const [ marks, setMarks ] = useState(buildMarks(dateExtremes[0], dateExtremes[1], granularity));
     const [ localInterval, setLocalInterval ] = useState([interval[0],interval[1]]);
 
-    function buildMarks(min, max, granularity){
-        let marks = []
+    function buildMarks(minNN, maxNN, granularity){
+        let marks = [];
+        let [min,max] = normalizeInterval([minNN, maxNN]); 
         //Supongo que 10 es un buen numero para ponerle label
-        for(let i=min;i<max;i+=granularity){
+        let granularityTimestamp = granularity*31536000
+        for(let i=min;i<max;i+=granularityTimestamp){
             marks.push({
                 value: i,
-                label: (i-min)%10 === 0?i.toString():'',
+                label: (i-min)%(10*granularityTimestamp) === 0?i.toString():'',
             })
         }
         marks.push({
@@ -46,7 +49,9 @@ const TempSliderContainer = () => {
     }
 
     function handleSubmit(event, newValue){
-        setInterval(newValue);
+        let parsedMin = new Date(newValue[0]*1000);
+        let parsedMax = new Date(newValue[1]*1000);
+        setInterval([parsedMin.toString(),parsedMax.toString()]);
     }
 
     function handleChange(event, newValue){
@@ -55,6 +60,7 @@ const TempSliderContainer = () => {
         //             with collect([id(n),n]) as nodes 
         //             match (m:Object)-[r]->(o:Object) with nodes, collect([[id(m),id(o)],type(r)]) as edges return nodes, edges`;
         
+        //ToDo: Los valores tienen que ser timestamps pero los display Date
         setLocalInterval(newValue);
         // applyFilterAndSave(query,newValue[0],newValue[1]);
     };
@@ -66,8 +72,8 @@ const TempSliderContainer = () => {
                     aria-labelledby="discrete-slider-custom"
                     step={null}
                     marks={marks}
-                    min={dateExtremes[0]}
-                    max={dateExtremes[1]}
+                    min={marks[0].value}
+                    max={marks[marks.length-1].value}
                     valueLabelDisplay="auto"
                     onChange={handleChange}
                     onChangeCommitted={handleSubmit}
@@ -76,7 +82,7 @@ const TempSliderContainer = () => {
             </div>
             <div style={{width:"20%"}}>
                 <Badge variant="primary" style={{marginTop: '-60px', marginLeft: '25px'}}>
-                    {interval[0] + ' - ' + interval[1]}
+                    {new Date(Date.parse(interval[0])).toDateString() + ' - ' + new Date(Date.parse(interval[1])).toDateString()}
                 </Badge>
             </div>
         </div>

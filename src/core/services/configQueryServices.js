@@ -20,7 +20,7 @@ export const fetchNeoQuery = async (key, connectionConfig, inputQuery) => {
 }
 
 export const tryConnection = async (connectionUrl, user, pass) => {
-    let query = "match (o:Object) with distinct toInteger(split(o.interval[0], '—')[0]) as Años order by Años return collect(Años)";
+    let query = "match (o:Object) with distinct split(o.interval[0], '—')[0] as Años order by Años return collect(Años)";
     const config = {
         method: 'post',
         url: connectionUrl,

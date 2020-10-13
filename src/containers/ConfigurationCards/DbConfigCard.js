@@ -28,10 +28,10 @@ const DbConfigCard = (props) => {
        // let today = new Date();
         // max = today.getFullyear() 
         // Entiendo que el máximo debería ser el día/año de la fecha 
-        let max = 2020; 
+        let max = "2020"; 
         setOneDateExtreme(0,min);
         setOneDateExtreme(1,max);
-        setInterval([min,max])
+        setInterval([Date.parse(min),Date.parse(max)])
         dispatch({
           type: "CHANGE_CONFIG",
           config: {
