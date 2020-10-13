@@ -181,7 +181,7 @@ const edgesCallback = (response) => {
 export const isInInterval = (stringInterval, numInterval) => {
     let vals = stringInterval.split("—");
     let normalizedPropertyInterval = normalizeInterval(vals);
-    let normalizedLimitInterval = normalizeInterval(numInterval);
+    let normalizedLimitInterval = normalizeIntervalNumeric(numInterval);
     vals[0] = parseInt(vals[0])
     if((numInterval[0] <= vals[0] && vals[0] <= numInterval[1]) || (vals[0] <= numInterval[0] && (vals[1] == "Now" || parseInt(vals[1]) >= numInterval[0]))){
         return true;
@@ -189,10 +189,24 @@ export const isInInterval = (stringInterval, numInterval) => {
     return false;
 }
 
+const completer = ["-01-01 00:00","-12-31 23:59"]
+
+const completeString = (original, minmax) => {
+    let stringLength = original.length - 4;
+    return original + completer[minmax].slice(stringLength)       
+}
+
 export const normalizeInterval = (interval) => {
     //Encontrar que formato tiene
-    let minInterval = Date.parse(interval[0]);
-    let maxInterval = Date.parse(interval[1]);
+    let minInterval = Date.parse(completeString(interval[0],0));
+    let maxInterval = Date.parse(completeString(interval[1],1));
+    return [minInterval,maxInterval];
+
+}
+export const normalizeIntervalNumeric = (interval) => {
+    //Encontrar que formato tiene
+    let minInterval = Date.parse(completeString(interval[0].toString(),0));
+    let maxInterval = Date.parse(completeString(interval[1].toString(),1));
     return [minInterval,maxInterval];
 
 }

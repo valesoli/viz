@@ -67,14 +67,16 @@ function testingParseIntervals(){
   ]
   let expectedOuts = [
     ["1990-01-01 00:00", "1990-12-31 23:59"],
-    ["1990-08-01 00:00", "1990-09-31 23:59"],
-    ["1990-08-12 00:00", "1990-09-01 23:59"],
+    ["1990-08-01 00:00", "1991-09-31 23:59"],
+    ["1990-08-12 00:00", "1991-09-01 23:59"],
     ["1990-08-12 11:00", "1991-09-01 12:00"]
   ]
 
   for (let i=0; i<intervals.length ; i++){
     it("Parsing Intervals Test " + i, () => {
-      expect(normalizeInterval(intervals[i])).toEqual(
+      let vals = normalizeInterval(intervals[i])
+      
+      expect([vals[0],vals[1]]).toEqual(
         [Date.parse(expectedOuts[i][0]),Date.parse(expectedOuts[i][1])]
       );
     });
