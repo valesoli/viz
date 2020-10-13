@@ -31,7 +31,7 @@ const DbConfigCard = (props) => {
         let max = "2020"; 
         setOneDateExtreme(0,min);
         setOneDateExtreme(1,max);
-        setInterval([Date.parse(min),Date.parse(max)])
+        setInterval([min,max])
         dispatch({
           type: "CHANGE_CONFIG",
           config: {

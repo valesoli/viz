@@ -28,7 +28,7 @@ const TempSliderContainer = () => {
     // Inicializo el intervalo con lo que traiga del contexto creo
     const { dateExtremes, interval, setInterval, granularity } = useContext(GraphContext);
     const [ marks, setMarks ] = useState(buildMarks(dateExtremes[0], dateExtremes[1], granularity));
-    const [ localInterval, setLocalInterval ] = useState([interval[0],interval[1]]);
+    const [ localInterval, setLocalInterval ] = useState([Date.parse(interval[0]),Date.parse(interval[1])]);
 
     function buildMarks(minNN, maxNN, granularity){
         let marks = [];
@@ -38,12 +38,12 @@ const TempSliderContainer = () => {
         for(let i=min;i<max;i+=granularityTimestamp){
             marks.push({
                 value: i,
-                label: (i-min)%(10*granularityTimestamp) === 0?i.toString():'',
+                label: (i-min)%(10*granularityTimestamp) === 0?new Date(i).toDateString():'',
             })
         }
         marks.push({
             value: max,
-            label: max.toString()
+            label: new Date(max).toDateString()
         });
         return marks;
     }
@@ -75,6 +75,7 @@ const TempSliderContainer = () => {
                     min={marks[0].value}
                     max={marks[marks.length-1].value}
                     valueLabelDisplay="auto"
+                    valueLabelFormat={(x) => new Date(x).toDateString()}
                     onChange={handleChange}
                     onChangeCommitted={handleSubmit}
                     value={localInterval}
