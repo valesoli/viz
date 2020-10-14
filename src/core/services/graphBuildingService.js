@@ -96,28 +96,6 @@ const nodesCallback = (response, relationshipsConfig) => {
                 }
             }
         }
-        // response.data.data.forEach(elem => {
-        //     for(o in objects){
-        //             var path = response.data.data[elem][o].path;
-        //             console.log("path: " + path);
-        //             let lastNode = null;
-        //             for(p in path){
-        //                 var key = path[p].id;
-        //                 console.log("key: " + key);
-        //                 if(key !== undefined){
-        //                     if(!data.has(key))
-        //                         data.set(key, path[p]);                                          
-        //                     console.log("lastnode: " + lastNode);
-        //                     if(lastNode != null){
-        //                         baseEdges.push([[lastNode, key],"Friend"]);
-        //                         lastNode = key;
-        //                     }
-        //                     else
-        //                         lastNode = key;
-        //                 }
-        //             }
-        //     }
-        // });
     }
     
     let nodeIds = [];
@@ -164,7 +142,7 @@ const attributesCallback = (response, nodeIds) => {
         return obj;
     }, {});
         
-    let query = "match (n:Object)-[r]->(m:Object) where n.id in [" + nodeIds + "] and m.id in [" + nodeIds + "] return collect([[n.id,m.id], type(r)])";
+    let query = "match (n:Object)-[r]->(m:Object) where n.id in [" + nodeIds + "] and m.id in [" + nodeIds + "] return collect([[n.id,m.id], type(r), r.interval])";
 
     return {
         query: query,
@@ -179,17 +157,20 @@ const edgesCallback = (response) => {
 }
 
 export const isInInterval = (stringInterval, numInterval) => {
-    let vals = stringInterval.split("—");
-    let normalizedPropertyInterval = normalizeInterval(vals);
-    let normalizedLimitInterval = normalizeInterval(numInterval);
-    // vals[0] = parseInt(vals[0])
-    // if((numInterval[0] <= vals[0] && vals[0] <= numInterval[1]) || (vals[0] <= numInterval[0] && (vals[1] == "Now" || parseInt(vals[1]) >= numInterval[0]))){
-    //     return true;
-    // }
-    // vals[0] = parseInt(vals[0])
-    if((normalizedLimitInterval[0] <= normalizedPropertyInterval[0] && normalizedPropertyInterval[0] <= normalizedLimitInterval[1]) || (normalizedPropertyInterval[0] <= normalizedLimitInterval[0] && (normalizedPropertyInterval[1] == "Now" || normalizedPropertyInterval[1] >= normalizedLimitInterval[0]))){
-        return true;
+    for(let i=0; i<stringInterval.length; i++){
+        let vals = stringInterval[i].split("—");
+        let normalizedPropertyInterval = normalizeInterval(vals);
+        let normalizedLimitInterval = normalizeInterval(numInterval);
+        // vals[0] = parseInt(vals[0])
+        // if((numInterval[0] <= vals[0] && vals[0] <= numInterval[1]) || (vals[0] <= numInterval[0] && (vals[1] == "Now" || parseInt(vals[1]) >= numInterval[0]))){
+        //     return true;
+        // }
+        // vals[0] = parseInt(vals[0])
+        if((normalizedLimitInterval[0] <= normalizedPropertyInterval[0] && normalizedPropertyInterval[0] <= normalizedLimitInterval[1]) || (normalizedPropertyInterval[0] <= normalizedLimitInterval[0] && (normalizedPropertyInterval[1] == "Now" || normalizedPropertyInterval[1] >= normalizedLimitInterval[0]))){
+            return true;
+        }
     }
+    
     return false;
 }
 
@@ -226,7 +207,7 @@ const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval
     for(let e of baseNodes.entries()){
         if(nodeCount < filters.nodeLimit){
             if(filters.nodeTypes[0] == "All nodes" || filters.nodeTypes.indexOf(e[1].title) > -1){
-                if(isInInterval(e[1].interval[0], interval)){
+                if(isInInterval(e[1].interval, interval)){
                     nodes.push({
                         id: e[0], 
                         title: attrs[e[0]] !== undefined ? attrs[e[0]].attributes[0][1] : e[1].title, 
@@ -242,13 +223,15 @@ const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval
     if(baseEdges !== undefined){
         baseEdges.forEach(e => {
             if(filters.edgeTypes[0] == "All edges" || filters.edgeTypes.indexOf(e[1]) > -1){
-                edges.push({
-                    from: e[0][0], 
-                    to: e[0][1],
-                    title: e[1],
-                    color: visualConfig.edgeColors[e[1]],
-                    arrows: 'to'
-                });
+                if(e[2] == undefined || isInInterval(e[2], interval)){
+                    edges.push({
+                        from: e[0][0], 
+                        to: e[0][1],
+                        title: e[1],
+                        color: visualConfig.edgeColors[e[1]],
+                        arrows: 'to'
+                    });
+                }
             }
         });
     }

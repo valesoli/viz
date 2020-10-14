@@ -11,13 +11,13 @@ export const GraphContext = createContext();
 
 const GraphContextProvider = (props) => {
     const [ query, setQuery ] = useState("select n, f, m match (n) - [f:Friend] -> (m)");
-    const [ userQuery, setUserQuery ] = useState("select n, f, m match (n) - [f:Friend] -> (m)")
+    const [ userQuery, setUserQuery ] = useState("select n, f, m match (n) - [f:Friend] -> (m)");
     const { connectionConfig } = useContext(ConnectionConfigContext);
     const { visualConfig } = useContext(VisualConfigContext);
     const { relationshipsConfig } = useContext(RelationshipsContext);
     const { filters } = useContext(FiltersContext);
 
-    const [ dateExtremes, setDateExtremes ] = useState(["1900","2000"])
+    const [ dateExtremes, setDateExtremes ] = useState(["1900","2000"]);
     const [ interval, setInterval ] = useState([dateExtremes[0],dateExtremes[1]]);
     const  [ granularity, setGranularity ] = useState(3);
 
