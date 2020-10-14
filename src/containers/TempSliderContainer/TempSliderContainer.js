@@ -30,11 +30,12 @@ const TempSliderContainer = () => {
     // Inicializo el intervalo con lo que traiga del contexto creo
     const { dateExtremes, interval, setInterval, granularity } = useContext(GraphContext);
     const [ marks, setMarks ] = useState(buildMarks(dateExtremes[0], dateExtremes[1], granularity));
-    const [ localInterval, setLocalInterval ] = useState([Date.parse(interval[0]),Date.parse(interval[1])]);
+    const [ localInterval, setLocalInterval ] = useState([Date.parse(interval[0])/1000,Date.parse(interval[1])/1000]);
 
     function buildMarks(minNN, maxNN, granularity){
         let marks = [];
         let [min,max] = normalizeInterval([minNN, maxNN]); 
+        if(granularity<2) return [min,max];
         //Supongo que 10 es un buen numero para ponerle label
         let granularityTimestamp = granularityTranslation[granularity];
         let count = 0;
@@ -72,21 +73,34 @@ const TempSliderContainer = () => {
     return (  
         <div style={{width:"100%"}}>
             <div style={{width:"80%"}}>
-                <Slider                        
-                    aria-labelledby="discrete-slider-custom"
-                    step={null}
-                    marks={marks}
-                    min={marks[0].value}
-                    max={marks[marks.length-1].value}
-                    valueLabelDisplay="auto"
-                    valueLabelFormat={(x) => new Date(x*1000).toLocaleDateString()}
-                    onChange={handleChange}
-                    onChangeCommitted={handleSubmit}
-                    value={localInterval}
-                />
+            {
+                granularity >= 2?
+                    <Slider                        
+                        aria-labelledby="discrete-slider-custom"
+                        step={null}
+                        marks={marks}
+                        min={marks[0].value}
+                        max={marks[marks.length-1].value}
+                        valueLabelDisplay="auto"
+                        valueLabelFormat={(x) => new Date(x*1000).toLocaleDateString()}
+                        onChange={handleChange}
+                        onChangeCommitted={handleSubmit}
+                        value={localInterval}
+                    />
+                    
+                :
+                    <Slider
+                        aria-labelledby= "range-slider"
+                        min={marks[0]}
+                        max={marks[1]}
+                        onChange={handleChange}
+                        onChangeCommitted={handleSubmit}
+                        value={localInterval}
+                    />
+            }
             </div>
             <div style={{width:"20%"}}>
-                <Badge variant="primary" style={{marginTop: '-60px', marginLeft: '25px'}}>
+                <Badge variant="primary" style={{marginTop: granularity>=2?'-60px':'-20px', marginLeft: '25px'}}>
                     {new Date(Date.parse(interval[0])).toDateString() + ' - ' + new Date(Date.parse(interval[1])).toDateString()}
                 </Badge>
             </div>
