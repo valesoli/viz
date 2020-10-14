@@ -42,3 +42,6 @@
 .container-fluid{
     height: 100% !important;
 }
+.CodeMirror-sizer{
+    min-width: 300px !important;
+}
