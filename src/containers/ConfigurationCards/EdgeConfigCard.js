@@ -9,6 +9,7 @@ import MyColorPicker from "containers/CustomColorPicker/MyColorPicker";
 import Loader from "react-loader-spinner";
 
 const EdgeConfigCard = (props) => {
+  const defaultColors = ["#33cccc","#f6ecd2","#ff9f88"]
   const { connectionConfig } = useContext(ConnectionConfigContext);
   const { visualConfig, dispatch } = useContext(VisualConfigContext);
   const [edges, setEdges] = useState(null);
@@ -16,13 +17,16 @@ const EdgeConfigCard = (props) => {
   const responseFormatter = (response) => {
     let response_table = response.data.results[0].data[0].row[0];
     let newEdges = [];
+    let edgesColors = {};
     for (var i = 0; i < response_table.length; i++) {
       let td = { type: "", color: "" };
       td.type = response_table[i];
-      td.color = visualConfig.edgeColors[response_table[i]];
+      td.color = visualConfig.edgeColors[response_table[i]]?visualConfig.edgeColors[response_table[i]]:defaultColors[i];
+      edgesColors[td.type] = td.color;
       newEdges.push(td);
     }
     setEdges(newEdges);
+    dispatch({ type: "CHANGE_EDGES", edgeColors: edgesColors });
     return newEdges;
   };
 

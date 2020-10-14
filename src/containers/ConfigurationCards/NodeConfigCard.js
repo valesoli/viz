@@ -10,6 +10,7 @@ import MyColorPicker from "containers/CustomColorPicker/MyColorPicker";
 import Loader from 'react-loader-spinner';
 
 const NodeConfigCard = (props) => {
+    const defaultColors = ["#33cccc","#f6ecd2","#ff9f88"]
     const { connectionConfig } = useContext(ConnectionConfigContext);
     const { visualConfig, dispatch } = useContext(VisualConfigContext);
     const [ nodeInfo, setNodeInfo ] = useState(null);
@@ -19,18 +20,21 @@ const NodeConfigCard = (props) => {
         let newNodes = [];
         let newMainAttr = [];
         let newDefaultAttr = [];
+        let nodeColors = {};
         for(let i = 0; i < response_table.length; i++){
             let td = {type: '', color: '', attribute: '', default: '', allAttrs: ''};
             td.type = response_table[i].row[0];
-            td.color = visualConfig.nodeColors[response_table[i].row[0]];
+            td.color = visualConfig.nodeColors[response_table[i].row[0]]?visualConfig.nodeColors[response_table[i].row[0]]:defaultColors[i];
             td.attribute = response_table[i].row[1][0];
             td.default = response_table[i].row[1][0];
             td.allAttrs = response_table[i].row[1];
+            nodeColors[td.type] = td.color;
             newNodes.push(td);
             newMainAttr.push({key: i, value: td.attribute});
             newDefaultAttr.push({key: i, value: td.default});
         }
         setNodeInfo({nodes: newNodes, mainAttr: newMainAttr, defaultAttr: newDefaultAttr});
+        dispatch({type: 'CHANGE_NODES', nodeColors: nodeColors});
         return response;
     }
 
