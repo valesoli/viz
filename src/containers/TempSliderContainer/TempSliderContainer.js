@@ -35,15 +35,17 @@ const TempSliderContainer = () => {
         let [min,max] = normalizeInterval([minNN, maxNN]); 
         //Supongo que 10 es un buen numero para ponerle label
         let granularityTimestamp = granularity*31536000
+        let count = 0;
         for(let i=min;i<max;i+=granularityTimestamp){
             marks.push({
                 value: i,
-                label: (i-min)%(10*granularityTimestamp) === 0?new Date(i).toDateString():'',
+                label: count%10 === 0?new Date(i*1000).toLocaleDateString():'',
             })
+            count++;
         }
         marks.push({
             value: max,
-            label: new Date(max).toDateString()
+            label: count%10<5?'':new Date(max*1000).toLocaleDateString()
         });
         return marks;
     }
@@ -75,7 +77,7 @@ const TempSliderContainer = () => {
                     min={marks[0].value}
                     max={marks[marks.length-1].value}
                     valueLabelDisplay="auto"
-                    valueLabelFormat={(x) => new Date(x).toDateString()}
+                    valueLabelFormat={(x) => new Date(x*1000).toLocaleDateString()}
                     onChange={handleChange}
                     onChangeCommitted={handleSubmit}
                     value={localInterval}
