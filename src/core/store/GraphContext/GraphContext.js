@@ -18,7 +18,7 @@ const GraphContextProvider = (props) => {
 
     const [ dateExtremes, setDateExtremes ] = useState(["1900","2000"])
     const [ interval, setInterval ] = useState([dateExtremes[0],dateExtremes[1]]);
-    const  [ granularity, setGranularity ] = useState(1);
+    const  [ granularity, setGranularity ] = useState(3);
 
     const [ graph, dispatch ] = useReducer(GraphReducer,
         {
@@ -61,7 +61,7 @@ const GraphContextProvider = (props) => {
     }
     
     return (  
-        <GraphContext.Provider value={{ graph, dispatch, query, setQuery, dateExtremes, setOneDateExtreme, interval, setInterval, granularity}}>
+        <GraphContext.Provider value={{ graph, dispatch, query, setQuery, dateExtremes, setOneDateExtreme, interval, setInterval, granularity, setGranularity}}>
             {props.children}
         </GraphContext.Provider>
     );

@@ -25,6 +25,7 @@ export function sliderCallback(years){
 }
 
 const TempSliderContainer = () => {
+    const granularityTranslation = [0,0,0,31536000]
     // Inicializo el intervalo con lo que traiga del contexto creo
     const { dateExtremes, interval, setInterval, granularity } = useContext(GraphContext);
     const [ marks, setMarks ] = useState(buildMarks(dateExtremes[0], dateExtremes[1], granularity));
@@ -34,7 +35,7 @@ const TempSliderContainer = () => {
         let marks = [];
         let [min,max] = normalizeInterval([minNN, maxNN]); 
         //Supongo que 10 es un buen numero para ponerle label
-        let granularityTimestamp = granularity*31536000
+        let granularityTimestamp = granularityTranslation[granularity];
         let count = 0;
         for(let i=min;i<max;i+=granularityTimestamp){
             marks.push({
