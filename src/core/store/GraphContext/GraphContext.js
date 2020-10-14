@@ -10,14 +10,14 @@ import { FiltersContext } from 'core/store/FiltersContext/FiltersContext';
 export const GraphContext = createContext();
 
 const GraphContextProvider = (props) => {
-    const [ query, setQuery ] = useState("select n, f, m match (n) - [f:Friend] -> (m)");
-    const [ userQuery, setUserQuery ] = useState("select n, f, m match (n) - [f:Friend] -> (m)");
+    const [ query, setQuery ] = useState("select p, c, n match (p:Person),(n:Brand),(c:City)");
+    const [ userQuery, setUserQuery ] = useState("select p, c, n match (p:Person),(n:Brand),(c:City)")
     const { connectionConfig } = useContext(ConnectionConfigContext);
     const { visualConfig } = useContext(VisualConfigContext);
     const { relationshipsConfig } = useContext(RelationshipsContext);
     const { filters } = useContext(FiltersContext);
 
-    const [ dateExtremes, setDateExtremes ] = useState(["1900","2000"]);
+    const [ dateExtremes, setDateExtremes ] = useState(["1900","2000"])
     const [ interval, setInterval ] = useState([dateExtremes[0],dateExtremes[1]]);
     const  [ granularity, setGranularity ] = useState(3);
 

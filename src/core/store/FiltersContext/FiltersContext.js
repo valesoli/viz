@@ -7,7 +7,7 @@ const FiltersContextProvider = (props) => {
     const [filters, dispatch] = useReducer(FiltersReducer, {
         nodeTypes: ["All nodes"],
         edgeTypes: ["All edges"],
-        nodeLimit: 100,
+        nodeLimit: 50,
         info: {
             success: true,
             description: '' 

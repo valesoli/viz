@@ -12,6 +12,10 @@ const GraphContainer = (props) => {
         nodes: {
             shape: "dot"
         },
+        edges: {
+            width: 2,
+            smooth: true
+        },
         physics: {
             forceAtlas2Based: {
                 gravitationalConstant: -26,
