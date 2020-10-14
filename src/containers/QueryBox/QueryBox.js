@@ -4,8 +4,8 @@ import { GraphContext } from 'core/store/GraphContext/GraphContext';
 import { helper_elapsedTimeMessage, helper_initializeTable } from 'containers/QueryBox/QueryBoxHelper';
 
 const QueryBox = (props) => {
-  const { setQuery } = useContext(GraphContext);
-  const [ localQuery, setLocalQuery ] = useState();
+  const { userQuery, setQuery, setUserQuery } = useContext(GraphContext);
+  const [ localQuery, setLocalQuery ] = useState(userQuery);
   const [ message, setMessage ] = useState('');
   const [ result, setResult ] = useState(null);
 
@@ -29,6 +29,7 @@ const QueryBox = (props) => {
 
   const handleSubmit = (event) => {
       event.preventDefault();
+      setUserQuery(localQuery);
       let parsedQuery = stripAttributes(localQuery);
       setQuery(parsedQuery);      
   }
@@ -65,11 +66,12 @@ const QueryBox = (props) => {
             {/* <label form="query">Query: </label> */}
             {/* <textarea class="form-control" id="query" name="query"></textarea> */}                        
           <CodeMirror
+            value={userQuery}
             options={{
               mode: 'application/x-cypher-query',
               theme: 'default',
               lineNumbers: true,
-              height: 'auto'
+              height: 'auto',
             }}
             onChange={(editor, data, value) => {
               setLocalQuery(value);
