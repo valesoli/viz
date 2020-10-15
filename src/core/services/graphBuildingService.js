@@ -157,6 +157,8 @@ const edgesCallback = (response) => {
 }
 
 export const isInInterval = (stringInterval, numInterval) => {
+    if(stringInterval == undefined)
+        return true;
     for(let i=0; i<stringInterval.length; i++){
         let vals = stringInterval[i].split("—");
         let normalizedPropertyInterval = normalizeInterval(vals);
@@ -220,10 +222,13 @@ const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval
         }
     }
 
+    let insertedEdges = new Map();
     if(baseEdges !== undefined){
         baseEdges.forEach(e => {
             if(filters.edgeTypes[0] == "All edges" || filters.edgeTypes.indexOf(e[1]) > -1){
                 if(e[2] == undefined || isInInterval(e[2], interval)){
+                    let edge = [e[0][0],e[0][0]];                    
+                    
                     edges.push({
                         from: e[0][0], 
                         to: e[0][1],
