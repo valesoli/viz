@@ -228,7 +228,8 @@ const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval
             if(filters.edgeTypes[0] == "All edges" || filters.edgeTypes.indexOf(e[1]) > -1){
                 if(e[2] == undefined || isInInterval(e[2], interval)){
                     let key = e[0][0] * 10000 + e[0][1];
-                    if(!insertedEdges.has(key)){                    
+                    let key2 = e[0][1] * 10000 + e[0][0];
+                    if(!insertedEdges.has(key) && ! insertedEdges.has(key2)){                    
                         edges.push({
                             from: e[0][0], 
                             to: e[0][1],
@@ -237,6 +238,7 @@ const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval
                             arrows: 'to'
                         });
                         insertedEdges.set(key, key);
+                        insertedEdges.set(key2, key2);
                     }
                 }
             }
