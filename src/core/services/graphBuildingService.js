@@ -227,7 +227,7 @@ const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval
         baseEdges.forEach(e => {
             if(filters.edgeTypes[0] == "All edges" || filters.edgeTypes.indexOf(e[1]) > -1){
                 if(e[2] == undefined || isInInterval(e[2], interval)){
-                    let key = e[0][0] * 100 + e[0][1];
+                    let key = e[0][0] * 10000 + e[0][1];
                     if(!insertedEdges.has(key)){                    
                         edges.push({
                             from: e[0][0], 
