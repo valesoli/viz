@@ -227,15 +227,17 @@ const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval
         baseEdges.forEach(e => {
             if(filters.edgeTypes[0] == "All edges" || filters.edgeTypes.indexOf(e[1]) > -1){
                 if(e[2] == undefined || isInInterval(e[2], interval)){
-                    let edge = [e[0][0],e[0][0]];                    
-                    
-                    edges.push({
-                        from: e[0][0], 
-                        to: e[0][1],
-                        title: e[1],
-                        color: visualConfig.edgeColors[e[1]],
-                        arrows: 'to'
-                    });
+                    let key = e[0][0] * 100 + e[0][1];
+                    if(!insertedEdges.has(key)){                    
+                        edges.push({
+                            from: e[0][0], 
+                            to: e[0][1],
+                            title: e[1],
+                            color: visualConfig.edgeColors[e[1]],
+                            arrows: 'to'
+                        });
+                        insertedEdges.set(key, key);
+                    }
                 }
             }
         });
