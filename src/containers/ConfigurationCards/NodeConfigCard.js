@@ -10,7 +10,7 @@ import MyColorPicker from "containers/CustomColorPicker/MyColorPicker";
 import Loader from 'react-loader-spinner';
 
 const NodeConfigCard = (props) => {
-    const defaultColors = ["#33cccc","#f6ecd2","#ff9f88"]
+    const defaultColors = ['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33'];    
     const { connectionConfig } = useContext(ConnectionConfigContext);
     const { visualConfig, dispatch } = useContext(VisualConfigContext);
     const [ nodeInfo, setNodeInfo ] = useState(null);

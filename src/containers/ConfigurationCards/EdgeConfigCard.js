@@ -9,7 +9,7 @@ import MyColorPicker from "containers/CustomColorPicker/MyColorPicker";
 import Loader from "react-loader-spinner";
 
 const EdgeConfigCard = (props) => {
-  const defaultColors = ["#33cccc","#f6ecd2","#ff9f88"]
+  const defaultColors = ['#66c2a5','#fc8d62','#8da0cb','#e78ac3','#a6d854','#ffd92f']; 
   const { connectionConfig } = useContext(ConnectionConfigContext);
   const { visualConfig, dispatch } = useContext(VisualConfigContext);
   const [edges, setEdges] = useState(null);
