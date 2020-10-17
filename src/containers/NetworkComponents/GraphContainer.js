@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Graph from "react-graph-vis";
 import { GraphContext } from "core/store/GraphContext/GraphContext";
 import { SelectedNodeContext } from "core/store/SelectedNodeContext";
@@ -28,12 +28,16 @@ const GraphContainer = (props) => {
             timestep: 0.35,
             stabilization: { iterations: 150 },
             },
+        interaction:{hover:true},
         height: '500px'
     }
     // Here we have the function that must be on each node. We have to think if its
     // something that will be constant or that will change along the work
+    const [getBaseEdges, setGetBaseEdges] = useState(null);
     const events = {
-        selectNode: (params) => setSelectedNodeId(params.nodes[0])
+        selectNode: (params) => setSelectedNodeId(params.nodes[0]),
+        // hoverNode: (params) => console.log(params),
+        hoverEdge: (params) => console.log(getBaseEdges.clustering.getBaseEdges(params.edge))
     }
     return (
         <div style={{height: '500px'}}>
@@ -44,6 +48,7 @@ const GraphContainer = (props) => {
                     options={options}
                     events={events}
                     getNetwork={network => {
+                        setGetBaseEdges(network);
                     //  if you want access to vis.js network api you can set the state in a parent component using this property
                     }}
                 />

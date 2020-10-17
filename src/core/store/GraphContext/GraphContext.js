@@ -10,8 +10,8 @@ import { FiltersContext } from 'core/store/FiltersContext/FiltersContext';
 export const GraphContext = createContext();
 
 const GraphContextProvider = (props) => {
-    const [ query, setQuery ] = useState("select p, c, n match (p:Person),(n:Brand),(c:City)");
-    const [ userQuery, setUserQuery ] = useState("select p, c, n match (p:Person),(n:Brand),(c:City)")
+    const [ query, setQuery ] = useState("select p, c, n match (p:Person),(c:City),(n:Brand)");
+    const [ userQuery, setUserQuery ] = useState("select p, c, n match (p:Person),(c:City),(n:Brand)")
     const { connectionConfig } = useContext(ConnectionConfigContext);
     const { visualConfig } = useContext(VisualConfigContext);
     const { relationshipsConfig } = useContext(RelationshipsContext);
