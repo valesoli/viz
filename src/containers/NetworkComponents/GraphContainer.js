@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import Graph from "react-graph-vis";
 import { GraphContext } from "core/store/GraphContext/GraphContext";
 import { SelectedNodeContext } from "core/store/SelectedNodeContext";
+require("vis-network/standalone/umd/vis-network.min.js");
 
 const GraphContainer = (props) => {
     const { setSelectedNodeId } = useContext(SelectedNodeContext);
@@ -9,12 +10,17 @@ const GraphContainer = (props) => {
     // and only have access to what i want to show
     const { graph } = useContext(GraphContext);
     const options = {
+        interaction:{
+            hover:true,
+            tooltipDelay: 5
+        },
         nodes: {
             shape: "dot"
         },
         edges: {
             width: 2,
-            smooth: true
+            smooth: true,
+            hoverWidth: function (width) {return width+1;}
         },
         physics: {
             forceAtlas2Based: {
@@ -28,16 +34,18 @@ const GraphContainer = (props) => {
             timestep: 0.35,
             stabilization: { iterations: 150 },
             },
-        interaction:{hover:true},
         height: '500px'
     }
     // Here we have the function that must be on each node. We have to think if its
     // something that will be constant or that will change along the work
-    const [getBaseEdges, setGetBaseEdges] = useState(null);
+    // const [getBaseEdges, setGetBaseEdges] = useState(null);
     const events = {
         selectNode: (params) => setSelectedNodeId(params.nodes[0]),
         // hoverNode: (params) => console.log(params),
-        hoverEdge: (params) => console.log(getBaseEdges.clustering.getBaseEdges(params.edge))
+        hoverEdge: (params) => {
+            console.log(graph.edges[params.edge]);
+        },
+        showPopup: (id) => {console.log(id)}
     }
     return (
         <div style={{height: '500px'}}>
@@ -48,8 +56,8 @@ const GraphContainer = (props) => {
                     options={options}
                     events={events}
                     getNetwork={network => {
-                        setGetBaseEdges(network);
                     //  if you want access to vis.js network api you can set the state in a parent component using this property
+                        // setGetBaseEdges(network);
                     }}
                 />
             :
