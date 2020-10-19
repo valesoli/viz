@@ -12,7 +12,7 @@ const GraphContainer = (props) => {
     const options = {
         interaction:{
             hover:true,
-            tooltipDelay: 5
+            tooltipDelay: 30 
         },
         nodes: {
             shape: "dot"
@@ -40,12 +40,7 @@ const GraphContainer = (props) => {
     // something that will be constant or that will change along the work
     // const [getBaseEdges, setGetBaseEdges] = useState(null);
     const events = {
-        selectNode: (params) => setSelectedNodeId(params.nodes[0]),
-        // hoverNode: (params) => console.log(params),
-        hoverEdge: (params) => {
-            console.log(graph.edges[params.edge]);
-        },
-        showPopup: (id) => {console.log(id)}
+        selectNode: (params) => setSelectedNodeId(params.nodes[0])
     }
     return (
         <div style={{height: '500px'}}>
