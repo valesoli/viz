@@ -235,7 +235,7 @@ const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval
                             id: i, 
                             from: e[0][0], 
                             to: e[0][1],
-                            title: `title: ${e[1]} - interval: ${e[2]}`,
+                            title: `Type: ${e[1]} - Interval: ${e[2]}`,
                             color: visualConfig.edgeColors[e[1]],
                             arrows: 'to'
                         });

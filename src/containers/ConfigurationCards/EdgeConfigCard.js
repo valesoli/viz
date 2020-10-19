@@ -71,7 +71,7 @@ const EdgeConfigCard = (props) => {
         </div>
       :
         <Card
-          title="Edges Configuration"
+          title="Edges Settings"
           ctTableResponsive
           content={
             <Table striped hover>

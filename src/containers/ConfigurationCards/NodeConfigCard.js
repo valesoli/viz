@@ -109,7 +109,7 @@ const NodeConfigCard = (props) => {
         )}
         {nodeInfo != null && (
             <Card
-                title="Nodes Configuration"
+                title="Nodes Settings"
                 ctTableResponsive
                 content={
                     <Table striped hover style={{marginBottom: "0px"}}>

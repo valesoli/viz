@@ -16,7 +16,7 @@ import GranularityConfigCard from "containers/ConfigurationCards/GranularityConf
 import { ConnectionConfigContext } from "core/store/ConnectionConfigContext/ConnectionConfigContext";
 import { VisualConfigContext } from "core/store/VisualConfigContext/VisualConfigContext";
 
-const Configuration = (props) => {
+const Settings = (props) => {
   const { connectionConfig } = useContext(ConnectionConfigContext);
   const { visualConfig } = useContext(VisualConfigContext);
 
@@ -67,4 +67,4 @@ const Configuration = (props) => {
   );
 }
  
-export default Configuration;
+export default Settings;
