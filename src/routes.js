@@ -21,7 +21,7 @@ const dashboardRoutes = [
     icon: "pe-7s-config",
     component: Settings,
     layout: "/platform"
-  }
+  },
   // {
   //   path: "/table",
   //   name: "Table List",

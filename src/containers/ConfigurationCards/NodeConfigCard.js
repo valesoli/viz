@@ -11,6 +11,8 @@ import Loader from 'react-loader-spinner';
 
 const NodeConfigCard = (props) => {
     const defaultColors = ['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33'];    
+    const defaultIcon = "pe-7s-asterisk";
+    const possibleIcons = ["pe-7s-cart","pe-7s-world", "pe-7s-users","pe-7s-plane", "pe-7s-science"];
     const { connectionConfig } = useContext(ConnectionConfigContext);
     const { visualConfig, dispatch } = useContext(VisualConfigContext);
     const [ nodeInfo, setNodeInfo ] = useState(null);
@@ -21,19 +23,25 @@ const NodeConfigCard = (props) => {
         let newMainAttr = [];
         let newDefaultAttr = [];
         let nodeColors = {};
+        let nodeIconsUpdate = {};
+        let nodeIcons = [];
         for(let i = 0; i < response_table.length; i++){
-            let td = {type: '', color: '', attribute: '', default: '', allAttrs: ''};
+            let td = {type: '', color: '', icon: '',attribute: '', default: '', allAttrs: ''};
             td.type = response_table[i].row[0];
             td.color = visualConfig.nodeColors[response_table[i].row[0]]?visualConfig.nodeColors[response_table[i].row[0]]:defaultColors[i];
+            td.icon = visualConfig.nodeAvatars[response_table[i].row[0]]?visualConfig.nodeAvatars[response_table[i].row[0]]:defaultIcon;
             td.attribute = response_table[i].row[1][0];
             td.default = response_table[i].row[1][0];
             td.allAttrs = response_table[i].row[1];
             nodeColors[td.type] = td.color;
+            nodeIcons.push({key: i, type:td.type, value: td.icon});
+            nodeIconsUpdate[td.type] = td.icon;
             newNodes.push(td);
             newMainAttr.push({key: i, value: td.attribute});
             newDefaultAttr.push({key: i, value: td.default});
         }
-        setNodeInfo({nodes: newNodes, mainAttr: newMainAttr, defaultAttr: newDefaultAttr});
+        setNodeInfo({nodes: newNodes, mainAttr: newMainAttr, defaultAttr: newDefaultAttr, nodeAvatars:nodeIcons});
+        dispatch({type:'CHANGE_ICON', nodeAvatars: nodeIconsUpdate})
         dispatch({type: 'CHANGE_NODES', nodeColors: nodeColors});
         return response;
     }
@@ -86,6 +94,27 @@ const NodeConfigCard = (props) => {
         dispatch({type: 'CHANGE_DEFAULT_ATTR', nodeDefaultAttrs: nodeDefaultAttrs});
     }
 
+    function changeValueIcon(value, key) {
+        let found = false;
+        let changingNodeAvatars = nodeInfo.nodeAvatars;
+        for(let i = 0; i < changingNodeAvatars.length; i++){
+            if(changingNodeAvatars[i].key === key){
+                changingNodeAvatars[i].value = value;
+                found = true;
+                break;
+            }
+        }
+        if(!found){
+            changingNodeAvatars.push({ key: key, value: value});
+        }
+        nodeInfo.nodeAvatars = changingNodeAvatars;
+        
+        let nodeIcons={};
+        nodeInfo.nodeAvatars.forEach(element => {
+            nodeIcons[element.type] = element.value;
+        });
+        dispatch({type: 'CHANGE_ICON', nodeAvatars: nodeIcons});
+    }
 
     function colorChange(type, color){
         nodeInfo.nodes.forEach(element => {
@@ -117,8 +146,9 @@ const NodeConfigCard = (props) => {
                         <tr>
                                 <th key={1}>TYPE</th>
                                 <th key={2}>COLOR</th>
-                                <th key={3}>MAIN ATTRIBUTE</th>
-                                <th key={4}>DEFAULT</th>
+                                <th key={3}>ICON</th>
+                                <th key={4}>MAIN ATTRIBUTE</th>
+                                <th key={5}>DEFAULT</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -128,8 +158,20 @@ const NodeConfigCard = (props) => {
                                         <td key={key+"1"}>{prop.type}</td>
                                         <td key={key+"2"}>
                                             <MyColorPicker color={prop.color} myType={prop.type} parentChange={colorChange}/>
+                                        </td>
+                                        <td key={key+"3"} width={"40px"}>
+                                            <DropdownButton style={{fontSize: "25px"}}
+                                                            bsStyle={"primary"}
+                                                            title={<i className={nodeInfo.nodeAvatars[key].value}/>}
+                                                            id={`dropdown-basic`}>
+                                                            {possibleIcons.map((prop, key2) => {
+                                                                return (
+                                                                <MenuItem key={key2} eventKey={key2} onClick={() => {changeValueIcon(prop, key);}}>{prop}</MenuItem>
+                                                                );
+                                                            })}
+                                            </DropdownButton>
                                         </td>                                    
-                                        <td key={key+"3"}>
+                                        <td key={key+"4"}>
                                             <DropdownButton style={{width: "100%"}}
                                                             bsStyle={"primary"}
                                                             title={nodeInfo.mainAttr[key].value}
@@ -141,7 +183,7 @@ const NodeConfigCard = (props) => {
                                                             })}
                                             </DropdownButton>
                                         </td>
-                                        <td key={key+"4"}>
+                                        <td key={key+"5"}>
                                             <DropdownButton style={{width: "100%"}}
                                                             bsStyle={"primary"}
                                                             title={nodeInfo.defaultAttr.map((val) => {

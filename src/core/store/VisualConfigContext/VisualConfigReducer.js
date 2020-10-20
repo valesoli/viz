@@ -40,6 +40,16 @@ export const VisualConfigReducer = (state, action) => {
                     nodeDefaultAttrs: action.nodeDefaultAttrs
                 }               
             );
+        case 'CHANGE_ICON':
+            return (
+                {
+                    nodeAvatars: action.nodeAvatars,
+                    nodeColors: state.nodeColors,
+                    edgeColors: state.edgeColors, 
+                    nodeMainAttrs: state.nodeMainAttrs,
+                    nodeDefaultAttrs: state.nodeDefaultAttrs
+                }               
+            );
         default:
             return state;
     }
