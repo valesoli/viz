@@ -21,8 +21,13 @@ class TempGraphPlatform extends Component {
       image: image,
       color: "black",
       hasImage: true,
-      fixedClasses: "dropdown show-dropdown open"
+      fixedClasses: "dropdown show-dropdown open",
+      collapsed: false
     };
+    this.changeCollapse = this.changeCollapse.bind(this);
+  }
+  changeCollapse(){
+    this.setState({collapsed : !this.state.collapsed});
   }
   getRoutes = routes => {
     return routes.map((prop, key) => {
@@ -67,8 +72,8 @@ class TempGraphPlatform extends Component {
   render() {
     return (
       <div className="wrapper">
-        <Sidebar {...this.props} routes={routes} image={this.state.image} color={this.state.color} hasImage={this.state.hasImage} />
-        <div id="main-panel" className="main-panel" ref="mainPanel">
+        <Sidebar {...this.props} routes={routes} image={this.state.image} color={this.state.color} hasImage={this.state.hasImage} collapsed={this.state.collapsed} changeCollapse={this.changeCollapse} />
+        <div id="main-panel" className={this.state.collapsed?"main-panel-c main-panel":"main-panel"} ref="mainPanel">
           <Switch>{this.getRoutes(routes)}</Switch>
         </div>
       </div>

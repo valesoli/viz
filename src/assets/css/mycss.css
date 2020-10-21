@@ -19,6 +19,15 @@
     min-height: calc(100vh - 111px) !important;
     height: 100% !important; 
 }
+.main-panel-c{
+    width: calc(100% - 95px) !important;
+    height: 100% !important;
+}
+.main-panel-c > .content{
+    padding-top:10px !important;
+    min-height: calc(100vh - 111px) !important;
+    height: 100% !important; 
+}
 .sidebar{
     width: 235px !important;
 }
@@ -27,6 +36,12 @@
 }
 .sidebar .logo{
     padding: 5px 30px !important;
+}
+.logo-c{
+    padding: 5px 15px !important;
+}
+.s-collapsed{
+    width: 95px !important;
 }
 .CodeMirror{
     height: auto !important;
@@ -44,4 +59,21 @@
 }
 .CodeMirror-sizer{
     min-width: 300px !important;
+}
+.my-button{
+    font-size: 35px;
+    background: rgba(255, 255, 255, 0.23);
+    opacity: 1;
+    height: 50px;
+    border-radius: 10px;
+    border: solid transparent;
+    border-color: transparent;
+}
+.my-button-nc{
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.23);
+    opacity: 1;
+    border-radius: 4px;
+    border: solid transparent;
+    border-color: transparent;
 }

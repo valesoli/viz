@@ -46,7 +46,7 @@ class Sidebar extends Component {
     return (
       <div
         id="sidebar"
-        className="sidebar"
+        className={this.props.collapsed?"sidebar s-collapsed":"sidebar"}
         data-color={this.props.color}
         data-image={this.props.image}
       >
@@ -55,23 +55,31 @@ class Sidebar extends Component {
           ) : (
             null
           )}
-        <div className="logo">
-          <a
-            href="https://github.com/joacorma/temp-graph-visualizer"
-            className="simple-text logo-mini"
-          >
-            <div className="logo-img">
-              <img src={logo} style={{marginTop:'-2px'}}alt="logo_image" />
-            </div>
-          </a>
-          <a
-            href="https://github.com/joacorma/temp-graph-visualizer"
-            className="simple-text logo-normal"
-          >
-            Temp-G Vis
-          </a>
+        <div className="logo" style={{display:"flex", padding: this.props.collapsed?'':"5px 15px"}}>
+            {this.props.collapsed ? "" :
+            (<>
+              <div className="logo-img" style={{float:"left"}}>
+                <a
+                  href="https://github.com/joacorma/temp-graph-visualizer"
+                  className="simple-text logo-mini"
+                >
+                  <img src={logo} style={{marginTop:'-2px'}}alt="logo_image" />
+                </a>
+              </div>
+              <div style={{float:"left"}}>
+                <a
+                  href="https://github.com/joacorma/temp-graph-visualizer"
+                  className="simple-text logo-normal"
+                >
+                  Temp-G Vis
+                </a>
+              </div>
+            </>)}
+          <div style={{borderColor: "transparent", float:"right", marginTop:"6px", marginLeft:this.props.collapsed?"-6px":"6px"}}>
+            <button className={this.props.collapsed ? "my-button" : "my-button-nc"} onClick={this.props.changeCollapse}><i className={this.props.collapsed?"pe-7s-right-arrow":"pe-7s-left-arrow"}/></button>
+          </div>
         </div>
-        <div className="sidebar-wrapper">
+        <div className={this.props.collapsed?"sidebar-wrapper s-collapsed":"sidebar-wrapper"}>
           <ul className="nav">
             {this.state.width <= 991 ? <AdminNavbarLinks /> : null}
             {this.props.routes.map((prop, key) => {
@@ -83,6 +91,7 @@ class Sidebar extends Component {
                         ? "active active-pro"
                         : this.activeRoute(prop.layout + prop.path)
                     }
+                    style={{display:this.props.collapsed?"flex":""}}
                     key={key}
                   >
                     <NavLink
@@ -90,8 +99,8 @@ class Sidebar extends Component {
                       className="nav-link"
                       activeClassName="active"
                     >
-                      <i className={prop.icon} />
-                      <p>{prop.name}</p>
+                      <i style={{marginRight:this.props.collapsed?"0px":""}} className={prop.icon} />
+                      {this.props.collapsed?'':<p>{prop.name}</p>}
                     </NavLink>
                   </li>
                 );
