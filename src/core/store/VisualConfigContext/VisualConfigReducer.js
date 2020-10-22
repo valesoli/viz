@@ -7,7 +7,8 @@ export const VisualConfigReducer = (state, action) => {
                     nodeColors: action.nodeColors,
                     edgeColors: state.edgeColors,
                     nodeMainAttrs: state.nodeMainAttrs,
-                    nodeDefaultAttrs: state.nodeDefaultAttrs
+                    nodeDefaultAttrs: state.nodeDefaultAttrs,
+                    pathColors: state.pathColors
                 }               
             );
         case 'CHANGE_EDGES':
@@ -17,7 +18,8 @@ export const VisualConfigReducer = (state, action) => {
                     nodeColors: state.nodeColors,
                     edgeColors: action.edgeColors,
                     nodeMainAttrs: state.nodeMainAttrs,
-                    nodeDefaultAttrs: state.nodeDefaultAttrs 
+                    nodeDefaultAttrs: state.nodeDefaultAttrs,
+                    pathColors: state.pathColors
                 }               
             );
         case 'CHANGE_MAIN_ATTR':
@@ -27,7 +29,8 @@ export const VisualConfigReducer = (state, action) => {
                     nodeColors: state.nodeColors,
                     edgeColors: state.edgeColors,
                     nodeMainAttrs: action.nodeMainAttrs,
-                    nodeDefaultAttrs: state.nodeDefaultAttrs
+                    nodeDefaultAttrs: state.nodeDefaultAttrs,
+                    pathColors: state.pathColors
                 }               
             );
         case 'CHANGE_DEFAULT_ATTR':
@@ -37,7 +40,8 @@ export const VisualConfigReducer = (state, action) => {
                     nodeColors: state.nodeColors,
                     edgeColors: state.edgeColors, 
                     nodeMainAttrs: state.nodeMainAttrs,
-                    nodeDefaultAttrs: action.nodeDefaultAttrs
+                    nodeDefaultAttrs: action.nodeDefaultAttrs,
+                    pathColors: state.pathColors
                 }               
             );
         case 'CHANGE_ICON':
@@ -47,7 +51,8 @@ export const VisualConfigReducer = (state, action) => {
                     nodeColors: state.nodeColors,
                     edgeColors: state.edgeColors, 
                     nodeMainAttrs: state.nodeMainAttrs,
-                    nodeDefaultAttrs: state.nodeDefaultAttrs
+                    nodeDefaultAttrs: state.nodeDefaultAttrs,
+                    pathColors: state.pathColors
                 }               
             );
         default:

@@ -12,15 +12,15 @@ export const fetchGraph = async (key, connectionConfig, visualConfig, relationsh
     let attributesResponse = await neoQuery(connectionConfig, nodesProcessed.query);
     const attributesProcessed = attributesCallback(attributesResponse, nodesProcessed.nodeIds);
     let edgesProcessed;
-    if(nodesProcessed.path){
-        edgesProcessed = nodesProcessed.baseEdges;
-    }
-    else {
+    // if(nodesProcessed.path){
+    //     edgesProcessed = nodesProcessed.baseEdges;
+    // }
+    // else {
         let edgesResponse = await neoQuery(connectionConfig, attributesProcessed.query);
         edgesProcessed = edgesCallback(edgesResponse);
-    }
+    // }
 
-    let {graph, events} = buildNodes(nodesProcessed.baseNodes, edgesProcessed, attributesProcessed.attrs, visualConfig, filters, interval);
+    let {graph, events} = buildNodes(nodesProcessed.baseNodes, edgesProcessed, attributesProcessed.attrs, visualConfig, filters, interval, nodesProcessed.path);
     return {info: {success: true, description: "SUCCESS"}, nodes: graph.nodes, edges: graph.edges};
 }
 
@@ -59,6 +59,7 @@ const tbdgQuery = async (query) =>{
 const nodesCallback = (response, relationshipsConfig) => {
     let data = new Map();
     let baseEdges = [];
+    let nodeIds = [];
     let e, o, p;
     let objects = [];
     let isPath = false;
@@ -69,38 +70,39 @@ const nodesCallback = (response, relationshipsConfig) => {
         response.data.data.forEach(elem => {
             for(e in elem){
                 var key = elem[e].id;
-                if(key !== undefined && !data.has(key))
-                    data.set(key, elem[e]);
+                if(key !== undefined && !data.has(key)){                    
+                    data.set(key, [elem[e], 0]);
+                    nodeIds.push(key);
+                }
             }
         });
     }
     else{
         isPath = true;
+        let pathColor = 0;
         for(let elem in response.data.data){
             for(let o in objects){
                 let path = response.data.data[elem][objects[o]].path;
-                let lastNode = null;
+                //let lastNode = null;
                 for(let p in path){
                     var key = path[p].id;
                     if(key !== undefined){
-                        if(!data.has(key))
-                            data.set(key, path[p]);                                          
-                        if(lastNode != null){
-                            let relationship = [lastNode.title,path[p].title];
-                            baseEdges.push([[lastNode.id, key], findRelationship(relationshipsConfig, relationship)]);
-                            lastNode = path[p];
-                        }
-                        else
-                            lastNode = path[p];
+                        if(!data.has(key)){
+                            data.set(key, [path[p], pathColor]);
+                            nodeIds.push(key);
+                        }                                     
+                        // if(lastNode != null){
+                        //     let relationship = [lastNode.title,path[p].title];
+                        //     baseEdges.push([[lastNode.id, key], findRelationship(relationshipsConfig, relationship), undefined, pathColor]);
+                        //     lastNode = path[p];
+                        // }
+                        // else
+                        //     lastNode = path[p];
                     }
                 }
+                pathColor++;
             }
         }
-    }
-    
-    let nodeIds = [];
-    for(let id of data.keys()){
-        nodeIds.push(id);
     }
 
     let query = "match (o:Object)-->(a:Attribute)-->(v:Value) where o.id in [" + nodeIds + "] return o.id, o.title, a.title, v.value, v.interval order by o.id";
@@ -201,20 +203,28 @@ export const normalizeIntervalNumeric = (interval) => {
 
 }
 
+const getEdgeColor = (from, to, baseNodes) => {
+    let fromColor = baseNodes.get(from)[1];
+    let toColor = baseNodes.get(to)[1];
+    if(fromColor != toColor){
+        return fromColor > toColor ? fromColor : toColor;
+    }     
+    return fromColor;
+}
 
-const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval) => {
+const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval, isPath) => {
     let nodes = [];
     let edges = [];
     let nodeCount = 0;
     for(let e of baseNodes.entries()){
         if(nodeCount < filters.nodeLimit){
-            if(filters.nodeTypes[0] == "All nodes" || filters.nodeTypes.indexOf(e[1].title) > -1){
-                if(isInInterval(e[1].interval, interval)){
+            if(filters.nodeTypes[0] == "All nodes" || filters.nodeTypes.indexOf(e[1][0].title) > -1){
+                if(isInInterval(e[1].interval, interval)){                                        
                     nodes.push({
                         id: e[0], 
-                        title: attrs[e[0]] !== undefined ? attrs[e[0]].attributes[0][1] : e[1].title, 
+                        title: attrs[e[0]] !== undefined ? attrs[e[0]].attributes[0][1] : e[1][0].title, 
                         group: e[1].title,
-                        color: visualConfig.nodeColors[e[1].title]
+                        color: isPath ? visualConfig.pathColors[e[1][1]] : visualConfig.nodeColors[e[1][0].title]
                     });
                     nodeCount++;
                 }
@@ -228,21 +238,21 @@ const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval
         baseEdges.forEach(e => {
             if(filters.edgeTypes[0] == "All edges" || filters.edgeTypes.indexOf(e[1]) > -1){
                 if(e[2] == undefined || isInInterval(e[2], interval)){
-                    let key = e[0][0] * 10000 + e[0][1];
-                    let key2 = e[0][1] * 10000 + e[0][0];
-                    if(!insertedEdges.has(key) && ! insertedEdges.has(key2)){
+                    // let key = e[0][0] * 10000 + e[0][1];
+                    // let key2 = e[0][1] * 10000 + e[0][0];
+                    // if(!insertedEdges.has(key) && ! insertedEdges.has(key2)){
                         edges.push({
                             id: i, 
                             from: e[0][0], 
                             to: e[0][1],
                             title: `Type: ${e[1]} - Interval: ${e[2]}`,
-                            color: visualConfig.edgeColors[e[1]],
+                            color: isPath ? visualConfig.pathColors[getEdgeColor(e[0][0], e[0][1], baseNodes)] : visualConfig.edgeColors[e[1]],
                             arrows: 'to'
                         });
                         i++;                    
-                        insertedEdges.set(key, key);
-                        insertedEdges.set(key2, key2);
-                    }
+                    //     insertedEdges.set(key, key);
+                    //     insertedEdges.set(key2, key2);
+                    // }
                 }
             }
         });

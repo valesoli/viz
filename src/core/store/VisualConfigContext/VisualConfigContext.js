@@ -20,7 +20,8 @@ const VisualConfigContextProvider = (props) => {
                 LivedIn: "#33cccc", 
                 Friend: "#f6b202", 
                 Fan: "#ff9f88"
-            }
+            },
+            pathColors: ['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33']
         })
     return (  
         <VisualConfigContext.Provider value={{ visualConfig, dispatch }}>
