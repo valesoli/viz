@@ -41,7 +41,7 @@ const neoQuery = async (connectionConfig, query) =>{
     return response;
 }
 
-const tbdgQuery = async (query) =>{
+export const tbdgQuery = async (query) =>{
     const config = {
         method: 'post',
         url: "http://localhost:7000/query",

@@ -5,9 +5,9 @@ import { VisualConfigContext } from 'core/store/VisualConfigContext/VisualConfig
 import { fetchNeoQuery } from 'core/services/configQueryServices';
 import { Table, DropdownButton, MenuItem, Dropdown} from "react-bootstrap";
 import { Card } from "components/Card/Card.jsx";
-import Button from "components/CustomButton/CustomButton.jsx";
 import MyColorPicker from "containers/CustomColorPicker/MyColorPicker";
 import Loader from 'react-loader-spinner';
+import MyMultiSelect from 'containers/ConfigurationCards/MyMultiSelect';
 
 const NodeConfigCard = (props) => {
     const defaultColors = ['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33'];    
@@ -17,10 +17,23 @@ const NodeConfigCard = (props) => {
     const { visualConfig, dispatch } = useContext(VisualConfigContext);
     const [ nodeInfo, setNodeInfo ] = useState(null);
 
+    const options = [
+        { label: "Grapes 🍇", value: "grapes" },
+        { label: "Mango 🥭", value: "mango" },
+        { label: "Strawberry 🍓", value: "strawberry", disabled: true },
+        { label: "Watermelon 🍉", value: "watermelon" },
+        { label: "Pear 🍐", value: "pear" },
+        { label: "Apple 🍎", value: "apple" },
+        { label: "Tangerine 🍊", value: "tangerine" },
+        { label: "Pineapple 🍍", value: "pineapple" },
+        { label: "Peach 🍑", value: "peach" },
+    ];
+
     const responseFormatter = (response) => {
         let response_table = response.data.results[0].data;        
         let newNodes = [];
         let newMainAttr = [];
+        let newMainAttrUpdate = {};
         let newDefaultAttr = [];
         let nodeColors = {};
         let nodeIconsUpdate = {};
@@ -38,11 +51,13 @@ const NodeConfigCard = (props) => {
             nodeIconsUpdate[td.type] = td.icon;
             newNodes.push(td);
             newMainAttr.push({key: i, value: td.attribute});
+            newMainAttrUpdate[td.type] = td.attribute;
             newDefaultAttr.push({key: i, value: td.default});
         }
         setNodeInfo({nodes: newNodes, mainAttr: newMainAttr, defaultAttr: newDefaultAttr, nodeAvatars:nodeIcons});
         dispatch({type:'CHANGE_ICON', nodeAvatars: nodeIconsUpdate})
         dispatch({type: 'CHANGE_NODES', nodeColors: nodeColors});
+        dispatch({type: 'CHANGE_MAIN_ATTR', nodeMainAttrs: newMainAttrUpdate}); 
         return response;
     }
 
@@ -149,6 +164,7 @@ const NodeConfigCard = (props) => {
                                 <th key={3}>ICON</th>
                                 <th key={4}>MAIN ATTRIBUTE</th>
                                 <th key={5}>DEFAULT</th>
+                                <th key={6}>QUERY</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -198,6 +214,9 @@ const NodeConfigCard = (props) => {
                                                             })}
                                             </DropdownButton>
                                         </td> 
+                                        <td key={key+"6"}>
+                                            <MyMultiSelect type={prop.type} attr={nodeInfo.mainAttr[key].value} />
+                                        </td>
                                     </tr>
                                 );
                             })}
