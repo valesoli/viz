@@ -11,7 +11,8 @@ export const GraphContext = createContext();
 
 const GraphContextProvider = (props) => {
     const [ query, setQuery ] = useState("select p, c, n match (p:Person),(c:City),(n:Brand)");
-    const [ userQuery, setUserQuery ] = useState("select p, c, n match (p:Person),(c:City),(n:Brand)")
+    const [ userQuery, setUserQuery ] = useState("select p, c, n match (p:Person),(c:City),(n:Brand)");
+    const [ variables, setVariables ] = useState();
     const { connectionConfig } = useContext(ConnectionConfigContext);
     const { visualConfig } = useContext(VisualConfigContext);
     const { relationshipsConfig } = useContext(RelationshipsContext);
@@ -53,7 +54,7 @@ const GraphContextProvider = (props) => {
         }
     }
 
-    const { data, status } = useQuery(["graph", connectionConfig, visualConfig, relationshipsConfig, query, filters, interval], fetchGraph, {
+    const { data, status } = useQuery(["graph", connectionConfig, visualConfig, relationshipsConfig, query, filters, interval, variables], fetchGraph, {
         onSuccess: updateGraph
     });
 
@@ -125,7 +126,7 @@ const GraphContextProvider = (props) => {
     }
 
     return (  
-        <GraphContext.Provider value={{ graph, dispatch, query, setQuery, userQuery, setUserQuery, dateExtremes, setOneDateExtreme, interval, setInterval, granularity, setGranularity, setOneQueryFilter}}>
+        <GraphContext.Provider value={{ graph, dispatch, query, setQuery, userQuery, setUserQuery, variables, setVariables, dateExtremes, setOneDateExtreme, interval, setInterval, granularity, setGranularity, setOneQueryFilter}}>
             {props.children}
         </GraphContext.Provider>
     );

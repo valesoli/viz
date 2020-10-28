@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const fetchGraph = async (key, connectionConfig, visualConfig, relationshipsConfig, inputQuery, filters, interval) => {
+export const fetchGraph = async (key, connectionConfig, visualConfig, relationshipsConfig, inputQuery, filters, interval, variables) => {
     if(!connectionConfig.connected) return null;
     let nodesResponse = await tbdgQuery(inputQuery);
     const nodesProcessed = nodesCallback(nodesResponse, relationshipsConfig);
@@ -20,7 +20,7 @@ export const fetchGraph = async (key, connectionConfig, visualConfig, relationsh
         edgesProcessed = edgesCallback(edgesResponse);
     // }
 
-    let {graph, events} = buildNodes(nodesProcessed.baseNodes, edgesProcessed, attributesProcessed.attrs, visualConfig, filters, interval, nodesProcessed.path);
+    let {graph, events} = buildNodes(nodesProcessed.baseNodes, edgesProcessed, attributesProcessed.attrs, visualConfig, filters, interval, nodesProcessed.path, variables);
     return {info: {success: true, description: "SUCCESS"}, nodes: graph.nodes, edges: graph.edges};
 }
 
@@ -60,7 +60,7 @@ const nodesCallback = (response, relationshipsConfig) => {
     let data = new Map();
     let baseEdges = [];
     let nodeIds = [];
-    let e, o, p;
+    let e;
     let objects = [];
     let isPath = false;
     if(!response.data.success) return 1;
@@ -212,19 +212,37 @@ const getEdgeColor = (from, to, baseNodes) => {
     return fromColor;
 }
 
-const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval, isPath) => {
+function isInVariables(variables, attribute, id) {
+    if(variables != null){
+        for(let i=0; i<variables.length; i++){
+            if(variables[i][0] == "id"){
+                if(variables[i][1] == id)
+                    return true;
+            }
+            if (variables[i][0] == attribute[0] && variables[i][1] == attribute[1])
+                return true;
+            
+        }
+    }    
+    return false;
+}
+
+const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval, isPath, variables) => {
     let nodes = [];
     let edges = [];
     let nodeCount = 0;
     for(let e of baseNodes.entries()){
         if(nodeCount < filters.nodeLimit){
             if(filters.nodeTypes[0] == "All nodes" || filters.nodeTypes.indexOf(e[1][0].title) > -1){
-                if(isInInterval(e[1].interval, interval)){                                        
+                if(isInInterval(e[1].interval, interval)){
+                    let color = isPath ? visualConfig.pathColors[e[1][1]] : visualConfig.nodeColors[e[1][0].title];
+                    if(isInVariables(variables, attrs[e[0]].attributes[0], e[0]))
+                        color = "#000000";                                        
                     nodes.push({
                         id: e[0], 
                         title: attrs[e[0]] !== undefined ? attrs[e[0]].attributes[0][1] : e[1][0].title, 
                         group: e[1].title,
-                        color: isPath ? visualConfig.pathColors[e[1][1]] : visualConfig.nodeColors[e[1][0].title]
+                        color: color
                     });
                     nodeCount++;
                 }

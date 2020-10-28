@@ -4,7 +4,7 @@ import { GraphContext } from 'core/store/GraphContext/GraphContext';
 import { helper_elapsedTimeMessage, helper_initializeTable } from 'containers/QueryBox/QueryBoxHelper';
 
 const QueryBox = (props) => {
-  const { userQuery, setQuery, setUserQuery } = useContext(GraphContext);
+  const { userQuery, setQuery, setUserQuery, setVariables } = useContext(GraphContext);
   const [ localQuery, setLocalQuery ] = useState(userQuery);
   const [ message, setMessage ] = useState('');
   const [ result, setResult ] = useState(null);
@@ -31,6 +31,7 @@ const QueryBox = (props) => {
       event.preventDefault();
       setUserQuery(localQuery);
       let parsedQuery = stripAttributes(localQuery);
+      setVariables(getVariables(localQuery));
       setQuery(parsedQuery);      
   }
 
@@ -58,6 +59,23 @@ const QueryBox = (props) => {
     return newQuery;
   }
   
+  const getVariables = (query) => {
+    const regex = /\s?(\w+.?\w+|\w+\[\w+\])\s?=\s?('[\w\s.]+'|\d+)/g;
+    const regex2 = /(\w+).?\[?(\w+)\]?\s?=\s?('[\w\s.]+'|\d+)/;
+    const answer = query.match(regex);
+    let match, object, attribute, value;
+    let variables = [];
+    if(answer !== null){
+      answer.forEach(e => {
+        match = e.match(regex2);
+        object = match[1];
+        attribute = match[2];
+        value = match[3].replaceAll("'", "");
+        variables.push([attribute, value]);
+      });
+    }
+    return variables;
+  }
 
   return (
     <div className="container-fluid">
