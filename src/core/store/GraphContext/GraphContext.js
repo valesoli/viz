@@ -24,6 +24,8 @@ const GraphContextProvider = (props) => {
 
     const [queryFilters, setQueryFilters] = useState([]);
 
+    const [ pathTimes, setPathTimes] = useState([]);
+
     const [ graph, dispatch ] = useReducer(GraphReducer,
         {
             nodes: [
@@ -49,6 +51,7 @@ const GraphContextProvider = (props) => {
         if(data == null) return;
         if(data.info.success){
             dispatch({type:"UPDATE_GRAPH", graph:data});
+            setPathTimes(data.pathTimes);
         } else {
             dispatch({type:"ERROR", error: data.info.description});
         }
@@ -126,7 +129,7 @@ const GraphContextProvider = (props) => {
     }
 
     return (  
-        <GraphContext.Provider value={{ graph, dispatch, query, setQuery, userQuery, setUserQuery, variables, setVariables, dateExtremes, setOneDateExtreme, interval, setInterval, granularity, setGranularity, setOneQueryFilter}}>
+        <GraphContext.Provider value={{ graph, dispatch, query, setQuery, userQuery, setUserQuery, variables, setVariables, dateExtremes, setOneDateExtreme, interval, setInterval, granularity, setGranularity, setOneQueryFilter, pathTimes}}>
             {props.children}
         </GraphContext.Provider>
     );

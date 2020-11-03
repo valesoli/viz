@@ -20,8 +20,9 @@ export const fetchGraph = async (key, connectionConfig, visualConfig, relationsh
         edgesProcessed = edgesCallback(edgesResponse);
     // }
 
+    let pathIntervals = hasPathIntervals(nodesResponse);
     let {graph, events} = buildNodes(nodesProcessed.baseNodes, edgesProcessed, attributesProcessed.attrs, visualConfig, filters, interval, nodesProcessed.path, variables);
-    return {info: {success: true, description: "SUCCESS"}, nodes: graph.nodes, edges: graph.edges};
+    return {info: {success: true, description: "SUCCESS"}, nodes: graph.nodes, edges: graph.edges, pathTimes:pathIntervals};
 }
 
 const neoQuery = async (connectionConfig, query) =>{
@@ -285,4 +286,20 @@ const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval
             // selectNode: (params) => onClickUpdateSelectionVis(params.nodes[0], this.props.con_config)
         }
     };
+}
+
+const hasPathIntervals = (response) => {
+    if(response.data.data[0].hasOwnProperty('path')){
+        if(response.data.data[0].path.hasOwnProperty('interval')){
+            let intervals = [];
+            for(let aux in response.data.data[0].path.interval){
+                let auxVal = response.data.data[0].path.interval[aux];
+                let vals = auxVal.split("—");
+                intervals.push(vals);
+            }
+            return intervals;
+        }
+        return null;
+    }
+    return null;
 }

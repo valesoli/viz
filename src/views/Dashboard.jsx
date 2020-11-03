@@ -12,6 +12,7 @@ import GraphContainer from "containers/NetworkComponents/GraphContainer";
 import TempSliderContainer from "containers/TempSliderContainer/TempSliderContainer";
 import FilterModule from "containers/NetworkComponents/FilterModule";
 import NodeVisualizer from "containers/NetworkComponents/NodeVisualizer";
+import PathTimesModule from "containers/NetworkComponents/PathTimesModule";
 import QueryBox from "containers/QueryBox/QueryBox";
 import { VisualConfigContext } from "core/store/VisualConfigContext/VisualConfigContext";
 import { ConnectionConfigContext } from "core/store/ConnectionConfigContext/ConnectionConfigContext";
@@ -65,6 +66,7 @@ const Dashboard = (props) => {
       NetworkCardBar = <TempSliderContainer/>;
       ExtraModules = <Col md={3} style={{height:'100%',  paddingLeft:'5px'}}>
                         <NodeVisualizer/>              
+                        <PathTimesModule/>
                         <FilterModule/>
                     </Col>
       QueryModule = <QueryBox/>
