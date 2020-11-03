@@ -11,8 +11,8 @@ import MyMultiSelect from 'containers/ConfigurationCards/MyMultiSelect';
 
 const NodeConfigCard = (props) => {
     const defaultColors = ['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33'];    
-    const defaultIcon = "pe-7s-asterisk";
-    const possibleIcons = ["pe-7s-cart","pe-7s-world", "pe-7s-users","pe-7s-plane", "pe-7s-science"];
+    const defaultIcon = "pe-7s-tools";
+    const possibleIcons = ["pe-7s-cart","pe-7s-world", "pe-7s-users","pe-7s-plane", "pe-7s-science","pe-7s-star"];
     const { connectionConfig } = useContext(ConnectionConfigContext);
     const { visualConfig, dispatch } = useContext(VisualConfigContext);
     const [ nodeInfo, setNodeInfo ] = useState(null);
