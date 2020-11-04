@@ -264,7 +264,7 @@ const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval
                             id: i, 
                             from: e[0][0], 
                             to: e[0][1],
-                            title: `Type: ${e[1]} - Interval: ${e[2]}`,
+                            title: `Type: ${e[1]} \nInterval: ${e[2].join('\n')}`,
                             color: isPath ? visualConfig.pathColors[getEdgeColor(e[0][0], e[0][1], baseNodes)] : visualConfig.edgeColors[e[1]],
                             arrows: 'to'
                         });
