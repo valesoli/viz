@@ -75,7 +75,7 @@ class Sidebar extends Component {
                 </a>
               </div>
             </>)}
-          <div style={{borderColor: "transparent", float:"right", marginTop:"6px", marginLeft:this.props.collapsed?"-6px":"6px"}}>
+          <div style={{borderColor: "transparent", float:"right", marginTop:"8px", marginRight:"-4px", marginLeft:this.props.collapsed?"-6px":"10px"}}>
             <button className={this.props.collapsed ? "my-button" : "my-button-nc"} onClick={this.props.changeCollapse}><i className={this.props.collapsed?"pe-7s-right-arrow":"pe-7s-left-arrow"}/></button>
           </div>
         </div>

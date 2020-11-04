@@ -65,6 +65,8 @@
     background: rgba(255, 255, 255, 0.23);
     opacity: 1;
     height: 50px;
+    width: 60px;
+    margin-left: -9px;
     border-radius: 10px;
     border: solid transparent;
     border-color: transparent;
