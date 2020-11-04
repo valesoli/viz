@@ -17,18 +17,6 @@ const NodeConfigCard = (props) => {
     const { visualConfig, dispatch } = useContext(VisualConfigContext);
     const [ nodeInfo, setNodeInfo ] = useState(null);
 
-    const options = [
-        { label: "Grapes 🍇", value: "grapes" },
-        { label: "Mango 🥭", value: "mango" },
-        { label: "Strawberry 🍓", value: "strawberry", disabled: true },
-        { label: "Watermelon 🍉", value: "watermelon" },
-        { label: "Pear 🍐", value: "pear" },
-        { label: "Apple 🍎", value: "apple" },
-        { label: "Tangerine 🍊", value: "tangerine" },
-        { label: "Pineapple 🍍", value: "pineapple" },
-        { label: "Peach 🍑", value: "peach" },
-    ];
-
     const responseFormatter = (response) => {
         let response_table = response.data.results[0].data;        
         let newNodes = [];

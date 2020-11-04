@@ -22,7 +22,7 @@ const GraphContextProvider = (props) => {
     const [ interval, setInterval ] = useState([dateExtremes[0],dateExtremes[1]]);
     const  [ granularity, setGranularity ] = useState(3);
 
-    const [queryFilters, setQueryFilters] = useState([]);
+    const [queryFilters, setQueryFilters] = useState({});
 
     const [ pathTimes, setPathTimes] = useState([]);
 
@@ -129,7 +129,7 @@ const GraphContextProvider = (props) => {
     }
 
     return (  
-        <GraphContext.Provider value={{ graph, dispatch, query, setQuery, userQuery, setUserQuery, variables, setVariables, dateExtremes, setOneDateExtreme, interval, setInterval, granularity, setGranularity, setOneQueryFilter, pathTimes}}>
+        <GraphContext.Provider value={{ graph, dispatch, query, setQuery, userQuery, setUserQuery, variables, setVariables, dateExtremes, setOneDateExtreme, interval, setInterval, granularity, setGranularity, queryFilters, setOneQueryFilter, pathTimes}}>
             {props.children}
         </GraphContext.Provider>
     );

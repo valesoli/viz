@@ -1,18 +1,22 @@
 import { tbdgQuery } from 'core/services/graphBuildingService';
 import { GraphContext } from 'core/store/GraphContext/GraphContext';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useRef} from 'react';
 import MultiSelect from "react-multi-select-component";
 
 const MyMultiSelect = (props) => {
-    const {setOneQueryFilter} = useContext(GraphContext);
-    const [selected, setSelected] = useState([]);
+    const mounted = useRef(false);
+    const {setOneQueryFilter, queryFilters} = useContext(GraphContext);
+    const [selected, setSelected] = useState(queryFilters[props.type]);
     const [options, setOptions] = useState([]);
     //Tengo que levantar las opciones de la bdd así que tengo que hacer un call.
 
-    //Hay que armar un hook para cuando cambie selected y que genere una nueva query.
     useEffect(
         () => {
-            setOneQueryFilter(props.type, selected);
+            if(mounted.current || queryFilters[props.type] == undefined){
+                setOneQueryFilter(props.type, selected);
+            } else {
+                mounted.current = true;
+            }
         },
         [selected]
     )
@@ -29,7 +33,9 @@ const MyMultiSelect = (props) => {
             setOptions(newOptions);
         });
     };
+
     useEffect(() => getOptions(props.type, props.attr), []);
+
     return (
         <MultiSelect
             options={options}
