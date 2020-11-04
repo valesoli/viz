@@ -181,7 +181,7 @@ export const isInInterval = (stringInterval, numInterval) => {
 
 const completer = ["-01-01 00:00","-12-31 23:59"]
 
-const completeString = (original, minmax) => {
+export const completeString = (original, minmax) => {
     let stringLength = original.length - 4;
     return original + completer[minmax].slice(stringLength)       
 }

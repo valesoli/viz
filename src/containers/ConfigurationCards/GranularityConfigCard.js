@@ -1,27 +1,56 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import "assets/css/mycss.css";
 
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { GraphContext } from 'core/store/GraphContext/GraphContext';
 
+import { completeString } from 'core/services/graphBuildingService';
+
 const GranularityConfigCard = () => {
     const selectionValues = ["Hours", "Days", "Months", "Years"];
-    const { granularity, setGranularity } = useContext(GraphContext);
+    const { granularity, setGranularity, setOneDateExtreme, dateExtremes } = useContext(GraphContext);
     const [ selected, setSelected ] = useState(selectionValues[granularity]);
+    const [ localExtremes, setLocalExtremes ] = useState([]);
     
+    useEffect(() => {
+        setLocalExtremes(dateExtremes);
+    }, [])
 
     const select = (val) => {
         setSelected(selectionValues[val]);
         setGranularity(val);
+    }
+
+    const updateMinMax = (value, minmax) => {
+        let complete = completeString(value, minmax);
+        if(complete.length == 16){
+            setOneDateExtreme(minmax, complete);
+        }
     }
         
     return (
         <div className='card'>
             <div className='card-block'>
                 <div className='row'>
-                    <div className='col-md-9'>
+                    <div className='col-md-3'>
                         <h4 className='title' style={{paddingLeft: "12px",paddingTop: "4px"}}>
                             Temporal Granularity
+                        </h4>
+                    </div>
+                    <div className='col-md-3'>
+                        <h4 className='title' style={{paddingLeft: "12px",paddingTop: "2px"}}>
+                        Min: 
+                        <input type="text" placeholder={localExtremes[0]} style={{width:"75%"}} onChange={(e) => updateMinMax(e.target.value, 0)}>
+                        
+                        </input>
+                        </h4>
+                    </div>
+                    <div className='col-md-3'>
+                        <h4 className='title' style={{paddingLeft: "12px",paddingTop: "2px"}}>
+                                Max: 
+                        <input type="text" placeholder={localExtremes[1]} style={{width:"75%"}} onChange={(e) => updateMinMax(e.target.value, 1)}>
+
+                            </input>
                         </h4>
                     </div>
                     <div className='col-md-3'>

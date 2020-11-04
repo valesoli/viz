@@ -64,6 +64,20 @@ const GraphContextProvider = (props) => {
     const setOneDateExtreme = (which, val) => {
         let newDateExtremes = dateExtremes;
         newDateExtremes[which] = val;
+        if(which == 0){
+            if(newDateExtremes[0] > interval[0]){
+                setInterval([newDateExtremes[0], interval[1]]);
+            } else if(newDateExtremes[0] > interval[1]) {
+                setInterval([interval[0], newDateExtremes[1]]);
+            }
+        } else {
+            if(newDateExtremes[1] < interval[1]){
+                console.log(newDateExtremes, interval)
+                setInterval([interval[0], newDateExtremes[1]]);
+            } else if(newDateExtremes[1] < interval[0]){
+                setInterval([newDateExtremes[0], interval[1]]);
+            }
+        }
         setDateExtremes(newDateExtremes);
     }
     
