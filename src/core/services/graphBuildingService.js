@@ -270,6 +270,8 @@ const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval
         });
     }
 
+    
+
     return {
         graph: {
             nodes: nodes,
