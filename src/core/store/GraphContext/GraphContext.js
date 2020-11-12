@@ -120,9 +120,29 @@ const GraphContextProvider = (props) => {
             whereClause = whereClause.slice(0,-3);
             newQuery += whereClause;
         }
+        setVariables(getVariables(newQuery));
         setUserQuery(newQuery);
         setQuery(newQuery);
     }
+
+    const getVariables = (query) => {
+        const regex = /\s?(\w+.?\w+|\w+\[\w+\])\s?=\s?('[\w\s-._]+'|\d+)/g;
+        const regex2 = /(\w+).?\[?(\w+)\]?\s?=\s?('[\w\s-._]+'|\d+)/;
+        const answer = query.match(regex);
+        let match, object, attribute, value;
+        let variables = [];
+        if(answer !== null){
+        for(let i=0; i<answer.length; i++){
+            match = answer[i].match(regex2);
+            object = match[1];
+            attribute = match[2];
+            value = match[3].replaceAll("'", "");
+            variables.push([attribute, value]);
+        }
+        }
+        return variables;
+    }
+
 
     const setOneQueryFilter = (type, value) => {
         let newQueryFilters = queryFilters;
