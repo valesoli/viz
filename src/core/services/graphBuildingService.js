@@ -56,18 +56,18 @@ export const tbdgQuery = async (query) =>{
     let response = await axios(config);
     return response;
 }
-
+let objects = [];
 const nodesCallback = (response, relationshipsConfig) => {
     let data = new Map();
     let baseEdges = [];
     let nodeIds = [];
     let e;
-    let objects = [];
+    
     let isPath = false;
     if(!response.data.success) return 1;
     if(response.data.data.length == 0) return 2;
-    objects = Object.keys(response.data.data[0]);
-    if(response.data.data[0][objects[0]] == undefined || response.data.data[0][objects[0]].path == undefined){
+    objects = Object.keys(response.data.data[0]);        
+    if(response.data.data[0][objects[0]] == undefined || response.data.data[0][objects[0]].path == undefined){        
         response.data.data.forEach(elem => {
             for(e in elem){
                 var key = elem[e].id;
@@ -81,17 +81,20 @@ const nodesCallback = (response, relationshipsConfig) => {
     else{
         isPath = true;
         let pathColor = 0;
-        for(let elem in response.data.data){
+        var nodes = response.data.data.sort(compare);
+        console.log(response.data.data);
+        console.log(nodes);
+        for(let elem in nodes){
             for(let o in objects){
-                let path = response.data.data[elem][objects[o]].path;
+                let path = nodes[elem][objects[o]].path;
                 //let lastNode = null;
                 for(let p in path){
                     var key = path[p].id;
                     if(key !== undefined){
-                        if(!data.has(key)){
+                        //if(!data.has(key)){
                             data.set(key, [path[p], pathColor]);
                             nodeIds.push(key);
-                        }                                     
+                        //}                                     
                         // if(lastNode != null){
                         //     let relationship = [lastNode.title,path[p].title];
                         //     baseEdges.push([[lastNode.id, key], findRelationship(relationshipsConfig, relationship), undefined, pathColor]);
@@ -114,6 +117,14 @@ const nodesCallback = (response, relationshipsConfig) => {
         baseEdges: baseEdges,
         nodeIds: nodeIds
     }
+}
+
+const compare = (arrayA, arrayB) => {
+    //console.log(objects);
+    if(arrayA[objects[0]].path.length >= arrayB[objects[0]].path.length)
+        return -1;
+    else
+        return 1;
 }
 
 const findRelationship = (relationshipsConfig, relationship) => {
@@ -208,7 +219,7 @@ const getEdgeColor = (from, to, baseNodes) => {
     let fromColor = baseNodes.get(from)[1];
     let toColor = baseNodes.get(to)[1];
     if(fromColor != toColor){
-        return fromColor > toColor ? fromColor : toColor;
+        return fromColor < toColor ? fromColor : toColor;
     }     
     return fromColor;
 }
@@ -232,6 +243,7 @@ const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval
     let nodes = [];
     let edges = [];
     let nodeCount = 0;
+    let insertedEdges = new Map();
     for(let e of baseNodes.entries()){
         if(nodeCount < filters.nodeLimit){
             if(filters.nodeTypes[0] == "All nodes" || filters.nodeTypes.indexOf(e[1][0].title) > -1){
@@ -256,15 +268,25 @@ const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval
         baseEdges.forEach(e => {
             if(filters.edgeTypes[0] == "All edges" || filters.edgeTypes.indexOf(e[1]) > -1){
                 if(e[2] == undefined || isInInterval(e[2], interval)){
+                    let color = isPath ? visualConfig.pathColors[getEdgeColor(e[0][0], e[0][1], baseNodes) % visualConfig.pathColors.length] : visualConfig.edgeColors[e[1]];                    
+                    // let key1 = e[0][0] * 10000 + e[0][1];
+                    // let key2 = e[0][1] * 10000 + e[0][0];
+                    // if((insertedEdges.has(key1) || insertedEdges.has(key2)) && isPath){
+                    //     color = visualConfig.pathColors[getEdgeColor(e[0][0], e[0][1], baseNodes) % visualConfig.pathColors.length + 1];
+                    // }
+                    // else{
+                    //     insertedEdges.set(key1, key1);
+                    //     insertedEdges.set(key2, key2);
+                    // }
                     edges.push({
                         id: i, 
                         from: e[0][0], 
                         to: e[0][1],
                         title: `Type: ${e[1]} \nInterval: ${e[2].join('\n')}`,
-                        color: isPath ? visualConfig.pathColors[getEdgeColor(e[0][0], e[0][1], baseNodes) % visualConfig.pathColors.length] : visualConfig.edgeColors[e[1]],
+                        color: color,
                         arrows: 'none'
                     });
-                    i++;
+                    i++;                    
                 }
             }
         });
