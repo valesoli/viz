@@ -108,7 +108,7 @@ const GraphContextProvider = (props) => {
         let whereClause = 'WHERE ';
         let atLeastOne = false;
         for(let i=0; i< values.length; i++){
-            if(values[i].length != 0 ){
+            if(values[i].length != 0 && values[i] != 0){
                 atLeastOne = true;
                 let attributeName = visualConfig.nodeMainAttrs[types[i]];
                 values[i].forEach(element => {
@@ -146,7 +146,11 @@ const GraphContextProvider = (props) => {
 
     const setOneQueryFilter = (type, value) => {
         let newQueryFilters = queryFilters;
-        newQueryFilters[type] = value;
+        if(value == undefined){
+            newQueryFilters[type] = 0;
+        } else {
+            newQueryFilters[type] = value;
+        }
         setQueryFilters(newQueryFilters);
 
         //Build Query

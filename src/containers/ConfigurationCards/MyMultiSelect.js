@@ -2,6 +2,7 @@ import { tbdgQuery } from 'core/services/graphBuildingService';
 import { GraphContext } from 'core/store/GraphContext/GraphContext';
 import React, {useContext, useEffect, useState, useRef} from 'react';
 import MultiSelect from "react-multi-select-component";
+import { isEmpty } from "core/services/util";
 
 const MyMultiSelect = (props) => {
     const mounted = useRef(false);
@@ -12,7 +13,7 @@ const MyMultiSelect = (props) => {
 
     useEffect(
         () => {
-            if(mounted.current || queryFilters[props.type] == undefined){
+            if(mounted.current || queryFilters[props.type] == undefined ){
                 setOneQueryFilter(props.type, selected);
             } else {
                 mounted.current = true;
