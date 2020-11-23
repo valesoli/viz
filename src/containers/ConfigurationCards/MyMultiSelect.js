@@ -23,19 +23,22 @@ const MyMultiSelect = (props) => {
     )
 
     function getOptions(type, attr){
+        console.log("corriendo");
         //Formatear la query
         let prop = 'a.'+ attr
         let query = 'select '+ prop + ' match (a:' + type + ')';
         tbdgQuery(query).then((val) => {
             let newOptions = [];    
             for(let element in val.data.data){
-                newOptions.push({label: val.data.data[element][prop].value, value: val.data.data[element][prop].value});
+                if(val.data.data[element][prop].value != null){
+                    newOptions.push({label: val.data.data[element][prop].value, value: val.data.data[element][prop].value});
+                }
             }
             setOptions(newOptions);
         });
     };
 
-    useEffect(() => getOptions(props.type, props.attr), []);
+    useEffect(() => getOptions(props.type, props.attr), [props]);
 
     return (
         <MultiSelect
