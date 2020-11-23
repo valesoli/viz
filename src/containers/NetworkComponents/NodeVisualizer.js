@@ -39,6 +39,11 @@ const NodeVisualizer = () => {
 
     function nodeSelectionCallback(response){
         if( selectedNodeId == 0){
+            setSelectedNode(
+                {
+                    nodeType: "MockType"
+                }
+            )
             return;
         }
         let response_array = response.data.results[0].data;

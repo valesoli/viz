@@ -39,8 +39,14 @@ const GraphContainer = (props) => {
     // Here we have the function that must be on each node. We have to think if its
     // something that will be constant or that will change along the work
     // const [getBaseEdges, setGetBaseEdges] = useState(null);
+    const myCleaner = (params) => {
+        if(params.nodes.length == 0 && params.edges.length == 0){
+            setSelectedNodeId(0);
+        }
+    } 
     const events = {
-        selectNode: (params) => setSelectedNodeId(params.nodes[0])
+        selectNode: (params) => setSelectedNodeId(params.nodes[0]),
+        click: (params) => myCleaner(params) 
     }
     return (
         <div style={{height: '500px'}}>
