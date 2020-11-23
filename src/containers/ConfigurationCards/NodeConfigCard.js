@@ -31,14 +31,14 @@ const NodeConfigCard = (props) => {
             td.type = response_table[i].row[0];
             td.color = visualConfig.nodeColors[response_table[i].row[0]]?visualConfig.nodeColors[response_table[i].row[0]]:defaultColors[i];
             td.icon = visualConfig.nodeAvatars[response_table[i].row[0]]?visualConfig.nodeAvatars[response_table[i].row[0]]:defaultIcon;
-            td.attribute = response_table[i].row[1][0];
+            td.attribute = visualConfig.nodeMainAttrs[response_table[i].row[0]]?visualConfig.nodeMainAttrs[response_table[i].row[0]]:response_table[i].row[1][0];
             td.default = response_table[i].row[1][0];
             td.allAttrs = response_table[i].row[1];
             nodeColors[td.type] = td.color;
             nodeIcons.push({key: i, type:td.type, value: td.icon});
             nodeIconsUpdate[td.type] = td.icon;
             newNodes.push(td);
-            newMainAttr.push({key: i, value: td.attribute});
+            newMainAttr.push({key: i, type:td.type, value: td.attribute});
             newMainAttrUpdate[td.type] = td.attribute;
             newDefaultAttr.push({key: i, value: td.default});
         }
@@ -70,8 +70,9 @@ const NodeConfigCard = (props) => {
         }
         nodeInfo.mainAttr = changingMainAttr;
         let nodeMainAttrs={};
-        nodeInfo.nodes.forEach(element => {
-            nodeMainAttrs[element.type] = element.mainAttr;
+
+        nodeInfo.mainAttr.forEach(element => {
+            nodeMainAttrs[element.type] = element.value;
         });
         dispatch({type: 'CHANGE_MAIN_ATTR', nodeMainAttrs: nodeMainAttrs}); 
     } 
