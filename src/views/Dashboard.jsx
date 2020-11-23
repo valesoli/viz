@@ -40,10 +40,10 @@ const Dashboard = (props) => {
     if(!connectionConfig.connected){
         NetworkCardContent = 
           <Jumbotron>
-            <h1>Bienvenid@!</h1>
+            <h1>Welcome</h1>
             <p>
-              Aún no realizó las configuraciones de connexión con neo4j.
-              Ahí mismo puede configurar algunos atributos para la visualización.
+              You are missing connection settings.
+              Direct towards Settings tab to get started.
             </p>
             <Button variant="secondary" size="lg">
               <NavLink
@@ -51,7 +51,7 @@ const Dashboard = (props) => {
                 className="nav-link"
                 activeClassName="active"
               >
-                <i className='pe-7s-config' />   Configuración
+                <i className='pe-7s-config' />  Settings 
               </NavLink>
               </Button>
           </Jumbotron>
