@@ -26,8 +26,11 @@ const Dashboard = (props) => {
 
     let colors = type === "node"?json.nodeColors:json.edgeColors;
     for (const [index, [key, value]] of Object.entries(Object.entries(colors))) {
-      type = "fa fa-circle text";
-      legend.push(<i className={type} style={{color: value}} key={index} />);
+      legend.push(
+        type == "node"?
+        <i className={"fa fa-circle text"} style={{color: value}} key={index} />:
+        <i className={"fa text"} style={{color: value, fontSize:'15px', fontWeight:'bolder'}} key={index} >━</i>
+      );
       legend.push(" ");
       legend.push(key);
     }
