@@ -23,7 +23,6 @@ const MyMultiSelect = (props) => {
     )
 
     function getOptions(type, attr){
-        console.log("corriendo");
         //Formatear la query
         let prop = 'a.'+ attr
         let query = 'select '+ prop + ' match (a:' + type + ')';

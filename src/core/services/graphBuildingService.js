@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { path } from 'd3';
 
 export const fetchGraph = async (key, connectionConfig, visualConfig, relationshipsConfig, inputQuery, filters, interval, variables) => {
     if(!connectionConfig.connected) return null;
@@ -21,7 +22,7 @@ export const fetchGraph = async (key, connectionConfig, visualConfig, relationsh
     // }
 
     let pathIntervals = hasPathIntervals(nodesResponse);
-    let {graph, events} = buildNodes(nodesProcessed.baseNodes, edgesProcessed, attributesProcessed.attrs, visualConfig, filters, interval, nodesProcessed.path, variables);
+    let {graph, events} = buildNodes(nodesProcessed.baseNodes, edgesProcessed, attributesProcessed.attrs, visualConfig, filters, interval, nodesProcessed.path, nodesProcessed.pathOrders, variables);
     return {info: {success: true, description: "SUCCESS"}, nodes: graph.nodes, edges: graph.edges, pathTimes:pathIntervals};
 }
 
@@ -63,6 +64,7 @@ const nodesCallback = (response, relationshipsConfig) => {
     let nodeIds = [];
     let e;
     
+    let myPaths =[];
     let isPath = false;
     if(!response.data.success) return 1;
     if(response.data.data.length == 0) return 2;
@@ -82,14 +84,14 @@ const nodesCallback = (response, relationshipsConfig) => {
         isPath = true;
         let pathColor = 0;
         var nodes = response.data.data.sort(compare);
-        console.log(response.data.data);
-        console.log(nodes);
         for(let elem in nodes){
             for(let o in objects){
                 let path = nodes[elem][objects[o]].path;
+                myPaths[pathColor] = [];
                 //let lastNode = null;
                 for(let p in path){
                     var key = path[p].id;
+                    myPaths[pathColor].push(key);
                     if(key !== undefined){
                         //if(!data.has(key)){
                             data.set(key, [path[p], pathColor]);
@@ -115,7 +117,8 @@ const nodesCallback = (response, relationshipsConfig) => {
         path: isPath,
         baseNodes: data,
         baseEdges: baseEdges,
-        nodeIds: nodeIds
+        nodeIds: nodeIds,
+        pathOrders: myPaths
     }
 }
 
@@ -239,7 +242,7 @@ function isInVariables(variables, attribute, id) {
     return false;
 }
 
-const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval, isPath, variables) => {
+const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval, isPath, pathOrders, variables) => {
     let nodes = [];
     let edges = [];
     let nodeCount = 0;
@@ -263,30 +266,63 @@ const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval
         }
     }
 
+    let restrictedEdges = new Set();
+    if(isPath){
+        for(let i = 0; i<pathOrders.length; i++){
+            for(let j = 0; j< pathOrders[i].length-1; j++){
+                restrictedEdges.add([pathOrders[i][j], pathOrders[i][j+1]].toString());
+            }
+        }
+    }
     if(baseEdges !== undefined){
         let i = 0;
         baseEdges.forEach(e => {
             if(filters.edgeTypes[0] == "All edges" || filters.edgeTypes.indexOf(e[1]) > -1){
                 if(e[2] == undefined || isInInterval(e[2], interval)){
-                    let color = isPath ? visualConfig.pathColors[getEdgeColor(e[0][0], e[0][1], baseNodes) % visualConfig.pathColors.length] : visualConfig.edgeColors[e[1]];                    
-                    // let key1 = e[0][0] * 10000 + e[0][1];
-                    // let key2 = e[0][1] * 10000 + e[0][0];
-                    // if((insertedEdges.has(key1) || insertedEdges.has(key2)) && isPath){
-                    //     color = visualConfig.pathColors[getEdgeColor(e[0][0], e[0][1], baseNodes) % visualConfig.pathColors.length + 1];
-                    // }
-                    // else{
-                    //     insertedEdges.set(key1, key1);
-                    //     insertedEdges.set(key2, key2);
-                    // }
-                    edges.push({
-                        id: i, 
-                        from: e[0][0], 
-                        to: e[0][1],
-                        title: `Type: ${e[1]} \nInterval: ${e[2].join('\n')}`,
-                        color: color,
-                        arrows: 'none'
-                    });
-                    i++;                    
+                    if(!isPath){
+                        let color = isPath ? visualConfig.pathColors[getEdgeColor(e[0][0], e[0][1], baseNodes) % visualConfig.pathColors.length] : visualConfig.edgeColors[e[1]];                    
+                        // let key1 = e[0][0] * 10000 + e[0][1];
+                        // let key2 = e[0][1] * 10000 + e[0][0];
+                        // if((insertedEdges.has(key1) || insertedEdges.has(key2)) && isPath){
+                        //     color = visualConfig.pathColors[getEdgeColor(e[0][0], e[0][1], baseNodes) % visualConfig.pathColors.length + 1];
+                        // }
+                        // else{
+                        //     insertedEdges.set(key1, key1);
+                        //     insertedEdges.set(key2, key2);
+                        // }
+                        edges.push({
+                            id: i, 
+                            from: e[0][0], 
+                            to: e[0][1],
+                            title: `Type: ${e[1]} \nInterval: ${e[2].join('\n')}`,
+                            color: color,
+                            arrows: 'to'
+                        });
+                        i++;                    
+                    } else {
+                        if(restrictedEdges.has([e[0][0],e[0][1]].toString())){
+                            let color = isPath ? visualConfig.pathColors[getEdgeColor(e[0][0], e[0][1], baseNodes) % visualConfig.pathColors.length] : visualConfig.edgeColors[e[1]];                    
+                            // let key1 = e[0][0] * 10000 + e[0][1];
+                            // let key2 = e[0][1] * 10000 + e[0][0];
+                            // if((insertedEdges.has(key1) || insertedEdges.has(key2)) && isPath){
+                            //     color = visualConfig.pathColors[getEdgeColor(e[0][0], e[0][1], baseNodes) % visualConfig.pathColors.length + 1];
+                            // }
+                            // else{
+                            //     insertedEdges.set(key1, key1);
+                            //     insertedEdges.set(key2, key2);
+                            // }
+                            edges.push({
+                                id: i, 
+                                from: e[0][0], 
+                                to: e[0][1],
+                                title: `Type: ${e[1]} \nInterval: ${e[2].join('\n')}`,
+                                color: color,
+                                arrows: 'to'
+                            });
+                            i++;                    
+                        }
+                    }
+
                 }
             }
         });

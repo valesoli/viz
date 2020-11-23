@@ -44,7 +44,6 @@ const DbConfigCard = (props) => {
         });
       })
       .catch((err) => {
-        console.log(err);
         dispatch({
           type: "CONNECTION_FAILED",
           config:{
