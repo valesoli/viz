@@ -152,8 +152,7 @@ const NodeConfigCard = (props) => {
                                 <th key={2}>COLOR</th>
                                 <th key={3}>ICON</th>
                                 <th key={4}>MAIN ATTRIBUTE</th>
-                                <th key={5}>DEFAULT</th>
-                                <th key={6}>QUERY</th>
+                                <th key={5}>QUERY</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -189,21 +188,6 @@ const NodeConfigCard = (props) => {
                                             </DropdownButton>
                                         </td>
                                         <td key={key+"5"}>
-                                            <DropdownButton style={{width: "100%"}}
-                                                            bsStyle={"primary"}
-                                                            title={nodeInfo.defaultAttr.map((val) => {
-                                                                if(val.key === key)
-                                                                    return val.value;
-                                                            })}
-                                                            id={`dropdown-basic`}>
-                                                            {prop.allAttrs.map((prop, key2) => {
-                                                                return (
-                                                                <MenuItem key={key2} eventKey={key2} onClick={() => changeValueDefault(key, prop)}>{prop}</MenuItem>
-                                                                );
-                                                            })}
-                                            </DropdownButton>
-                                        </td> 
-                                        <td key={key+"6"}>
                                             <MyMultiSelect type={prop.type} attr={nodeInfo.mainAttr[key].value} />
                                         </td>
                                     </tr>
