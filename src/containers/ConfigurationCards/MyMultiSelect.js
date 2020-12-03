@@ -13,7 +13,7 @@ const MyMultiSelect = (props) => {
 
     useEffect(
         () => {
-            if(mounted.current || queryFilters[props.type] == undefined ){
+            if(mounted.current){
                 setOneQueryFilter(props.type, selected);
             } else {
                 mounted.current = true;
