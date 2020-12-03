@@ -57,9 +57,18 @@ const GraphContextProvider = (props) => {
         }
     }
 
-    const { data, status } = useQuery(["graph", connectionConfig, visualConfig, relationshipsConfig, query, filters, interval, variables], fetchGraph, {
-        onSuccess: updateGraph
-    });
+    useEffect( () => {
+        async function fetchData(connectionConfig, visualConfig,relationshipsConfig, query, filters, interval, variables){
+            let data = await fetchGraph("graph", connectionConfig, visualConfig, relationshipsConfig, query, filters, interval, variables);
+            console.log(data);
+            updateGraph(data);
+        }
+        fetchData(connectionConfig, visualConfig, relationshipsConfig, query, filters, interval, variables);
+    }, [query]);
+
+    // const { data, status } = useQuery(["graph", connectionConfig, visualConfig, relationshipsConfig, query, filters, interval, variables], fetchGraph, {
+    //     onSuccess: updateGraph
+    // });
 
     const setOneDateExtreme = (which, val) => {
         let newDateExtremes = dateExtremes;
