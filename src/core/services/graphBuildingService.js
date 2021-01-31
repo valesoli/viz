@@ -252,13 +252,22 @@ const buildNodes = (baseNodes, baseEdges, attrs, visualConfig, filters, interval
             if(filters.nodeTypes[0] == "All nodes" || filters.nodeTypes.indexOf(e[1][0].title) > -1){
                 if(isInInterval(e[1].interval, interval)){
                     let color = isPath ? visualConfig.pathColors[e[1][1] % visualConfig.pathColors.length] : visualConfig.nodeColors[e[1][0].title];
-                    if(isInVariables(variables, attrs[e[0]].attributes[0], e[0]))
-                        color = "#000000";                                        
+                    let border = "#FFFFFF";
+                    let borderWidth = 1;
+                    if(isInVariables(variables, attrs[e[0]].attributes[0], e[0])){
+                        border = "#000000";                                        
+                        borderWidth = 5;
+                    }
                     nodes.push({
                         id: e[0], 
                         title: attrs[e[0]] !== undefined ? attrs[e[0]].attributes[0][1] : e[1][0].title, 
                         group: e[1].title,
-                        color: color
+                        color: {
+                            background: color,
+                            border: border,
+                            highlight: {border: "#2B7CE9", background: color}
+                        },
+                        borderWidth: borderWidth
                     });
                     nodeCount++;
                 }
