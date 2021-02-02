@@ -22,7 +22,8 @@ export const fetchGraph = async (key, connectionConfig, visualConfig, relationsh
     // }
 
     let pathIntervals = hasPathIntervals(nodesResponse);
-    let {graph, events} = buildNodes(nodesProcessed.baseNodes, edgesProcessed, attributesProcessed.attrs, visualConfig, filters, interval, nodesProcessed.path, nodesProcessed.pathOrders, variables);
+    //let {graph, events} = buildNodes(nodesProcessed.baseNodes, edgesProcessed, attributesProcessed.attrs, visualConfig, filters, interval, nodesProcessed.path, nodesProcessed.pathOrders, variables);
+    let {graph, events} = buildNodes(nodesProcessed.baseNodes, edgesProcessed, attributesProcessed.attrs, visualConfig, filters, interval, false, nodesProcessed.pathOrders, variables);
     return {info: {success: true, description: "SUCCESS"}, nodes: graph.nodes, edges: graph.edges, pathTimes:pathIntervals};
 }
 
