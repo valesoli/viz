@@ -1,0 +1,84 @@
+.btn-group-primary{
+    width: 100%;
+}
+.my-content{
+    min-height: 100px !important;
+}
+.card{
+    margin-bottom: 5px !important;
+}
+.card-user .author{
+    margin-top: -100px !important;
+}
+.main-panel{
+    width: calc(100% - 235px) !important;
+    height: 100% !important;
+}
+.main-panel > .content{
+    padding-top:10px !important;
+    min-height: calc(100vh - 111px) !important;
+    height: 100% !important; 
+}
+.main-panel-c{
+    width: calc(100% - 95px) !important;
+    height: 100% !important;
+}
+.main-panel-c > .content{
+    padding-top:10px !important;
+    min-height: calc(100vh - 111px) !important;
+    height: 100% !important; 
+}
+.sidebar{
+    width: 235px !important;
+}
+.sidebar-wrapper{
+    width: 235px !important;
+}
+.sidebar .logo{
+    padding: 5px 30px !important;
+}
+.logo-c{
+    padding: 5px 15px !important;
+}
+.s-collapsed{
+    width: 95px !important;
+}
+.CodeMirror{
+    height: auto !important;
+}
+.callout {
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #eee;
+  border-left-width: 5px;
+  border-radius: 3px;
+  border-left-color: #5bc0de;
+}
+.container-fluid{
+    height: 100% !important;
+}
+.CodeMirror-sizer{
+    min-width: 300px !important;
+}
+.my-button{
+    font-size: 35px;
+    background: rgba(255, 255, 255, 0.23);
+    opacity: 1;
+    height: 50px;
+    width: 60px;
+    margin-left: -9px;
+    border-radius: 10px;
+    border: solid transparent;
+    border-color: transparent;
+}
+.my-button-nc{
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.23);
+    opacity: 1;
+    border-radius: 4px;
+    border: solid transparent;
+    border-color: transparent;
+}
+.vis-tooltip{
+    white-space: pre-wrap !important;
+}
