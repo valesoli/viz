@@ -3,12 +3,8 @@ node_modules/
 
 .vscode/launch.json
 
-*.json
-
 *.log
 
 .vscode/launch.json
-
-*.json
 
 *.log
