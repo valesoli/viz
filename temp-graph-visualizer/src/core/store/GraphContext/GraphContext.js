@@ -18,7 +18,7 @@ const GraphContextProvider = (props) => {
     const { relationshipsConfig } = useContext(RelationshipsContext);
     const { filters } = useContext(FiltersContext);
 
-    const [ dateExtremes, setDateExtremes ] = useState(["1900","2000"])
+    const [ dateExtremes, setDateExtremes ] = useState(["1900","2023"])
     const [ interval, setInterval ] = useState([dateExtremes[0],dateExtremes[1]]);
     const  [ granularity, setGranularity ] = useState(3);
 

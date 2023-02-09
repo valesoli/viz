@@ -9,7 +9,7 @@ const ConnectionConfigContextProvider = (props) => {
             connected: false, 
             url: 'http://localhost:7474/db/data/transaction/commit',
             user: 'neo4j',
-            pass: 'admin',
+            pass: '12345',
             info: ''
         }
     )
